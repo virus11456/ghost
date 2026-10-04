@@ -14,6 +14,7 @@
 | `02-世界觀.md` | 三界結構、三本帳、仙界與陰間官制、人間勢力、陰陽界地理、夜遊神與宿主、先生的法與代價、十條鐵律、年表、系列延伸、舊線的敘事管道 |
 | `03-寫作守則.md` | 視角、篇幅、節奏、靈異露面分寸等規則 |
 | `正文/NN-章名.md` | 已完成的正文，一章一檔 |
+| `tools/build_reader.py`、`tools/reader_template.html` | 把正文組成閱讀網站 `site/index.html`（線上版：https://claude.ai/artifact/WyVUHxNTvCnCknir9o379q） |
 
 ## 目前進度
 
@@ -35,7 +36,8 @@
    - 違反十條鐵律、敘事管道（夢只能看見陳守一在場的事）、寫作守則的地方。
    找到就直接修（改正文或補大綱一句），並更新本檔的連續性備忘。
 7. `git add`、`git commit -m "第N章 章名"`，直接推到 `main`：`git push origin HEAD:main`（不開 PR）。
-8. 用一兩句中文回報：這章寫了什麼、新埋了哪些伏筆，以及回頭檢查找到並修掉了哪些問題（沒有也要說）。
+8. **更新閱讀網站**：`python3 tools/build_reader.py` 重建 `site/index.html`，再用 Artifact 工具發布到同一個網址 `https://claude.ai/artifact/WyVUHxNTvCnCknir9o379q`（新對話要帶 `url` 參數，否則會變成新網址）。
+9. 用一兩句中文回報：這章寫了什麼、新埋了哪些伏筆，以及回頭檢查找到並修掉了哪些問題（沒有也要說）。
 
 ## 寫作守則摘要（細節見 03-寫作守則.md）
 

@@ -1,0 +1,249 @@
+<title>霧川</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Serif+TC:wght@400;600&display=swap">
+<style>
+/* 版面：一條窄窄的閱讀欄，像河道；目錄依卷排列，未寫的章節淡成霧。強調色取鎮符那塊褪色的紅布。 */
+:root {
+  --bg: #e7ebe9;
+  --paper: #f3f5f4;
+  --fg: #1d2422;
+  --muted: #66716c;
+  --faint: #a9b3ae;
+  --rule: #cdd4d0;
+  --accent: #9c4b55;
+  --accent-soft: #ead9db;
+  --display: "LXGW WenKai TC", "Kaiti TC", "BiauKai", "STKaiti", serif;
+  --body: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --ui: -apple-system, "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --size: 19px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1316; --paper: #141a1e; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
+    --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1316; --paper: #141a1e; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
+  --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); }
+body { color: var(--fg); font-family: var(--body); margin: 0; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule);
+  font-family: var(--ui); font-size: 14px;
+}
+.bar .home { font-family: var(--display); font-size: 20px; background: none; border: 0; cursor: pointer; padding: 0 4px; letter-spacing: .1em; }
+.bar .where { color: var(--muted); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tools { display: flex; gap: 6px; }
+.tools button {
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
+  padding: 4px 10px; cursor: pointer; font-size: 13px; color: var(--muted);
+}
+.tools button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+
+main { padding-inline: 16px; padding-block: 0 80px; }
+
+/* 封面 */
+.cover { max-width: 760px; margin: 0 auto; padding-block: 56px 24px; display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: start; }
+.cover h1 {
+  writing-mode: vertical-rl; font-family: var(--display); font-weight: 700;
+  font-size: clamp(64px, 14vw, 120px); line-height: 1; margin: 0; letter-spacing: .2em;
+  background: linear-gradient(180deg, var(--fg) 30%, var(--faint) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.cover .meta { display: grid; gap: 18px; padding-top: 8px; min-width: 0; }
+.cover .core { font-size: 17px; line-height: 2; margin: 0; max-width: 34em; }
+.cover .stat { font-family: var(--ui); font-size: 13px; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.progress { height: 3px; background: var(--rule); border-radius: 2px; width: 160px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--accent); }
+.go {
+  justify-self: start; font-family: var(--display); font-size: 18px; letter-spacing: .08em;
+  background: var(--accent); color: var(--paper); border: 0; border-radius: 4px; padding: 10px 22px; cursor: pointer;
+}
+@media (max-width: 520px) { .cover { grid-template-columns: 1fr; gap: 12px; padding-block: 32px 8px; } .cover h1 { writing-mode: horizontal-tb; letter-spacing: .3em; } }
+
+.toc { max-width: 760px; margin: 0 auto; display: grid; gap: 34px; padding-block: 24px; }
+.vol header { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
+.vol h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0; letter-spacing: .08em; text-wrap: balance; }
+.vol h2 small { color: var(--muted); font-size: 15px; margin-right: 10px; }
+.vol .blurb { color: var(--muted); font-size: 14px; line-height: 1.8; margin: 8px 0 4px; }
+.vol ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 18px; }
+.vol li button {
+  width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+  display: grid; grid-template-columns: 2.4em 1fr auto; gap: 8px; align-items: baseline;
+  padding: 9px 4px; border-bottom: 1px dashed var(--rule);
+}
+.vol li .n { font-family: var(--ui); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.vol li .t { font-family: var(--display); font-size: 18px; }
+.vol li .l { font-family: var(--ui); font-size: 11px; color: var(--muted); letter-spacing: .05em; }
+.vol li button:hover .t { color: var(--accent); }
+.vol li.todo button { cursor: default; }
+.vol li.todo .t, .vol li.todo .n { color: var(--faint); }
+.vol li.here .t { color: var(--accent); }
+
+/* 正文 */
+.chapter { max-width: 34em; margin: 0 auto; padding-block: 48px 24px; font-size: var(--size); }
+.chapter .num { font-family: var(--ui); font-size: 12px; letter-spacing: .3em; color: var(--accent); margin: 0; }
+.chapter h2 { font-family: var(--display); font-weight: 700; font-size: 2em; letter-spacing: .12em; margin: .2em 0 1.4em; text-wrap: balance; }
+.chapter p { line-height: 2; margin: 0 0 1.05em; text-align: justify; }
+.chapter p.era { font-family: var(--display); color: var(--accent); letter-spacing: .15em; margin-block: 1.6em 1.4em; }
+.chapter p.doc { font-family: var(--display); background: var(--paper); border-left: 2px solid var(--accent); padding: .8em 1em; line-height: 1.9; }
+.chapter p strong { font-weight: 600; }
+.chapter p.beat { text-align: center; font-size: 1.3em; letter-spacing: .3em; margin-block: 1.4em; }
+.sep { border: 0; text-align: center; margin: 2.2em 0; color: var(--faint); }
+.sep::before { content: "・　・　・"; letter-spacing: .2em; }
+.nav { max-width: 34em; margin: 40px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-family: var(--ui); }
+.nav button {
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px;
+  cursor: pointer; text-align: left; display: grid; gap: 4px; min-width: 0;
+}
+.nav button:last-child { text-align: right; }
+.nav small { color: var(--muted); font-size: 12px; }
+.nav span { font-family: var(--display); font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav button:disabled { opacity: .45; cursor: default; }
+.end { text-align: center; color: var(--muted); font-family: var(--ui); font-size: 13px; margin-top: 28px; }
+
+/* 直排 */
+body.vertical .chapter {
+  writing-mode: vertical-rl; max-width: none; height: min(78vh, 46em);
+  overflow-x: auto; overflow-y: hidden; padding: 24px 8px; margin: 0;
+}
+body.vertical .chapter p { margin: 0 0 0 1.05em; text-align: start; }
+body.vertical .chapter p.doc { border-left: 0; border-top: 2px solid var(--accent); }
+body.vertical .sep { margin: 0 1.6em; }
+body.vertical .chapter h2 { margin: 0 0 0 1.2em; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .chapter { animation: rise .5s ease both; }
+  @keyframes rise { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+</style>
+
+<div class="bar">
+  <button class="home" id="home" type="button" aria-label="回到目錄">霧川</button>
+  <div class="where" id="where">目錄</div>
+  <div class="tools">
+    <button type="button" id="smaller" aria-label="字小一點">A−</button>
+    <button type="button" id="bigger" aria-label="字大一點">A＋</button>
+    <button type="button" id="vertical" aria-pressed="false">直排</button>
+  </div>
+</div>
+<main id="main"></main>
+
+<script>
+const DATA = /*__DATA__*/null;
+const CN = "〇一二三四五六七八九";
+const cn = n => n <= 10 ? (n === 10 ? "十" : CN[n]) : n < 20 ? "十" + (n % 10 ? CN[n % 10] : "") : CN[Math.floor(n / 10)] + "十" + (n % 10 ? CN[n % 10] : "");
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("wuchuan." + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem("wuchuan." + k, JSON.stringify(v)); } catch (e) {} }
+};
+const written = Object.keys(DATA.chapters).map(Number).sort((a, b) => a - b);
+const all = DATA.volumes.flatMap(v => v.chapters.map(c => ({ ...c, vol: v.vol, volName: v.name })));
+const meta = n => all.find(c => c.n === n) || { n, name: "", line: "" };
+const main = document.getElementById("main");
+const where = document.getElementById("where");
+
+let size = store.get("size", 19);
+let vertical = store.get("vertical", false);
+function applyPrefs() {
+  document.documentElement.style.setProperty("--size", size + "px");
+  document.body.classList.toggle("vertical", vertical);
+  document.getElementById("vertical").setAttribute("aria-pressed", String(vertical));
+}
+
+function toc() {
+  const last = store.get("last", null);
+  const done = written.length;
+  const next = last && DATA.chapters[last] ? last : written[0];
+  where.textContent = "目錄";
+  main.innerHTML = `
+    <section class="cover">
+      <h1>霧川</h1>
+      <div class="meta">
+        <p class="core">${DATA.core}</p>
+        <div class="stat"><span>十卷・八十章</span><span>已寫 ${done} / 80 章</span>
+          <span class="progress" aria-hidden="true"><i style="width:${done / 80 * 100}%"></i></span></div>
+        <button class="go" type="button" data-go="${next}">${last && DATA.chapters[last] ? "繼續讀　第" + cn(last) + "章" : "從第一章讀起"}</button>
+      </div>
+    </section>
+    <div class="toc">
+      ${DATA.volumes.map(v => `
+        <section class="vol">
+          <header><h2><small>${v.vol}</small>${v.name}</h2></header>
+          <p class="blurb">${v.blurb}</p>
+          <ol>${v.chapters.map(c => {
+            const has = !!DATA.chapters[c.n];
+            return `<li class="${has ? "" : "todo"} ${c.n === last ? "here" : ""}">
+              <button type="button" ${has ? `data-go="${c.n}"` : `disabled aria-label="第${c.n}章 ${c.name}，尚未寫成"`}>
+                <span class="n">${c.n}</span><span class="t">${c.name}</span><span class="l">${has ? c.line : "未寫"}</span>
+              </button></li>`;
+          }).join("")}</ol>
+        </section>`).join("")}
+    </div>`;
+  window.scrollTo(0, 0);
+}
+
+function read(n) {
+  const ch = DATA.chapters[n];
+  if (!ch) return toc();
+  const m = meta(n);
+  const i = written.indexOf(n);
+  const prev = written[i - 1], next = written[i + 1];
+  store.set("last", n);
+  where.textContent = `${m.vol || ""}　第${cn(n)}章　${m.name}`;
+  const title = ch.title.replace(/^第.+?章　/, "");
+  main.innerHTML = `
+    <article class="chapter" id="text">
+      <p class="num">${m.vol || ""}・${m.volName || ""}　第 ${n} 章</p>
+      <h2>${title}</h2>
+      ${ch.html}
+    </article>
+    <nav class="nav" aria-label="換章">
+      <button type="button" ${prev ? `data-go="${prev}"` : "disabled"}><small>上一章</small><span>${prev ? "第" + cn(prev) + "章　" + meta(prev).name : "已是第一章"}</span></button>
+      <button type="button" ${next ? `data-go="${next}"` : "disabled"}><small>下一章</small><span>${next ? "第" + cn(next) + "章　" + meta(next).name : "還沒寫到"}</span></button>
+    </nav>
+    ${next ? "" : `<p class="end">目前寫到這裡。下一章是第${cn(n + 1)}章〈${meta(n + 1).name}〉。</p>`}`;
+  window.scrollTo(0, 0);
+  const t = document.getElementById("text");
+  if (vertical) t.scrollLeft = 0;
+}
+
+function route() {
+  const m = location.hash.match(/^#c(\d+)$/);
+  m ? read(Number(m[1])) : toc();
+}
+function go(n) {
+  const h = n ? "#c" + n : "#toc";
+  if (location.hash === h) route(); else location.hash = h;
+}
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-go]");
+  if (b) go(Number(b.dataset.go));
+});
+document.getElementById("home").onclick = () => go(0);
+document.getElementById("smaller").onclick = () => { size = Math.max(15, size - 1); store.set("size", size); applyPrefs(); };
+document.getElementById("bigger").onclick = () => { size = Math.min(26, size + 1); store.set("size", size); applyPrefs(); };
+document.getElementById("vertical").onclick = () => { vertical = !vertical; store.set("vertical", vertical); applyPrefs(); route(); };
+document.addEventListener("keydown", e => {
+  const m = location.hash.match(/^#c(\d+)$/);
+  if (!m || e.target.closest("input,textarea")) return;
+  const i = written.indexOf(Number(m[1]));
+  if (e.key === "ArrowRight" && written[i + 1]) go(written[i + 1]);
+  if (e.key === "ArrowLeft" && written[i - 1]) go(written[i - 1]);
+});
+window.addEventListener("hashchange", route);
+applyPrefs();
+route();
+</script>

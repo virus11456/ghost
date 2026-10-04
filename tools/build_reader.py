@@ -51,11 +51,37 @@ def main():
     core = re.search(r"## 故事核心\n\n(.+?)\n", outline).group(1)
     data = {"volumes": volumes(), "chapters": chapters, "core": core}
     tpl = (ROOT / "tools" / "reader_template.html").read_text(encoding="utf-8")
-    out = tpl.replace("/*__DATA__*/null", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
-    dest = ROOT / "site" / "index.html"
-    dest.parent.mkdir(exist_ok=True)
-    dest.write_text(out, encoding="utf-8")
-    print(f"{dest}  {len(chapters)} 章")
+    body = tpl.replace("/*__DATA__*/null", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
+    site = ROOT / "site"
+    site.mkdir(exist_ok=True)
+    # Vercel 版：完整的 HTML 文件，含手機用的 meta 與加到主畫面的圖示
+    cut = body.index("</style>") + len("</style>")
+    page = HEAD.replace("</head>", body[:cut] + "\n</head>") + body[cut:] + "\n</body>\n</html>\n"
+    (site / "index.html").write_text(page, encoding="utf-8")
+    # claude.ai Artifact 版：發布時會自動包上外殼，所以只放內容
+    art = ROOT / "build"
+    art.mkdir(exist_ok=True)
+    (art / "artifact.html").write_text(body, encoding="utf-8")
+    print(f"{site / 'index.html'}  {len(chapters)} 章")
+
+HEAD = """<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="《霧川》：靈異懸疑長篇小說，十卷八十章。">
+<meta name="theme-color" content="#e7ebe9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1316" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="霧川">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+"""
 
 if __name__ == "__main__":
     main()

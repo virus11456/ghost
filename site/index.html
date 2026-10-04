@@ -1,9 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="《霧川》：靈異懸疑長篇小說，十卷八十章。">
+<meta name="theme-color" content="#e7ebe9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1316" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="霧川">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>霧川</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Serif+TC:wght@400;600&display=swap">
 <style>
-/* 版面：一條窄窄的閱讀欄，像河道；目錄依卷排列，未寫的章節淡成霧。強調色取鎮符那塊褪色的紅布。 */
+/* 版面：一條窄窄的閱讀欄，像河道；目錄依卷排列，未寫的章節淡成霧。強調色取鎮符那塊褪色的紅布。手機上工具收到底部。 */
 :root {
   --bg: #e7ebe9;
   --paper: #f3f5f4;
@@ -13,45 +28,50 @@
   --rule: #cdd4d0;
   --accent: #9c4b55;
   --accent-soft: #ead9db;
+  --shade: rgba(20, 28, 26, .35);
   --display: "LXGW WenKai TC", "Kaiti TC", "BiauKai", "STKaiti", serif;
   --body: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
   --ui: -apple-system, "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   --size: 19px;
+  --lead: 2;
+  --top: env(safe-area-inset-top, 0px);
+  --bottom: env(safe-area-inset-bottom, 0px);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f1316; --paper: #141a1e; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
-    --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; color-scheme: dark;
+    --bg: #0f1316; --paper: #161c20; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
+    --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; --shade: rgba(0, 0, 0, .55); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f1316; --paper: #141a1e; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
-  --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; color-scheme: dark;
+  --bg: #0f1316; --paper: #161c20; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
+  --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; --shade: rgba(0, 0, 0, .55); color-scheme: dark;
 }
-* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { background: var(--bg); }
-body { color: var(--fg); font-family: var(--body); margin: 0; }
+body { color: var(--fg); font-family: var(--body); margin: 0; -webkit-text-size-adjust: 100%; }
 button { font: inherit; color: inherit; }
-a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
 
+/* 頂欄 */
 .bar {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 16px; background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule);
-  font-family: var(--ui); font-size: 14px;
+  position: sticky; top: var(--top); z-index: 5;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px 8px 16px; background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule);
+  font-family: var(--ui); font-size: 14px; transition: transform .25s ease;
 }
-.bar .home { font-family: var(--display); font-size: 20px; background: none; border: 0; cursor: pointer; padding: 0 4px; letter-spacing: .1em; }
+.bar .home { font-family: var(--display); font-size: 20px; background: none; border: 0; cursor: pointer; padding: 6px 4px; letter-spacing: .1em; }
 .bar .where { color: var(--muted); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tools { display: flex; gap: 6px; }
-.tools button {
-  background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
-  padding: 4px 10px; cursor: pointer; font-size: 13px; color: var(--muted);
+.iconbtn {
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 8px;
+  min-width: 40px; height: 36px; padding: 0 10px; cursor: pointer; font-size: 14px; color: var(--muted);
 }
-.tools button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+.readbar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; }
+.readbar i { display: block; height: 100%; width: 0; background: var(--accent); }
 
-main { padding-inline: 16px; padding-block: 0 80px; }
+main { padding-inline: 16px; padding-block: 0 96px; }
 
 /* 封面 */
 .cover { max-width: 760px; margin: 0 auto; padding-block: 56px 24px; display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: start; }
@@ -68,9 +88,9 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 .progress i { display: block; height: 100%; background: var(--accent); }
 .go {
   justify-self: start; font-family: var(--display); font-size: 18px; letter-spacing: .08em;
-  background: var(--accent); color: var(--paper); border: 0; border-radius: 4px; padding: 10px 22px; cursor: pointer;
+  background: var(--accent); color: var(--paper); border: 0; border-radius: 6px; padding: 12px 24px; cursor: pointer;
 }
-@media (max-width: 520px) { .cover { grid-template-columns: 1fr; gap: 12px; padding-block: 32px 8px; } .cover h1 { writing-mode: horizontal-tb; letter-spacing: .3em; } }
+.hint { font-family: var(--ui); font-size: 12px; color: var(--muted); margin: 0; }
 
 .toc { max-width: 760px; margin: 0 auto; display: grid; gap: 34px; padding-block: 24px; }
 .vol header { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
@@ -79,9 +99,9 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 .vol .blurb { color: var(--muted); font-size: 14px; line-height: 1.8; margin: 8px 0 4px; }
 .vol ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 18px; }
 .vol li button {
-  width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+  width: 100%; min-height: 46px; text-align: left; background: none; border: 0; cursor: pointer;
   display: grid; grid-template-columns: 2.4em 1fr auto; gap: 8px; align-items: baseline;
-  padding: 9px 4px; border-bottom: 1px dashed var(--rule);
+  padding: 10px 4px; border-bottom: 1px dashed var(--rule);
 }
 .vol li .n { font-family: var(--ui); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .vol li .t { font-family: var(--display); font-size: 18px; }
@@ -95,7 +115,7 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 .chapter { max-width: 34em; margin: 0 auto; padding-block: 48px 24px; font-size: var(--size); }
 .chapter .num { font-family: var(--ui); font-size: 12px; letter-spacing: .3em; color: var(--accent); margin: 0; }
 .chapter h2 { font-family: var(--display); font-weight: 700; font-size: 2em; letter-spacing: .12em; margin: .2em 0 1.4em; text-wrap: balance; }
-.chapter p { line-height: 2; margin: 0 0 1.05em; text-align: justify; }
+.chapter p { line-height: var(--lead); margin: 0 0 1.05em; text-align: justify; }
 .chapter p.era { font-family: var(--display); color: var(--accent); letter-spacing: .15em; margin-block: 1.6em 1.4em; }
 .chapter p.doc { font-family: var(--display); background: var(--paper); border-left: 2px solid var(--accent); padding: .8em 1em; line-height: 1.9; }
 .chapter p strong { font-weight: 600; }
@@ -104,7 +124,7 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 .sep::before { content: "・　・　・"; letter-spacing: .2em; }
 .nav { max-width: 34em; margin: 40px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-family: var(--ui); }
 .nav button {
-  background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px;
   cursor: pointer; text-align: left; display: grid; gap: 4px; min-width: 0;
 }
 .nav button:last-child { text-align: right; }
@@ -115,30 +135,115 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 
 /* 直排 */
 body.vertical .chapter {
-  writing-mode: vertical-rl; max-width: none; height: min(78vh, 46em);
+  writing-mode: vertical-rl; max-width: none; height: calc(100dvh - 150px - var(--top) - var(--bottom));
   overflow-x: auto; overflow-y: hidden; padding: 24px 8px; margin: 0;
+  overscroll-behavior-x: contain;
 }
 body.vertical .chapter p { margin: 0 0 0 1.05em; text-align: start; }
 body.vertical .chapter p.doc { border-left: 0; border-top: 2px solid var(--accent); }
 body.vertical .sep { margin: 0 1.6em; }
 body.vertical .chapter h2 { margin: 0 0 0 1.2em; }
 
+/* 底部工具列（手機） */
+.dock {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+  display: none; grid-template-columns: repeat(4, 1fr);
+  padding: 6px 8px calc(6px + var(--bottom));
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--rule); font-family: var(--ui); transition: transform .25s ease;
+}
+.dock button {
+  background: none; border: 0; min-height: 48px; display: grid; justify-items: center; align-content: center; gap: 2px;
+  color: var(--fg); cursor: pointer; font-size: 11px;
+}
+.dock button b { font-family: var(--display); font-weight: 400; font-size: 18px; line-height: 1; }
+.dock button:disabled { color: var(--faint); }
+
+/* 設定面板 */
+.sheet-shade { position: fixed; inset: 0; background: var(--shade); z-index: 9; }
+.sheet {
+  position: fixed; z-index: 10; left: 50%; bottom: 0; transform: translateX(-50%);
+  width: min(560px, 100%); background: var(--paper); border: 1px solid var(--rule); border-bottom: 0;
+  border-radius: 16px 16px 0 0; padding: 10px 20px calc(22px + var(--bottom));
+  font-family: var(--ui); display: grid; gap: 18px;
+}
+.sheet .grip { width: 40px; height: 4px; border-radius: 2px; background: var(--rule); justify-self: center; }
+.sheet h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 20px; letter-spacing: .1em; }
+.row { display: grid; grid-template-columns: 4.5em 1fr; gap: 12px; align-items: center; }
+.row > span { color: var(--muted); font-size: 13px; }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.seg button { background: none; border: 0; min-height: 42px; cursor: pointer; font-size: 14px; color: var(--muted); }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.size { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+.size input { width: 100%; accent-color: var(--accent); }
+.size small { color: var(--muted); }
+.sheet .done { background: var(--accent); color: var(--paper); border: 0; border-radius: 10px; min-height: 46px; font-size: 15px; cursor: pointer; }
+.sample { font-family: var(--body); font-size: var(--size); line-height: var(--lead); margin: 0; color: var(--fg); }
+
+@media (max-width: 700px) {
+  .bar .desk { display: none; }
+  body.reading .dock { display: grid; }
+  body.reading .nav { display: none; }
+  body.chrome-off.reading .bar { transform: translateY(calc(-100% - var(--top))); }
+  body.chrome-off.reading .dock { transform: translateY(100%); }
+  .chapter { padding-block: 28px 16px; }
+  .chapter h2 { font-size: 1.7em; }
+  .cover { grid-template-columns: 1fr; gap: 14px; padding-block: 32px 8px; }
+  .cover h1 { writing-mode: horizontal-tb; letter-spacing: .3em; }
+  .go { justify-self: stretch; text-align: center; }
+  .vol ol { grid-template-columns: 1fr; }
+  .vol li .l { display: none; }
+}
+@media (min-width: 701px) { .hint { display: none; } }
+
 @media (prefers-reduced-motion: no-preference) {
-  .chapter { animation: rise .5s ease both; }
+  .chapter { animation: rise .45s ease both; }
   @keyframes rise { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 }
+@media (prefers-reduced-motion: reduce) { .bar, .dock { transition: none; } }
 </style>
+</head>
+<body>
 
-<div class="bar">
+
+<div class="bar" id="bar">
   <button class="home" id="home" type="button" aria-label="回到目錄">霧川</button>
   <div class="where" id="where">目錄</div>
-  <div class="tools">
-    <button type="button" id="smaller" aria-label="字小一點">A−</button>
-    <button type="button" id="bigger" aria-label="字大一點">A＋</button>
-    <button type="button" id="vertical" aria-pressed="false">直排</button>
-  </div>
+  <button class="iconbtn desk" type="button" id="prevTop" aria-label="上一章">‹</button>
+  <button class="iconbtn desk" type="button" id="nextTop" aria-label="下一章">›</button>
+  <button class="iconbtn" type="button" id="openSheet" aria-label="閱讀設定">Aa</button>
+  <div class="readbar" aria-hidden="true"><i id="readbar"></i></div>
 </div>
 <main id="main"></main>
+
+<nav class="dock" id="dock" aria-label="閱讀工具">
+  <button type="button" id="dPrev"><b>‹</b>上一章</button>
+  <button type="button" id="dToc"><b>目</b>目錄</button>
+  <button type="button" id="dSet"><b>Aa</b>設定</button>
+  <button type="button" id="dNext"><b>›</b>下一章</button>
+</nav>
+
+<div class="sheet-shade" id="shade" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="grip" aria-hidden="true"></div>
+  <h3 id="sheetTitle">閱讀設定</h3>
+  <p class="sample">夜裡走路，別回頭。</p>
+  <div class="row"><span>字級</span>
+    <div class="size"><small>小</small><input type="range" id="sizeRange" min="15" max="26" step="1" aria-label="字級"><small>大</small></div>
+  </div>
+  <div class="row"><span>行距</span>
+    <div class="seg" id="leadSeg"><button type="button" data-lead="1.8">緊</button><button type="button" data-lead="2">適中</button><button type="button" data-lead="2.3">鬆</button></div>
+  </div>
+  <div class="row"><span>排版</span>
+    <div class="seg" id="modeSeg"><button type="button" data-mode="h">橫排</button><button type="button" data-mode="v">直排</button></div>
+  </div>
+  <div class="row"><span>外觀</span>
+    <div class="seg" id="themeSeg"><button type="button" data-theme-set="auto">跟系統</button><button type="button" data-theme-set="light">淺色</button><button type="button" data-theme-set="dark">深色</button></div>
+  </div>
+  <button type="button" class="done" id="closeSheet">完成</button>
+</section>
 
 <script>
 const DATA = {"volumes": [{"vol": "卷一", "name": "沒吃藥", "blurb": "小鎮消失、倖存者入院、偷藥的人現身；舊線同步揭開 1931 年的源頭，兩個偷東西的女孩說出同一句話。", "chapters": [{"n": 1, "name": "空鎮", "line": "今"}, {"n": 2, "name": "渡河", "line": "舊"}, {"n": 3, "name": "松嶺", "line": "今"}, {"n": 4, "name": "鎮符", "line": "舊"}, {"n": 5, "name": "監視器", "line": "今"}, {"n": 6, "name": "行屍", "line": "舊"}, {"n": 7, "name": "三下", "line": "今"}, {"n": 8, "name": "我的錯", "line": "今／舊"}]}, {"vol": "卷二", "name": "滿月", "blurb": "滿月夜怪物暴走，周遠開了那一槍；舊線師父戰死，留下「只能葬、不能殺」的規則；卷末周遠發現自己十二年前就在這個案子裡。", "chapters": [{"n": 9, "name": "停電", "line": "今"}, {"n": 10, "name": "鏡中人", "line": "今"}, {"n": 11, "name": "師父", "line": "舊"}, {"n": 12, "name": "手札", "line": "今／舊"}, {"n": 13, "name": "申誡", "line": "今"}, {"n": 14, "name": "七號床", "line": "今"}, {"n": 15, "name": "拒約", "line": "舊"}, {"n": 16, "name": "還差一個", "line": "今"}]}, {"vol": "卷三", "name": "先生", "blurb": "林依遇上陰陽先生，周遠追到一座十二年前的墳；舊線揭開 1931 年為什麼只能封、不能葬，今線揭開周遠夢的來源。", "chapters": [{"n": 17, "name": "石崗", "line": "今"}, {"n": 18, "name": "玉佛", "line": "今"}, {"n": 19, "name": "廟公", "line": "今"}, {"n": 20, "name": "葬法", "line": "舊"}, {"n": 21, "name": "逃", "line": "舊"}, {"n": 22, "name": "病歷", "line": "今"}, {"n": 23, "name": "兩半", "line": "今"}, {"n": 24, "name": "出院", "line": "今"}]}, {"vol": "卷四", "name": "葬歌", "blurb": "三個人在石崗鎮的民宿裡補完九十五年前沒唱完的歌；小滿這一次沒有逃，透過曾孫女把欠的還了。結局留一道縫。", "chapters": [{"n": 25, "name": "山路", "line": "今"}, {"n": 26, "name": "三個人", "line": "今"}, {"n": 27, "name": "下半本", "line": "舊"}, {"n": 28, "name": "七號床", "line": "今"}, {"n": 29, "name": "放手", "line": "今"}, {"n": 30, "name": "退潮", "line": "今"}, {"n": 31, "name": "結案", "line": "今"}, {"n": 32, "name": "第三聲", "line": "今"}]}, {"vol": "卷五", "name": "四十三", "blurb": "失蹤的 43 人開始敲門；周遠和何靜發現霧川鎮有一個「背面」；舊線轉到陳守一流浪的年代，查出夜遊神的源頭是 1899 年一場被全鎮掩蓋的河祭。", "chapters": [{"n": 33, "name": "兩下", "line": "今"}, {"n": 34, "name": "背面", "line": "今"}, {"n": 35, "name": "戲班", "line": "舊"}, {"n": 36, "name": "河祭", "line": "舊"}, {"n": 37, "name": "族譜", "line": "今"}, {"n": 38, "name": "名單", "line": "今"}, {"n": 39, "name": "擺渡人", "line": "今"}, {"n": 40, "name": "下元", "line": "今"}]}, {"vol": "卷六", "name": "名字", "blurb": "四個人在下元節進入霧川鎮的背面，替一個被抹掉名字的女孩補一場真正的葬禮；一聲不再可怕的敲門之後，新的案子找上門。", "chapters": [{"n": 41, "name": "入水", "line": "今"}, {"n": 42, "name": "倒舞", "line": "今"}, {"n": 43, "name": "遺言", "line": "舊"}, {"n": 44, "name": "河底", "line": "今／舊"}, {"n": 45, "name": "道歉", "line": "今"}, {"n": 46, "name": "葬歌・二", "line": "今"}, {"n": 47, "name": "天亮", "line": "今"}, {"n": 48, "name": "三下", "line": "今"}]}, {"vol": "卷七", "name": "松嶺", "blurb": "事情沒有結束：松嶺療養院底下藏著一整層不存在的病房，院長叫周遠「師弟」；舊線揭開葛青崖還有第二個徒弟。", "chapters": [{"n": 49, "name": "白石里", "line": "今"}, {"n": 50, "name": "七號床", "line": "今"}, {"n": 51, "name": "師兄", "line": "舊"}, {"n": 52, "name": "院長", "line": "今"}, {"n": 53, "name": "下半本", "line": "舊"}, {"n": 54, "name": "B3", "line": "今"}, {"n": 55, "name": "解聘", "line": "今"}, {"n": 56, "name": "那四個", "line": "今"}]}, {"vol": "卷八", "name": "拾遺", "blurb": "梁鶴年的組織「拾遺會」浮上檯面：他們收購人的愧疚，把它丟進背面養成怪物，再從消失的鎮上收地。沈言被帶走，林依這一次沒有逃。", "chapters": [{"n": 57, "name": "拾遺會", "line": "今"}, {"n": 58, "name": "獨葬", "line": "今"}, {"n": 59, "name": "再會", "line": "舊"}, {"n": 60, "name": "帶走", "line": "今"}, {"n": 61, "name": "地政", "line": "今"}, {"n": 62, "name": "買忘", "line": "舊"}, {"n": 63, "name": "停職", "line": "今"}, {"n": 64, "name": "第二個滿月", "line": "今"}]}, {"vol": "卷九", "name": "背面", "blurb": "戰場移進背面：所有被遺忘的地方由河相連，梁鶴年在那裡開了一座「名字市」；舊線追到 1899 年與 2014 年，揭開葛青崖的愧疚與陳守一真正的死因。", "chapters": [{"n": 65, "name": "入口", "line": "今"}, {"n": 66, "name": "河網", "line": "今"}, {"n": 67, "name": "少年葛", "line": "舊"}, {"n": 68, "name": "名字市", "line": "今"}, {"n": 69, "name": "主唱", "line": "今"}, {"n": 70, "name": "里長", "line": "今"}, {"n": 71, "name": "和平村", "line": "舊"}, {"n": 72, "name": "守門", "line": "今"}]}, {"vol": "卷十", "name": "對帳", "blurb": "今線與舊線在陰陽界合流，周遠見到陳守一本人；冬至天門開，仙界、陰間、人間三方都想在這一夜把帳做平，周遠以先生身分召三界對帳，讓他們互相咬出彼此的底；全書收在周遠自己擺起了算命桌。", "chapters": [{"n": 73, "name": "留下的人", "line": "今"}, {"n": 74, "name": "外面", "line": "今"}, {"n": 75, "name": "冬至", "line": "今"}, {"n": 76, "name": "三人", "line": "今"}, {"n": 77, "name": "師徒", "line": "今／舊"}, {"n": 78, "name": "對帳", "line": "今"}, {"n": 79, "name": "大葬", "line": "今"}, {"n": 80, "name": "廟口", "line": "今"}]}], "chapters": {"1": {"title": "第一章　空鎮", "html": "<p>報案電話是早上六點十二分打進縣警局的。<\/p>\n<p>值班台的學弟接起來，聽了半分鐘，臉色變得很奇怪，摀住話筒轉頭問：「學長，一個鎮的人不見了，這要轉哪一組？」<\/p>\n<p>周遠正在茶水間洗杯子。他沒有抬頭看洗手台上方那面鏡子，這是他好幾年來的習慣，連自己都說不上是什麼時候開始的。<\/p>\n<p>「轉我。」他說。<\/p>\n<hr class=\"sep\">\n<p>霧川鎮在山坳裡，從縣城開過去要一個小時，最後二十分鐘是沿著溪谷往上繞的單線道。周遠到的時候是七點四十分，霧還沒散，像一層濕棉被壓在屋頂上。<\/p>\n<p>報案的是一個送貨司機，姓黃，五十幾歲，坐在貨車駕駛座上抽菸，一根接一根。他每週三送一車泡麵和衛生紙到鎮上的雜貨店，送了九年。<\/p>\n<p>「我按喇叭按了十分鐘，」黃司機說，手一直在抖，「沒人出來。我想說老闆睡過頭，去敲門，沒人。隔壁早餐店，沒人。再隔壁，沒人。我一路敲到廟口，一個人都沒有。」<\/p>\n<p>「一個都沒有？」<\/p>\n<p>「連狗都沒有。」黃司機吐了一口煙，「警察先生，這個鎮我來了九年，早上七點，早餐店的阿姨一定在煎蘿蔔糕。從來沒有一次例外。」<\/p>\n<p>周遠看了看手機上的戶籍資料。霧川鎮，戶籍人口三百一十二人，一條主街，一座土地公廟，一間派出所。<\/p>\n<p>派出所的值班員警也聯絡不上。<\/p>\n<hr class=\"sep\">\n<p>他從雜貨店開始。<\/p>\n<p>鐵門拉下來一半，從底下鑽進去，店裡收拾得整整齊齊，收銀機鎖著，抽屜裡的零錢一枚不少。二樓是老闆的住處，臥室的門虛掩著。<\/p>\n<p>周遠在門上敲了兩下。<\/p>\n<p>「警察，有人在嗎？」<\/p>\n<p>沒有回應。他推門進去。<\/p>\n<p>床上的被子掀開一角，枕頭上還留著頭睡過的凹陷。床頭櫃上擺著老花眼鏡、半杯水、一支螢幕亮著的手機，鎖定畫面上有十幾通未接來電。<\/p>\n<p>床邊，擺著一雙藍白拖鞋。<\/p>\n<p>周遠蹲下來看了很久。拖鞋擺得非常整齊，兩隻併攏，鞋頭朝外，對著房門，像是有人在主人離開之後，特地彎腰替他擺好的。<\/p>\n<p>一般人起床穿拖鞋，脫下來的時候，鞋頭會朝著床。<\/p>\n<hr class=\"sep\">\n<p>到中午，鑑識組和支援的警力陸續趕到，周遠帶著人一戶一戶地查。<\/p>\n<p>每一戶都一樣。門窗沒有被破壞，財物都在，冰箱裡有剩菜，電鍋還插著電，保溫燈亮著。被子掀開，人不見了。床邊的拖鞋，鞋頭全部朝外。<\/p>\n<p>「組長，」鑑識的小方從巷子另一頭跑過來，口罩拉到下巴，「你來看一下這個。」<\/p>\n<p>小方指著一戶人家的木門。離地大約一百五十公分的位置，有三個淺淺的凹痕，排成一列，間距相同。<\/p>\n<p>周遠伸手摸了摸。凹痕很淺，邊緣圓潤，不像是工具敲出來的。他把手握成拳，指節對上去，剛好吻合。<\/p>\n<p>「不只這一戶，」小方壓低聲音，「目前看到的，至少四十幾戶都有。高度一樣，間距一樣，都是三個。」<\/p>\n<p>「其他戶呢？」<\/p>\n<p>「沒有。乾乾淨淨的。」<\/p>\n<p>周遠沒說話。他退後一步，看著那扇門。<\/p>\n<p>有人在半夜，挑了四十幾戶人家，每一戶敲了三下。<\/p>\n<p>然後，整個鎮的人都不見了。<\/p>\n<hr class=\"sep\">\n<p>他們是下午兩點多，在土地公廟前找到她的。<\/p>\n<p>奇怪的是，上午十點，支援的員警才查過廟埕，那時那裡一個人也沒有。<\/p>\n<p>廟埕是一片舖著石板的空地，正對著廟門。周遠一走過轉角就看見了：一個年輕女人坐在廟埕正中央，雙腳光著，沾滿乾掉的泥巴，身上只穿一件淺色的長睡衣。她抬著頭，望著廟頂的燕尾脊，一動也不動。<\/p>\n<p>她在笑。<\/p>\n<p>不是嚇傻了的笑，也不是獲救的鬆一口氣。那是一種很滿足、很輕鬆的笑，像剛跳完一支很好玩的舞，還沉浸在音樂裡。<\/p>\n<p>周遠示意後面的人停下，一個人慢慢走過去，在她身邊蹲下。<\/p>\n<p>「小姐，」他放輕聲音，「妳還好嗎？妳叫什麼名字？」<\/p>\n<p>她過了好幾秒才轉過頭。那個笑容像退潮一樣，從她臉上一點一點退掉，露出底下一張蒼白、茫然、極度疲倦的臉。<\/p>\n<p>「沈言，」她說，「我叫沈言。」<\/p>\n<p>她看了看四周空蕩蕩的街，又低頭看了看自己滿是泥巴的腳，像是第一次發現它們。<\/p>\n<p>「警察先生，大家都去哪裡了？」<\/p>\n<p>「我們正在找。」周遠說，「妳一直在這裡嗎？昨天晚上，妳有沒有看到什麼，聽到什麼？」<\/p>\n<p>沈言沒有回答這個問題。她只是看著他，看了很久，久到周遠開始覺得不太舒服。<\/p>\n<p>然後她開口，聲音很輕，像在問一件很平常的事。<\/p>\n<p>「你剛剛在雜貨店敲門，」她說，「為什麼只敲兩下？」<\/p>\n<p>周遠愣住了。<\/p>\n<p>雜貨店在主街的另一頭，離廟埕走路要五分鐘，中間隔著十幾棟房子。<\/p>\n<p>他回頭看了一眼。廟埕的屋簷下，掛著一支老舊的監視器，鏡頭的紅燈一閃一閃，正對著他們兩個人。<\/p>", "chars": 1639}, "2": {"title": "第二章　渡河", "html": "<p>周遠那天晚上十一點才回到家。<\/p>\n<p>他在玄關脫鞋，習慣性地把皮鞋鞋頭朝牆、鞋跟朝外擺好，擺到一半，手停住了。他看著那雙鞋，想起雜貨店老闆床邊那雙藍白拖鞋，想了很久，最後還是把鞋轉了回去。<\/p>\n<p>洗澡的時候，他照例沒看鏡子。<\/p>\n<p>躺上床，他以為自己會失眠。三百一十二個人，一個坐在廟埕上笑的女人，一個不可能聽見的問題。可是他頭一沾枕頭，就睡著了，睡得又快又沉，像被什麼東西拖下去。<\/p>\n<hr class=\"sep\">\n<p class=\"era\">一九三一年，霧川渡。<\/p>\n<p>船身晃了一下，陳守一抓緊船舷，差點把師父的布包掉進河裡。<\/p>\n<p>「抓好。」葛青崖頭也沒回，坐在船頭，膝上橫著那只銅鈴，「這包東西掉下去，你下去撈。」<\/p>\n<p>河很寬，水是黃濁的，傍晚的霧從上游一路漫下來，對岸的屋頂只露出一排模糊的燕尾。撐船的是個黝黑的漢子，船尾蹲著一個小女孩，七八歲大，綁著兩條歪掉的辮子，一雙眼睛從上船開始就沒離開過那只銅鈴。<\/p>\n<p>「阿伯，」她終於忍不住，「那個鈴，可以搖嗎？」<\/p>\n<p>「小滿，」撐船的漢子低聲喝她，「沒禮貌。」<\/p>\n<p>葛青崖笑了一下，那是陳守一很少看見的表情。「搖不得，」他說，「這個鈴一搖，會有人來。」<\/p>\n<p>「誰？」<\/p>\n<p>「不該來的人。」<\/p>\n<p>小女孩縮了縮脖子，卻沒有被嚇到，反而更好奇地盯著那只鈴，像在盯一顆糖。<\/p>\n<p>陳守一十七歲，跟師父走江湖三年了。他知道師父說的不是玩笑話，也知道師父每隔三年都會回霧川渡一次。可是回來做什麼，師父從來不說，他也從來不敢問。<\/p>\n<p>「你師兄在對岸等，」葛青崖忽然說，「上了岸，你先跟著我，別亂跑。」<\/p>\n<p>陳守一點點頭。他不太喜歡那個師兄，可他什麼都沒說。<\/p>\n<hr class=\"sep\">\n<p>霧川渡比陳守一想的熱鬧。<\/p>\n<p>碼頭邊擠滿了挑夫和魚販，主街掛著一串串紅燈籠，空氣裡有燒酒和炸豬油的香味。一打聽才知道，鎮上最大的沈家，老太爺今天做七十大壽，席開六十桌，全鎮的人都去吃了。<\/p>\n<p>葛青崖沒去吃席。他領著陳守一穿過人群，先去了鎮尾的土地廟。<\/p>\n<p>廟很小，香火卻很旺。葛青崖在神案前站了很久，抬頭看著橫樑。陳守一順著他的視線往上看，橫樑正中央，用紅布包著一樣東西，紅布已經褪成了粉色，用麻繩綁了好幾圈。<\/p>\n<p>「那是什麼？」<\/p>\n<p>「鎮符。」葛青崖說，「三十年前，你師祖跟我一起封的。」<\/p>\n<p>「封什麼？」<\/p>\n<p>葛青崖沒回答。他從袖子裡摸出三枚銅錢，往神案上一撒，看了一眼，又收了回去。<\/p>\n<p>陳守一沒看清楚卦象，只看到師父的眉頭皺了一下。<\/p>\n<p>廟門口，那個叫小滿的小女孩不知道什麼時候跟了過來，扒著門框，仰頭看著橫樑上那包粉紅色的東西，看得出神。<\/p>\n<hr class=\"sep\">\n<p>天黑以後，葛青崖才帶著陳守一去沈家。<\/p>\n<p>壽宴已經散了，滿地瓜子殼和鞭炮屑。管家認得葛青崖，什麼都沒問，直接把他們領進後院。<\/p>\n<p>後院的廂房裡，點著一盞油燈。一個年輕女人坐在床沿，穿著一身素淨的藍衣，臉色白得近乎透明。她看見葛青崖，站起來行了個禮。<\/p>\n<p>「葛先生，又麻煩您了。」<\/p>\n<p>「少奶奶客氣。」<\/p>\n<p>葛青崖從布包裡取出一只陶罐，倒出一碗黑漆漆的藥湯，雙手遞過去。那藥湯的味道很怪，像香灰混著鐵鏽。沈家少奶奶接過碗，閉著眼一口氣喝完，喝完以後，額上全是冷汗。<\/p>\n<p>「這三年，」葛青崖低聲問，「夜裡還好嗎？」<\/p>\n<p>「還好。」她說，「每天早上一碗，一天都沒斷過。」<\/p>\n<p>她放下碗，抬起頭，目光越過葛青崖，落在站在門邊的陳守一身上。<\/p>\n<p>然後，她笑了。<\/p>\n<p>那個笑容只出現了一瞬間。嘴角往上拉開，拉到一個不太對的弧度，像有什麼東西借她的臉，從裡面往外看了一眼。下一秒，笑容就不見了，她又是那個蒼白、客氣、疲倦的少奶奶。<\/p>\n<p>陳守一的後頸一陣發涼。<\/p>\n<hr class=\"sep\">\n<p>回客棧的路上，鎮上已經沒有人了。紅燈籠一盞一盞熄滅，石板路被霧打得濕亮。<\/p>\n<p>「師父，」陳守一終於忍不住，「少奶奶喝的，到底是什麼藥？」<\/p>\n<p>葛青崖走在前面，腳步沒停。<\/p>\n<p>「守一，」他說，「你記好一件事。在這個鎮上，夜裡走路，別回頭。」<\/p>\n<p>陳守一不懂，可他點了頭。<\/p>\n<p>走過沈家大宅的圍牆時，他聽見背後有一點聲音。很輕，像有人光著腳踩在石板上，一步，一步，跟著他們的步子。<\/p>\n<p>他想起師父的話，咬著牙，沒有回頭。<\/p>\n<p>可是在轉角的地方，他用眼角的餘光，瞥見了沈家二樓的窗。<\/p>\n<p>窗開著。那位少奶奶站在窗後，一動也不動，正低頭看著他。<\/p>\n<hr class=\"sep\">\n<p>周遠醒過來的時候，是凌晨三點。<\/p>\n<p>他躺在黑暗裡，心臟跳得很快，額頭上全是汗。夢裡的每一個細節都清楚得不像話：河水的腥味、藥湯的鐵鏽味、那個小女孩歪掉的辮子、那只從來沒有被搖響的銅鈴。<\/p>\n<p>他不認識夢裡的任何一個人。可他知道那個少年叫陳守一，就像知道自己的名字一樣。<\/p>\n<p>他摸黑拿起手機，在搜尋欄打了四個字：霧川鎮　舊名。<\/p>\n<p>第一筆結果，是縣政府文化局的一頁簡介。<\/p>\n<p class=\"doc\">霧川鎮，舊稱霧川渡，清代至日治時期為溪谷渡口，因河道改道與聚落遷移，民國五十年後改今名。<\/p>\n<p>周遠盯著那行字，一直看到螢幕暗下去。<\/p>\n<p>黑掉的螢幕映出他自己的臉。他下意識地移開視線，可是在移開之前的那半秒，他好像看見，螢幕裡的自己，比他慢了一點才轉開眼睛。<\/p>", "chars": 1887}, "3": {"title": "第三章　松嶺", "html": "<p>松嶺療養院在縣城北邊的山上，從主幹道彎進一條產業道路，再爬十五分鐘的坡。兩旁全是松樹，枝葉密得把天空遮成一條窄縫。<\/p>\n<p>周遠把車停進訪客停車格時，順手把後照鏡往上扳了一點。<\/p>\n<p>療養院是一棟灰白色的四層樓，窗框漆成墨綠色，看得出是很多年前的建築，只是外牆補過好幾次漆，補得深淺不一。大門旁掛著一塊銅牌，寫著創院年份：民國四十二年。<\/p>\n<p>「周組長？」<\/p>\n<p>迎出來的是一個三十出頭的女醫師，白袍底下穿著毛衣，頭髮紮得很緊，手上抱著一本病歷夾。<\/p>\n<p>「何靜，沈小姐的主治。」她沒有伸手，「先說好，二十分鐘，我全程在場。她現在的狀態不適合接受偵訊，我是看在你們說事關三百多人，才答應讓你見她。」<\/p>\n<p>「不是偵訊，是會談。」<\/p>\n<p>「對她來說沒有差別。」何靜轉身往裡走，「跟我來。」<\/p>\n<hr class=\"sep\">\n<p>走廊很長，地板是舊式的磨石子，被拖把拖得發亮，空氣裡有消毒水和舊木頭的味道。<\/p>\n<p>「我有一件事想不通，」周遠跟在她後面，「她昨天被送到縣立醫院，今天早上就轉來這裡。為什麼是松嶺？」<\/p>\n<p>「縣府跟我們有合作，」何靜頭也沒回，「重大創傷、原因不明的個案，都會轉介到松嶺。我們這裡專收這種病人，已經收了很多年。」<\/p>\n<p>「誰轉介的？」<\/p>\n<p>何靜在一扇門前停下，翻開病歷夾看了一眼。「轉介醫師的簽名有點潦草。」她把夾子闔上，「這重要嗎？」<\/p>\n<p>周遠想了想。「應該不重要。」<\/p>\n<p>他把這件事記在了心裡。<\/p>\n<hr class=\"sep\">\n<p>會談室很小，白牆、木桌、兩張椅子，窗外是一整片松林。<\/p>\n<p>沈言坐在桌子對面，換了一身療養院的淺藍色病人服，頭髮洗過了，臉色還是很白。她的雙手捧著一杯溫水，周遠進門到坐下，她一口都沒喝。<\/p>\n<p>「沈小姐，昨天見過，」周遠說，「我姓周。」<\/p>\n<p>「我記得。」她看了他一眼，又低下頭，「你找到大家了嗎？」<\/p>\n<p>「還沒有。所以需要妳幫忙。」周遠打開錄音筆，「從頭說吧。妳最後記得的事情，是什麼時候？」<\/p>\n<p>「星期一早上。」沈言說，「我睡過頭了。」<\/p>\n<p>她說得很慢，像在一格一格地回想。<\/p>\n<p>她在鎮公所當約聘，八點打卡。那天她七點五十幾分才醒，鬧鐘不知道什麼時候被按掉了。她抓了包包就衝出門，一直跑到巷口，才想起來一件事。<\/p>\n<p>「我沒吃藥。」<\/p>\n<p>「什麼藥？」<\/p>\n<p>沈言沉默了一會兒。<\/p>\n<p>「一種黑色的小藥丸，裝在一個白色的小瓷瓶裡。我每天早上起來第一件事就是吃一顆，從十二歲開始，十二年，一天都沒有斷過。」<\/p>\n<p>何靜在旁邊的筆記本上寫了一行字。<\/p>\n<p>「是醫生開的嗎？」周遠問。<\/p>\n<p>「不是。」沈言的聲音更輕了，「是一個算命的先生給的。那時候我還很小，很多事都記不清楚了。我只記得他交代，一天都不能斷。斷了會怎樣，他沒說。」<\/p>\n<p>「那天妳為什麼沒回去拿？」<\/p>\n<p>「我想說，一天而已。」她抬起頭，第一次直視周遠，「那天我心情很好。好得很奇怪。我從來沒有那麼輕鬆過，好像身上卸掉了一個很重的東西。下班回家，我飯都沒吃就睡了。」<\/p>\n<p>「然後呢？」<\/p>\n<p>「然後第二天早上起來，全身都在痛，腳底都是泥。我想補吃，可是藥瓶不見了。」<\/p>\n<p>「不見了？」<\/p>\n<p>「我把整個房間都翻過了。床底、抽屜、垃圾桶。沒有。」沈言的手指收緊，杯子裡的水晃了一下，「我室友林依那天一早就出門了，我沒機會問她。」<\/p>\n<p>「林依，」周遠在本子上寫下這個名字，「她現在在哪裡？」<\/p>\n<p>「我不知道。」沈言說，「她也不見了嗎？」<\/p>\n<p>周遠沒有回答。三百一十二個失蹤者名單裡，確實有林依。可是鑑識報告寫著，她房間的衣櫃少了幾件衣服，行李箱不見了。<\/p>\n<p>「第二天晚上呢？」<\/p>\n<p>「我很早就睡了。然後……」沈言閉上眼睛，「然後我就在廟埕上了。你在我旁邊。」<\/p>\n<p>「中間那兩個晚上，妳完全沒有記憶？」<\/p>\n<p>「沒有。」<\/p>\n<p>何靜放下筆，看了看手錶。「十五分鐘了。」<\/p>\n<hr class=\"sep\">\n<p>就在那個時候，走廊上傳來了歌聲。<\/p>\n<p>很輕，很慢，是一個老人的聲音，乾澀、沙啞，像一根被風吹得嗚嗚響的竹管。那旋律周遠從沒聽過，調子一直往下沉，每一句的尾音都拖得很長，像要把什麼東西放進很深的地方。<\/p>\n<p>沈言手裡的杯子停在半空。<\/p>\n<p>「那是七號床的阿婆，」何靜說，語氣很平常，「她每天這個時候都會唱，不用理她。」<\/p>\n<p>沈言沒有聽見。她慢慢轉過頭，看向門口，眼睛睜得很大。<\/p>\n<p>「她在唱……」她喃喃地說，「她怎麼會唱這個……」<\/p>\n<p>「沈小姐？」<\/p>\n<p>杯子從她手裡滑下去，摔在磨石子地上，碎了。<\/p>\n<p>沈言站了起來。<\/p>\n<p>她的動作很奇怪，不像是自己站起來的，倒像是被什麼東西從頭頂提起來。她的雙手慢慢往前抬，抬到與肩同高，手腕微微垂著。她的腳跟離開了地面，只用腳尖撐著，身體開始輕輕地左右搖晃。<\/p>\n<p>她的嘴角，一點一點往上翹。<\/p>\n<p>「何醫師——」<\/p>\n<p>何靜已經按下了牆上的呼叫鈕。兩個護理師衝進來，一左一右扶住沈言。她沒有掙扎，也沒有出聲，就那樣用腳尖站著、晃著、笑著，任由她們把她往外帶。<\/p>\n<p>經過周遠身邊的時候，她的頭微微偏過來，用只有他聽得見的聲音說：<\/p>\n<p>「她唱錯了一個音。」<\/p>\n<p>然後她被帶走了。走廊上的歌聲，也在同一刻停了下來。<\/p>\n<hr class=\"sep\">\n<p>「解離發作，」何靜蹲在地上撿玻璃碎片，聲音很鎮定，手卻有一點抖，「創傷後很常見。突然的聲音刺激，會讓病人進入另一種意識狀態。」<\/p>\n<p>「妳以前看過這樣的嗎？」<\/p>\n<p>何靜的手停了一下。<\/p>\n<p>「看過很多種。」她站起來，把碎片丟進垃圾桶，「沒看過這種。」<\/p>\n<p>周遠走出會談室，往走廊盡頭看。<\/p>\n<p>七號房的門開著一條縫。他走過去，從門縫往裡看。<\/p>\n<p>房間裡只有一張病床，床上坐著一個極老的女人，瘦得只剩一層皮貼在骨頭上，滿頭白髮稀疏得看得見頭皮。她坐得很直，臉朝著窗外的松林，嘴唇還在微微地動，卻沒有發出聲音。<\/p>\n<p>「她多大年紀？」<\/p>\n<p>「一百零二。」何靜跟了過來，壓低聲音，「是這裡住最久的病人，民國四十幾年就住進來了，比我們所有人都早。」<\/p>\n<p>「家人呢？」<\/p>\n<p>「幾乎沒有。只有一個年輕女生，每個月來看她一次，坐一個下午就走。」<\/p>\n<p>老婦人忽然轉過頭來。<\/p>\n<p>她的眼睛很混濁，像兩顆蒙了灰的玻璃珠，可是她看著周遠，看得非常準，像是早就知道他站在那裡。<\/p>\n<p>她抬起一隻枯瘦的手，指著他，又像是指著他身後的什麼東西。<\/p>\n<p>「鈴……」她用台語說，聲音像砂紙，「彼个鈴，毋通搖。」<\/p>\n<p>周遠的後頸，一陣發涼。<\/p>\n<hr class=\"sep\">\n<p>開車下山的時候，天已經暗了。<\/p>\n<p>松林在車燈裡一排一排地往後倒，周遠一直在想那句話。那個鈴，不能搖。他昨晚的夢裡，有一只從來沒被搖響的銅鈴。<\/p>\n<p>巧合。他告訴自己。一個一百零二歲的老人，說什麼都可能是巧合。<\/p>\n<p>手機在副駕駛座上震了一下。是何靜傳來的訊息，很短：<\/p>\n<p class=\"doc\">她打了鎮定劑，睡著了。睡著以前一直問我一件事，叫我一定要轉告你。<\/p>\n<p>第二則訊息隔了幾秒才跳出來。<\/p>\n<p class=\"doc\">她問你：你昨晚，有沒有夢見一條河？<\/p>", "chars": 2514}, "4": {"title": "第四章　鎮符", "html": "<p class=\"era\">一九三一年，霧川渡。<\/p>\n<p>陳守一睡不著。<\/p>\n<p>客棧的房間在二樓，窗外就是主街。他躺在硬木板床上，一閉眼，就看見沈家二樓那扇窗，還有窗後那個一動也不動的人影。<\/p>\n<p>房裡有三張床。師父睡在靠門的那張，鼾聲很輕，像老貓。靠窗那張是師兄的。師兄傍晚在碼頭接到他們，吃過晚飯就說要去鎮上走走，到現在還沒回來。<\/p>\n<p>陳守一翻了個身，看著那張空床，什麼都沒說。<\/p>\n<p>遠處傳來更夫的梆子聲，一下，又一下，拖著沙啞的嗓子喊：子時囉，小心火燭。<\/p>\n<p>他坐起來，想去樓下的井邊喝口水。走到窗邊的時候，他看見了。<\/p>\n<p>主街上，有一個小小的人影。<\/p>\n<hr class=\"sep\">\n<p>是那個船家的女孩，小滿。<\/p>\n<p>她光著腳，穿著一件太大的舊衫，兩條辮子拆開了，頭髮亂糟糟地披在肩上。她走得很急，卻一點聲音都沒有，貼著屋簷下的陰影，一路往鎮尾的方向去。<\/p>\n<p>鎮尾，是土地廟。<\/p>\n<p>陳守一想都沒想，抓了外衣就下樓。<\/p>\n<p>街上的霧比白天更濃了，紅燈籠都熄了，只有幾戶人家的門縫透出一點油燈的光。他遠遠跟在小滿後面，看著她推開土地廟半掩的門，閃了進去。<\/p>\n<p>他躲在廟外的石獅子後面，從門縫往裡看。<\/p>\n<p>廟裡只點著神案上的一盞長明燈。小滿把供桌旁的長板凳拖過來，墊著腳爬上神案，又踩上香爐的邊緣，伸長了手臂，去搆橫樑上那包褪成粉色的紅布。<\/p>\n<p>她太矮了，搆了三次都沒搆到。第四次，她整個人踮在香爐邊上，搖搖晃晃，指尖終於勾住了那條麻繩。<\/p>\n<p>「小滿！」<\/p>\n<p>陳守一衝了進去。<\/p>\n<p>女孩嚇得一抖，手一扯，那包紅布連著麻繩從橫樑上掉了下來，正好落在她懷裡。她從神案上跳下來，赤腳踩過滿地香灰，從他身邊鑽了過去，像一條滑溜的魚。<\/p>\n<p>他伸手去抓，只抓到一角衣袖。布太舊了，嘶的一聲撕開，他手裡只剩下一片破布。<\/p>\n<p>「那個不能拿！」他對著門外喊。<\/p>\n<p>小滿跑到廟門口，回頭看了他一眼。<\/p>\n<p>長明燈的光照在她臉上。她的眼睛很亮，亮得不像害怕，倒像是做了一件很了不起的事。她懷裡緊緊抱著那包紅布，嘴角還沾著一點黏黏的東西，在燈光下閃著光，像是糖。<\/p>\n<p>「有人講，」她喘著氣說，「裡面有好物。」<\/p>\n<p>然後她轉身，消失在霧裡。<\/p>\n<hr class=\"sep\">\n<p>陳守一追了出去。<\/p>\n<p>他追過兩條巷子，追到碼頭邊，霧濃得連自己的手都看不清。河水在黑暗裡嘩嘩地響，停在岸邊的船一艘艘輕輕撞在一起，發出空洞的聲音。<\/p>\n<p>小滿不見了。<\/p>\n<p>他站在碼頭上喘氣，正要往回走，忽然聽見一個聲音。<\/p>\n<p>叩。<\/p>\n<p>很輕。從他身後的街上傳來。<\/p>\n<p>叩。<\/p>\n<p>像是有人用指節，敲在一扇木門上。<\/p>\n<p>叩。<\/p>\n<p>三下。然後停了。<\/p>\n<p>陳守一沒有動。他站在原地，聽著那個聲音停了一會兒，又在稍遠一點的地方響起來。叩，叩，叩。再停。再遠一點。叩，叩，叩。<\/p>\n<p>有人在一戶一戶地敲門。<\/p>\n<p>他慢慢地，一步一步，往旁邊挪，挪到一堆漁網後面蹲下來，從網眼的縫隙往街上看。<\/p>\n<p>霧裡走出一個人。<\/p>\n<p>她穿著一件素白的長衫，赤著腳，頭髮披散。她走得很輕，很慢，腳跟幾乎不沾地，身體隨著某種他聽不見的節拍輕輕擺動，像一邊走一邊在跳舞。<\/p>\n<p>沈家少奶奶。<\/p>\n<p>她在一戶人家門前停下，抬起手，用指節在門板上敲了三下。叩，叩，叩。屋裡沒有回應，也沒有亮燈。她歪著頭，在門前站了一會兒，像在聞什麼味道，然後笑了笑，走向下一戶。<\/p>\n<p>有些人家，她只是經過，連停都沒停。<\/p>\n<p>有些人家，她停下來，敲三下。<\/p>\n<p>陳守一把自己縮得更小。他聽見自己的心跳，一下一下撞在耳膜上，吵得他以為整條街都聽得見。<\/p>\n<p>她走到碼頭邊，停了下來。<\/p>\n<p>離漁網堆，大概只有五步遠。<\/p>\n<p>她背對著他，站在那裡，一動也不動。霧在她身邊慢慢地流。過了很久，久到陳守一的腿都蹲麻了，她才慢慢地、慢慢地轉過頭來。<\/p>\n<p>不是轉身。只有頭轉了過來。<\/p>\n<p>她的臉在霧裡白得發青，嘴角往上拉開，拉到一個人不可能笑出來的弧度。她的眼睛直直地看著漁網堆，看著網眼後面的他。<\/p>\n<p>「小師父，」她說，聲音甜得像化開的麥芽糖，「你剛剛，有回頭嗎？」<\/p>\n<p>陳守一咬住了自己的手背，一聲都不敢出。<\/p>\n<hr class=\"sep\">\n<p>一隻手從後面捂住了他的嘴。<\/p>\n<p>他差點叫出來，那隻手很粗、很乾，帶著香灰和菸草的味道。<\/p>\n<p>「別動。」師父的聲音貼在他耳邊，壓得極低，「別看她的眼睛。」<\/p>\n<p>葛青崖不知道什麼時候到的，蹲在他身後。他的另一隻手裡握著那只銅鈴，拇指死死按住鈴舌，不讓它發出一點聲音。<\/p>\n<p>街上的人影又站了一會兒。然後，她轉回頭去，繼續往前走。叩，叩，叩。聲音越來越遠，最後消失在霧裡。<\/p>\n<p>葛青崖鬆開手，長長地吐了一口氣。<\/p>\n<p>「師父，」陳守一的聲音在抖，「小滿，那個小女孩，她把廟裡的東西拿走了——」<\/p>\n<p>「我知道。」葛青崖說，「我去過廟裡了。」<\/p>\n<p>他站起來，望著霧裡沈家大宅的方向，臉上是陳守一從來沒見過的神情。不是害怕，是一種很深、很老的疲倦，像一個人終於等到了一件他等了三十年、一直希望不會來的事。<\/p>\n<p>「那碗藥，」他說，「從今晚起，壓不住了。」<\/p>\n<hr class=\"sep\">\n<p>師徒兩個回到客棧時，天快亮了。<\/p>\n<p>陳守一推開房門，第一眼就看向靠窗那張床。<\/p>\n<p>床是空的。被子疊得整整齊齊，跟傍晚時一模一樣，從頭到尾沒有人睡過。<\/p>\n<p>他伸手摸了摸枕頭。冰的。<\/p>\n<p>「師父，」他回頭說，「師兄一整夜都沒有回來。」<\/p>\n<p>葛青崖站在門口，看著那張空床，看了很久。<\/p>\n<p>他什麼都沒說。<\/p>", "chars": 1955}, "5": {"title": "第五章　監視器", "html": "<p>何靜的那則訊息，周遠一整晚都沒有回。<\/p>\n<p>他把手機螢幕朝下蓋在床頭，瞪著天花板到天亮，一直在想同一件事：一個被打了鎮定劑的女人，怎麼會知道他夢見了什麼。<\/p>\n<hr class=\"sep\">\n<p>霧川鎮只有一支監視器，裝在土地公廟的屋簷下。廟公三年前怕小偷摸香油錢，自己出錢裝的，主機就塞在廟後的小倉庫裡，跟一堆金紙和舊燈籠擠在一起。<\/p>\n<p>廟公也在失蹤名單上。<\/p>\n<p>小方花了一個上午才把硬碟拆下來，接上局裡的電腦。畫質很差，夜間只有黑白，鏡頭上還沾著一層蜘蛛網，可是它一直在錄，一秒都沒斷過。<\/p>\n<p>「從星期一晚上開始看？」小方問。<\/p>\n<p>「從星期一晚上開始看。」<\/p>\n<hr class=\"sep\">\n<p class=\"doc\">星期二凌晨，00:14。<\/p>\n<p>畫面左下角出現了一個人影。<\/p>\n<p>她光著腳，穿著淺色的長睡衣，頭髮披散。她走路的樣子很奇怪，腳跟幾乎不沾地，身體隨著某種節奏輕輕擺動，像一邊走一邊在跳舞。<\/p>\n<p>她走到廟埕正中央，停下來，抬起頭。<\/p>\n<p>正對著鏡頭。<\/p>\n<p>夜間模式下，她的眼睛是兩個反光的白點。她的嘴角往上拉開，拉到一個正常人笑不出來的弧度。<\/p>\n<p>她就那樣對著監視器，笑了整整一分鐘。<\/p>\n<p>小方沒有說話。會議室裡只剩下電腦風扇的聲音。<\/p>\n<p>00:15:12，她轉過身，走出畫面，往主街的方向去了。<\/p>\n<p>「是沈言。」小方終於開口，聲音有點乾。<\/p>\n<p>周遠盯著畫面左上角的時間碼，00:14。不知道為什麼，他多看了那四個數字一眼。<\/p>\n<p>「繼續。」<\/p>\n<p>之後的四個小時，畫面邊緣斷斷續續有人影晃過，太遠了，看不清楚。04:31，她從同一個方向走回來，穿過廟埕，消失在往她住處的巷子裡。<\/p>\n<hr class=\"sep\">\n<p class=\"doc\">星期二晚上，22:03。<\/p>\n<p>廟埕上出現了第一個人。<\/p>\n<p>是主街上賣早餐的阿姨，穿著外出的運動外套，手裡提著一台手提音響。她把音響放在廟前的石階上，按下播放鍵，然後走到廟埕中央，站好。<\/p>\n<p>監視器沒有收音。可是從她的動作看得出來，有音樂。<\/p>\n<p>她舉起雙手，往前平舉，手腕微微下垂。身體往左晃，往右晃，每隔幾秒，往前跳一小步。<\/p>\n<p>接著來了第二個人。第三個人。第十個人。<\/p>\n<p>他們從畫面四個角落走進來，穿著睡衣、汗衫、拖鞋，有的還光著腳。沒有人交談，沒有人互相看一眼，每個人一走進廟埕，就自動找到自己的位置，舉起雙手，開始跳。<\/p>\n<p>到了 22:30，廟埕上站滿了人，排成一個整整齊齊的方陣。<\/p>\n<p>「組長，」小方把畫面放大，「你看他們的動作。」<\/p>\n<p>周遠已經看到了。<\/p>\n<p>上百個人，同樣的角度，同樣的節奏。不是像，是完全一樣，沒有一個人快半拍，沒有一個人慢半拍。整齊得像是同一個人，被複製了一百次。<\/p>\n<p>站在方陣最前面、面對所有人帶舞的，是那個穿淺色長睡衣、光著腳的女人。<\/p>\n<p>22:31，畫面右上角，一個拖著行李箱的年輕女孩走了進來。<\/p>\n<p>她跟其他人都不一樣。她會東張西望，會停下來，會往後退。她在人群邊緣站了很久，好像有人跟她說了什麼，她勉強笑了一下，把行李箱靠在廟旁的牆邊，站進了最後一排，學著大家舉起雙手。<\/p>\n<p>小方暫停畫面，從資料夾裡抽出一張戶籍照片，貼在螢幕旁邊比對。<\/p>\n<p>「林依。」<\/p>\n<hr class=\"sep\">\n<p>他們把畫面快轉了八倍。<\/p>\n<p>人群一直在跳。沒有人停下來，沒有人喝水，沒有人坐下。六個小時，像一台不會壞的機器。<\/p>\n<p>只有最後一排的林依不一樣。從凌晨一點左右開始，她的動作越來越僵，越來越對不上拍子，好幾次她的手垂下來，又像被什麼東西拉著一樣，猛地抬回去。她像一個被線吊著、卻拚命想掙脫的木偶。<\/p>\n<p>04:52，畫面忽然閃了一下，整個雜訊化，持續不到一秒。<\/p>\n<p>就在那一秒，林依的雙手垂了下來。<\/p>\n<p>她轉身就跑，連行李箱都沒拿，從方陣裡衝出來，跌了一跤，爬起來，往鎮外的方向狂奔，消失在畫面右側。<\/p>\n<p>帶舞的女人轉過頭，望著她逃走的方向。<\/p>\n<p>她沒有追。她只是抬起一隻手，輕輕揮了揮，像在跟一個朋友說晚安。<\/p>\n<p>04:58，整個方陣轉向，排成長長的一列，踩著同樣的舞步，一個接一個往畫面左側走去。左邊，是上後山的路。<\/p>\n<p>廟埕空了。<\/p>\n<hr class=\"sep\">\n<p>「停。」周遠說，「倒回去一點。」<\/p>\n<p>小方把畫面倒回 04:58，再放慢播放。<\/p>\n<p>人群走光以後，廟埕上只剩下靠在牆邊的那只行李箱。<\/p>\n<p>05:03，畫面下方走進來一個人。<\/p>\n<p>是個男人，穿著深色外套，戴著帽子，帽簷壓得很低。他走路的樣子很正常，跟剛才那些人完全不同，腳跟著地，一步一步，不疾不徐。他走到牆邊，彎腰拎起那只行李箱，轉身就走。<\/p>\n<p>經過監視器底下的時候，他抬了一下頭。<\/p>\n<p>只有半秒。帽簷底下的臉是一片模糊的陰影，什麼都看不清楚。可是周遠很確定一件事：他是故意抬頭的。他知道這裡有一支監視器，他在讓鏡頭知道，他看見了。<\/p>\n<p>「組長，」小方的聲音發緊，「我們到的時候，牆邊沒有行李箱。」<\/p>\n<p>「我知道。」<\/p>\n<p>「那天晚上，鎮上還有一個醒著的人。」<\/p>\n<p>周遠沒有回答。<\/p>\n<p>05:10，帶舞的女人一個人走了回來。她走到廟埕正中央，盤腿坐下，抬起頭，對著監視器笑。<\/p>\n<p>她的嘴唇動了動。<\/p>\n<p>「她在說什麼？」<\/p>\n<p>局裡會讀唇的老學長被叫了過來。他瞇著老花眼，把那幾秒鐘的畫面來回看了十幾次，臉色一次比一次白。<\/p>\n<p>「她說，」老學長慢慢地說，「『我們還會再見的。』」<\/p>\n<hr class=\"sep\">\n<p>他們本來以為，看到這裡就夠了。<\/p>\n<p>可是小方手快，順手把畫面一路快轉下去，快轉到星期三早上。天亮了，畫面從黑白變回彩色，沈言一直坐在廟埕中央，一動也不動，像一尊石像。<\/p>\n<p>10:02，兩個穿制服的員警從畫面右側走進來。<\/p>\n<p>是支援的派出所員警，周遠認得他們。他們沿著廟埕巡了一圈，東看西看，其中一個還拿手電筒往廟裡照了照。<\/p>\n<p>然後，他們從沈言身邊走了過去。<\/p>\n<p>不是遠遠經過。是貼著她走過去，近到其中一個員警的褲管，擦過了她的肩膀。<\/p>\n<p>他們沒有低頭。他們沒有停下。他們看都沒看她一眼，就像那裡什麼都沒有。<\/p>\n<p>小方按下了暫停鍵。<\/p>\n<p>會議室裡很安靜。<\/p>\n<p>「組長，」過了很久，小方才開口，「我上午十點問過他們，他們說廟埕上一個人都沒有。」<\/p>\n<p>周遠看著螢幕上那個坐在廟埕中央的女人。凍結的畫面裡，她的臉微微仰著，嘴角帶著笑，眼睛半閉，像在聽一首只有她聽得見的歌。<\/p>\n<p>14:07，畫面左側走進來一個男人，直直地朝她走過去，在她身邊蹲了下來。<\/p>\n<p>是他自己。<\/p>\n<p>他走過去的時候，連猶豫都沒有。<\/p>\n<p>他一眼就看見了她。<\/p>\n<hr class=\"sep\">\n<p>那天晚上，周遠終於拿起手機，回了何靜的訊息。<\/p>\n<p>他只打了一個字：<strong>有。<\/strong><\/p>\n<p>訊息幾乎是立刻就顯示已讀。三個點跳了很久，才跳出一行字。<\/p>\n<p class=\"doc\">我轉告她了。她說，那就好。<\/p>\n<p>又過了一會兒，第二行字跳了出來。<\/p>\n<p class=\"doc\">她說，這樣你就找得到她了。<\/p>\n<p>周遠盯著那個「她」字，看了很久。他不知道沈言說的，是那個拖著行李箱逃走的林依，還是那個每天晚上，都在廟埕上等人跳舞的東西。<\/p>", "chars": 2499}, "6": {"title": "第六章　行屍", "html": "<p class=\"era\">一九三一年，霧川渡。<\/p>\n<p>天亮以後，霧川渡看起來跟平常沒有兩樣。<\/p>\n<p>碼頭邊的挑夫照樣吆喝，魚販照樣刮鱗，昨晚壽宴剩下的紅紙還黏在石板路上。陳守一跟著師父走過主街，一戶一戶地看。<\/p>\n<p>有些人家的門上，有三個淺淺的指節印。<\/p>\n<p>那些人家，門都開著，人也都在。賣豆腐的老闆照樣磨豆子，打鐵的照樣掄錘，可是他們做事的樣子很怪，像是手在動、魂不在，眼睛直直地看著前面，嘴角掛著一點笑。陳守一跟豆腐老闆打招呼，老闆抬起頭看他，笑得很和氣，卻一句話都沒說，又低下頭去，一圈一圈地推磨。<\/p>\n<p>「師父，他們……」<\/p>\n<p>「別盯著看。」葛青崖說，「看門檻。」<\/p>\n<p>陳守一低頭。豆腐店的門檻內側，整整齊齊擺著一雙草鞋，鞋頭朝外，對著街。隔壁打鐵鋪，也是。再隔壁，也是。凡是門上有指節印的人家，門檻後都擺著一雙鞋頭朝外的鞋。<\/p>\n<p>「誰擺的？」<\/p>\n<p>葛青崖沒有回答。他停在一戶人家門前，看著那雙草鞋，看了很久，低聲說了一句陳守一聽不太懂的話：<\/p>\n<p>「還是那個規矩。三十二年了，還是那個規矩。」<\/p>\n<hr class=\"sep\">\n<p>他們去了沈家。<\/p>\n<p>少奶奶月娥坐在廂房裡，換了一身乾淨的衣裳，頭髮梳得整整齊齊，看起來只是有點累。可是陳守一看見了：她擱在床邊的那雙繡花鞋底，沾著一層乾掉的河泥。<\/p>\n<p>「葛先生，」她勉強笑了笑，「昨晚睡得不好，做了好多夢。」<\/p>\n<p>葛青崖沒有接話。他把那碗黑藥湯端給她，看著她喝完，然後轉身，去了前廳。<\/p>\n<p>沈家老太爺坐在太師椅上，七十歲的人，腰桿還挺得筆直，手裡轉著兩顆核桃。<\/p>\n<p>「葛先生又來了。」老太爺說，「每三年一次，比收租的還準。」<\/p>\n<p>「老太爺，」葛青崖站著，沒有坐，「廟裡的鎮符，昨晚被人拿走了。」<\/p>\n<p>核桃停了。<\/p>\n<p>「拿走就再封一張，」老太爺說，「錢，沈家出。」<\/p>\n<p>「封不了。那張符，是三十二年前用一條人命換來的。」葛青崖往前走了一步，聲音壓得很低，「老太爺，那一年大水，渡口的事，您比我清楚。」<\/p>\n<p>老太爺的臉色變了。只變了一瞬間，很快又恢復成一張石頭似的臉。<\/p>\n<p>「葛先生，」他慢慢地說，「你那時候才十幾歲，記錯了吧。」<\/p>\n<p>「我沒記錯。」<\/p>\n<p>兩個老人對看著，誰都沒有再說話。廳堂裡安靜得只聽得見後院的雞在叫。<\/p>\n<p>陳守一站在門邊，看著老太爺握著核桃的那隻手。那隻手在抖。<\/p>\n<hr class=\"sep\">\n<p>中午，師兄回來了。<\/p>\n<p>他二十出頭，個子高，生得一副好相貌，笑起來兩邊嘴角一樣高。他說昨晚在對岸的酒館喝多了，睡在船上，今早才搭渡船過來。<\/p>\n<p>「聽說出事了？」他坐下來，替自己倒了杯茶，「廟裡那張符，真的被偷了？」<\/p>\n<p>「你怎麼知道？」陳守一問。<\/p>\n<p>「碼頭上的人都在講啊。」師兄笑著看他，「小師弟，你臉色好差。」<\/p>\n<p>葛青崖坐在桌子另一頭，一直沒說話。<\/p>\n<p>師兄喝了口茶，放下杯子，像是隨口問起一件小事：「師父，那東西三十年都被壓著，這次跑出來了，就一定得再壓回去嗎？」<\/p>\n<p>「不然呢？」<\/p>\n<p>「我是想，」師兄的手指在桌上輕輕敲著，「一樣東西能讓整條街的人跟著它走，總有它的用處。說不定，能養。」<\/p>\n<p>葛青崖抬起眼睛，看了他一眼。<\/p>\n<p>只是一眼。師兄的手指停了，笑容也收了一點。<\/p>\n<p>「我隨便說說。」他說。<\/p>\n<p>陳守一低頭扒飯，什麼都沒說。可是他注意到了一件事：師兄放在桌邊的那只布袋，袋口露出一角油紙，油紙上沾著一點黏黏的、琥珀色的東西。<\/p>\n<p>像是糖。<\/p>\n<hr class=\"sep\">\n<p>那天晚上，月亮比前一晚又圓了一點。<\/p>\n<p>葛青崖不讓陳守一出門。可是子時剛過，陳守一就醒了。不是被聲音吵醒的，是被一種感覺拉醒的，像有一根看不見的線，綁在他的胸口，輕輕地、一下一下地往外扯。<\/p>\n<p>然後他聽見了音樂。<\/p>\n<p>不是鑼鼓，不是嗩吶。是一把胡琴，拉著一段他從沒聽過的曲子。那調子輕快、甜膩，黏在耳朵裡化不開，像糖漿從屋簷上一滴一滴往下淌。<\/p>\n<p>他下了床。<\/p>\n<p>他不記得自己是怎麼走下樓梯、走出客棧的。等他回過神來，他已經站在鎮東頭的曬穀場邊上。<\/p>\n<p>曬穀場上，站滿了人。<\/p>\n<p>上百個人，排成一個整整齊齊的方陣。豆腐店老闆、打鐵的、碼頭的挑夫、白天那些門上有指節印的人，全都在。他們雙手往前平舉，手腕垂著，身體往左晃，往右晃，每隔幾拍，往前跳一小步。月光照在他們臉上，每一張臉，都帶著同樣的笑。<\/p>\n<p>站在方陣最前面帶舞的，是月娥。<\/p>\n<p>她赤著腳，一身素白，背對著月亮。她沒有拉胡琴，可是那曲子，好像就是從她身上流出來的。<\/p>\n<p>陳守一的腳，動了。<\/p>\n<p>他往前走了一步，又一步。他的雙手自己抬了起來，抬到與肩同高，手腕垂了下去。他的身體開始往左晃。好舒服。他想。什麼都不用想，什麼都不用怕，只要跟著拍子，跟著大家——<\/p>\n<p>他站進了最後一排。<\/p>\n<p>月娥隔著整個方陣，對他笑了。<\/p>\n<hr class=\"sep\">\n<p>啪。<\/p>\n<p>一記耳光，打得他眼前發白。<\/p>\n<p>他還沒反應過來，一塊黃布已經兜頭罩了下來，蓋住了他的整個人。布很舊，有香灰的味道。音樂一下子變得很遠，像隔著一層水。<\/p>\n<p>「別出聲。」師父的聲音就在他耳邊，「蓋著布，她看不見你。」<\/p>\n<p>葛青崖把他從隊伍裡拖了出來，一直拖到曬穀場邊一堆稻草後面，才把黃布掀開一角。<\/p>\n<p>陳守一大口喘氣，渾身是汗，兩條手臂還在發抖，像剛從很深的水底浮上來。<\/p>\n<p>「師父……我剛剛……」<\/p>\n<p>「我知道。」<\/p>\n<p>「他們、他們是不是也能這樣拉回來？」陳守一指著曬穀場上的人，「豆腐店的老闆，他們——」<\/p>\n<p>「憑我現在，拉不回來了。」葛青崖說。<\/p>\n<p>他的聲音很平，平得讓陳守一害怕。<\/p>\n<p>「門上被敲過三下、跟著她跳過一整夜的人，心和魂都已經被她收走了。」葛青崖望著那片整齊晃動的人影，「你現在看到的，只是還在動的身子。他們已經不是人了。」<\/p>\n<p>陳守一說不出話。<\/p>\n<p>他的目光越過稻草堆，越過方陣，落在曬穀場另一頭。那裡停著幾艘拖上岸修補的舊船。其中一艘船底下，縮著一個小小的人影，兩隻手緊緊抱著一包粉紅色的東西，一雙眼睛睜得好大，一眨不眨地看著跳舞的人群。<\/p>\n<p>是小滿。<\/p>\n<p>她沒有跳。音樂那麼近，她卻一動也沒動。<\/p>\n<p>「師父，你看，小滿她……」<\/p>\n<p>「符在她身上。」葛青崖說，「誰身上帶著鎮它的東西，誰就拉不走。」<\/p>\n<p>他頓了一下，聲音更低了。<\/p>\n<p>「可是她一個七歲的孩子，抱著那張符，撐不了幾夜。」<\/p>\n<hr class=\"sep\">\n<p>周遠醒過來的時候，感覺不太對。<\/p>\n<p>他沒有躺在床上。<\/p>\n<p>他是站著的。站在自己家的玄關，光著腳，面對著那扇鐵門。客廳沒有開燈，只有窗外的路燈，從百葉窗的縫隙裡斜斜地照進來。<\/p>\n<p>他的右手舉在半空中，握成拳頭，指節離鐵門只差一公分。<\/p>\n<p>他就那樣舉著，一動也不敢動。<\/p>\n<p>他不知道自己在這裡站了多久，也不知道在他醒來之前，這隻手，已經敲過幾下了。<\/p>", "chars": 2453}, "7": {"title": "第七章　三下", "html": "<p>天亮以後，周遠才敢開燈。<\/p>\n<p>他在玄關站到腿發麻，一直等到窗外的天色從黑變灰，才慢慢把那隻舉著的手放下來。手臂痠得像搬了一整夜的東西。<\/p>\n<p>他打開燈，看著那扇鐵門。<\/p>\n<p>門的內側，離地大約一百五十公分的地方，鐵皮上有兩個很淺的凹痕。<\/p>\n<p>兩個。不是三個。<\/p>\n<p>他把手握成拳頭，對上去。指節剛好嵌進凹痕裡，分毫不差。<\/p>\n<p>他在門前站了很久，最後去廚房拿了一卷膠帶，撕了一段，貼在那兩個凹痕上，貼得平平整整，像在封住什麼東西。<\/p>\n<hr class=\"sep\">\n<p>縣警局三樓的小會議室，白板上貼滿了照片。<\/p>\n<p>小方熬了兩個通宵，眼睛底下一片青黑，可是精神很好。她把一疊報表攤在桌上，用螢光筆劃得花花綠綠。<\/p>\n<p>「組長，有眉目了。」她說，「霧川鎮一共一百二十七戶，門上有三個凹痕的，四十三戶。我把這四十三戶的戶長和同住家人，全部丟進系統裡跑了一遍。」<\/p>\n<p>她抽出第一張紙。<\/p>\n<p>「雜貨店老闆。十二年來被消保官檢舉過七次，對老人少找錢、對外地人亂開價，罰款都繳了，從來沒改。」<\/p>\n<p>第二張。<\/p>\n<p>「主街第六戶，男主人，兩次家暴通報，太太後來撤告。」<\/p>\n<p>第三張。<\/p>\n<p>「鎮公所退休的會計，二十年前一筆災後重建款去向不明，查到一半，案子不了了之。」<\/p>\n<p>第四張、第五張、第十張。欠債跑路、侵占祖產、騙老人簽本票、酒駕撞人逃逸沒被抓到。小方一張一張往下翻，翻到最後，桌上疊成了一座小山。<\/p>\n<p>「組長，四十三戶裡，有四十二戶查得到東西。有的是刑案，有的是民事糾紛，有的只是鄰居的檢舉紀錄。可是每一戶，都欠著某個人什麼。」<\/p>\n<p>周遠看著那疊紙，沒有說話。<\/p>\n<p>「那其他八十四戶呢？」<\/p>\n<p>「乾乾淨淨。」小方說，「至少系統裡是。」<\/p>\n<p>「可是那八十四戶的人也不見了。」<\/p>\n<p>「對。」小方點頭，「他們也不見了，可是他們家門上沒被敲。我想了一整晚，覺得這兩種人不一樣。被敲門的四十三戶，是被挑出來的。其他人，比較像是……被帶走的。跟著走的。」<\/p>\n<p>周遠想起監視器裡那支整整齊齊的舞隊。想起夢裡曬穀場上的方陣，豆腐店老闆空洞的笑。想起師父說的那句話：門上被敲過三下的人，心和魂都已經被收走了。<\/p>\n<p>「挑人，」他喃喃地說，「她在挑人。」<\/p>\n<p>「她？」<\/p>\n<p>周遠回過神來。「我是說，兇手。」<\/p>\n<p>小方看了他一眼，沒有追問，抽出了最後一張紙。<\/p>\n<p>「還有一戶，我查不到東西。」<\/p>\n<hr class=\"sep\">\n<p>第四十三戶，是土地公廟的廟公。<\/p>\n<p>七十一歲，一輩子沒離開過霧川鎮，沒有前科，沒有欠債，沒有糾紛，連一張交通罰單都沒有。鄰居對他的評價只有一句話：老實人，每天早上五點開廟門，晚上八點關，三十年沒變過。<\/p>\n<p>可是他家的門上，有三個凹痕。<\/p>\n<p>「是不是搞錯了？」小方說，「還是兇手也會挑錯？」<\/p>\n<p>周遠盯著那張紙上廟公的照片。一張很普通的老人的臉，皺紋很深，眼神有點怯。<\/p>\n<p>「去查他的上一代，」他說，「爸爸、阿公，能查多遠查多遠。」<\/p>\n<p>「查上一代做什麼？」<\/p>\n<p>周遠也說不上來。他只是想起昨晚夢裡，沈家老太爺那隻握著核桃、一直在發抖的手。<\/p>\n<p>「有些債，」他說，「不一定是自己欠的。」<\/p>\n<hr class=\"sep\">\n<p>下午，周遠去敲小方辦公室的門，想問戶政資料調得怎麼樣了。<\/p>\n<p>叩、叩。<\/p>\n<p>他的手停在半空中。<\/p>\n<p>他忽然意識到一件事：他這輩子敲門，好像從來都只敲兩下。<\/p>\n<p>不管是辦公室、嫌犯家、證人家，還是過年回老家，他都是敲兩下，停，等。他從來沒想過這件事，就像沒想過自己走路先邁哪隻腳。<\/p>\n<p>他看著自己的拳頭，試著敲第三下。<\/p>\n<p>手不動。<\/p>\n<p>不是使不上力，是整條手臂像被一根看不見的線拉住了，指節離門板只有一公分，怎麼樣都敲不下去。他咬著牙，又試了一次。手腕開始發抖，指尖發麻，背上冒出一層冷汗。<\/p>\n<p>門開了。<\/p>\n<p>小方探出頭來，看見他舉著拳頭、滿頭大汗地站在門口，愣了一下。<\/p>\n<p>「組長？你怎麼了？」<\/p>\n<p>周遠把手放下來，在褲子上擦了擦。<\/p>\n<p>「沒事。」他說，「戶政資料呢？」<\/p>\n<p>「還在跑，最快要下禮拜。」小方側身讓他進來，「不過另一條線有消息了。」<\/p>\n<p>她把電腦螢幕轉過來。<\/p>\n<p>「林依的電子票證。星期三清晨五點五十八分，在霧川鎮外的招呼站上了第一班客運，六點五十二分，在縣城車站刷卡出站。」<\/p>\n<p>「之後呢？」<\/p>\n<p>「之後就沒有了。卡沒再用過，手機也一直關機。」小方說，「可是車站後面那一帶，全是老旅社，很多都收現金、不太看證件。如果我是她，我會躲在那裡。」<\/p>\n<p>周遠盯著螢幕上的那個時間。<\/p>\n<p>五點五十八分。監視器裡，林依是四點五十二分逃出廟埕的。從廟埕跑到鎮外的招呼站，最多二十分鐘。她在路邊等了將近一個小時，天還沒亮，一個人，光著一隻腳。<\/p>\n<p>她在等第一班車。她在逃。<\/p>\n<p>「整理一份車站周邊旅社的名單，」他說，「明天開始一家一家問。」<\/p>\n<hr class=\"sep\">\n<p>那天晚上，周遠很早就上了床。<\/p>\n<p>睡前，他把一張椅子拖到玄關，抵在鐵門前面，又在椅背上掛了一串鑰匙。只要有人碰到椅子，鑰匙就會響。<\/p>\n<p>他躺在黑暗裡，聽著自己的心跳，一直等到睡意像潮水一樣漫上來。<\/p>\n<p>迷迷糊糊之間，他想起門上那兩個凹痕。<\/p>\n<p>兩下。<\/p>\n<p>如果有一天，他沒有在第二下之後醒來，那第三下，會敲在誰的門上？<\/p>", "chars": 1893}, "8": {"title": "第八章　我的錯", "html": "<p>找到林依，花了五天。<\/p>\n<p>縣城車站後面那一帶，舊旅社一家挨著一家，招牌褪色，樓梯陰暗，櫃檯後面坐的多半是看電視打盹的老人。周遠和小方拿著照片，一家一家問。有的說沒看過，有的說記不得，有的連照片都懶得抬頭看。<\/p>\n<p>第五天下午，一家叫「福星」的老旅社，老闆娘主動打了電話到派出所。<\/p>\n<p>「三樓那個小姐，住了一個禮拜了，」老闆娘在電話裡壓低聲音，「付現金，三餐叫外送，從來沒出過房門。晚上一定要開著燈睡，我跟她說電費要另外算，她二話不說就多給了一千。」<\/p>\n<p>「還有呢？」<\/p>\n<p>「還有，」老闆娘頓了一下，「她每天都下來問我一樣的問題。她問我，床底下的聲音，是不是樓下的電視。」<\/p>\n<hr class=\"sep\">\n<p>三〇七號房在走廊最裡面。<\/p>\n<p>周遠在門前站了一會兒，抬起手，敲了兩下。<\/p>\n<p>叩、叩。<\/p>\n<p>「縣警局，周遠。林依小姐，我們找妳很久了。」<\/p>\n<p>門裡安靜了很久。久到周遠以為裡面沒有人，才傳出一個很啞的聲音。<\/p>\n<p>「你剛剛敲了幾下？」<\/p>\n<p>周遠愣了一下。<\/p>\n<p>「兩下。」<\/p>\n<p>門鎖喀的一聲打開了。門只開了一條縫，門鏈還掛著。縫裡是一張憔悴得不像二十四歲的臉，眼窩深陷，嘴唇乾裂，頭髮油膩地黏在額頭上。<\/p>\n<p>「如果是三下，」林依說，「我就不會開了。」<\/p>\n<hr class=\"sep\">\n<p>她不肯讓周遠進門，也不肯跟他回局裡。她就隔著那條門縫，斷斷續續地說了一個多小時。<\/p>\n<p>「藥是我拿的。」<\/p>\n<p>這是她說的第一句話。<\/p>\n<p>「半年來，她每天早上第一件事就是吃那顆黑色的藥。我問她是什麼，她只說是保健的，問多了她就不高興。那天早上她睡過頭，衝出門的時候連看都沒看我一眼。我就……有點不爽。」<\/p>\n<p>林依的聲音很平，像在念一份背過很多遍的稿子。<\/p>\n<p>「我把藥瓶藏起來了。我想說嚇嚇她，晚上再還她。就是開個玩笑。」<\/p>\n<p>「然後呢？」<\/p>\n<p>「那天半夜，我被聲音吵醒。」她的手指抓著門框，指節發白，「有人在敲門。不是敲我們家，是隔壁，再隔壁。叩、叩、叩，很輕，一戶一戶地敲過去。我從窗戶往下看，看到她了。」<\/p>\n<p>「沈言？」<\/p>\n<p>「她光著腳在街上走，走路的樣子……不像她。像在跳舞。」林依閉上眼睛，「她走到我們家樓下的時候，停了一下，抬頭往我的窗戶看。她在笑。」<\/p>\n<p>「妳那時候怎麼做？」<\/p>\n<p>「我躲回被子裡，一直發抖到天亮。」林依說，「天一亮，我就拿著藥瓶跑去縣城找朋友。我沒敢還她。我怕。」<\/p>\n<p>「可是妳星期二晚上又回去了。」<\/p>\n<p>「因為整個鎮的人都不接電話。我爸媽、鄰居、我老闆，一個都打不通。」她的聲音開始抖，「我想說，不管怎樣，至少要把藥還給她。我收了行李，搭末班車回去。我想說還了藥，就再也不要回那個鎮了。」<\/p>\n<p>「然後妳在廟埕上，加入了那支舞。」<\/p>\n<p>門縫後面，林依的眼睛猛地睜開。<\/p>\n<p>「你看過了？」<\/p>\n<p>「監視器。」<\/p>\n<p>她沉默了很久。<\/p>\n<p>「那你一定也看到了。」她幾乎是用氣音在說，「他們跳得那麼整齊，因為他們早就不是人了。我一站進去就知道了。他們身上有一種味道，甜的，像放太久的糖水。我想停，停不下來。我的手自己舉起來，我的腳自己在動，我腦袋裡越來越安靜，什麼都不想了，很舒服。」<\/p>\n<p>她吞了一口口水。<\/p>\n<p>「是她在前面帶。她一直看著我。跳到半夜，她開口問我：小依，妳為什麼拿走我的藥？」<\/p>\n<p>周遠沒有出聲。<\/p>\n<p>「我哭著跟她說對不起。我說，是我的錯，全部都是我的錯。」林依的眼淚順著臉頰往下流，她沒有擦，「她就笑。一直笑。」<\/p>\n<p>「後來妳是怎麼跑出來的？」<\/p>\n<p>「我不知道。」她搖頭，「天快亮的時候，我的手碰到了口袋。藥瓶在口袋裡。我一碰到它，腦袋就清醒了一下，就那麼一下。我就跑了。」<\/p>\n<p>周遠想起了那個夢。想起船底下抱著鎮符的小女孩，想起師父說的話：誰身上帶著鎮它的東西，誰就拉不走。<\/p>\n<p>「藥瓶現在在哪裡？」<\/p>\n<p>林依的手，按在胸前的口袋上，按得很緊。<\/p>\n<p>「在我這裡。我不能給你。」<\/p>\n<p>「為什麼？」<\/p>\n<p>「因為只要它還在我身上，她就會來找我。」林依說，「如果它在你身上，她就會去找你。」<\/p>\n<hr class=\"sep\">\n<p>最後，周遠問她要不要知道沈言現在在哪裡。<\/p>\n<p>林依遲疑了一下，點點頭。<\/p>\n<p>「她在松嶺療養院，山上那間。」<\/p>\n<p>林依的表情，在那一瞬間變了。不是害怕，是一種很複雜的、像被什麼東西刺了一下的神情。<\/p>\n<p>「松嶺……」她喃喃地說，「怎麼會是松嶺。」<\/p>\n<p>「妳知道那裡？」<\/p>\n<p>林依沒有回答。她看了一眼走廊盡頭的小窗。窗外天色正在暗下來，一輪幾乎全圓的月亮，剛剛浮上對面大樓的屋頂。<\/p>\n<p>「周警官，」她說，「明天晚上是滿月。你最好今晚就離開這裡。」<\/p>\n<p>門關上了。<\/p>\n<hr class=\"sep\">\n<p>周遠沒有離開。他在對面的便利商店坐了一整夜，盯著福星旅社三樓那扇亮著燈的窗。<\/p>\n<p>凌晨兩點，他靠著玻璃，睡著了。<\/p>\n<p class=\"era\">一九三一年，霧川渡。<\/p>\n<p>第三天早上，陳守一在曬穀場邊的舊船底下，找到了小滿。<\/p>\n<p>她縮成一團，懷裡緊緊抱著那包粉紅色的紅布，兩隻腳凍得發紫，眼睛下面是兩圈很深的黑。她看見陳守一，沒有逃，只是把那包東西抱得更緊了一點。<\/p>\n<p>「小滿，」陳守一蹲下來，放輕聲音，「把東西給我，好不好？」<\/p>\n<p>小女孩看著他，看了很久。然後，她的嘴唇開始發抖，眼淚一顆一顆地掉下來。<\/p>\n<p>她從船底爬出來，跪在泥地上，把那包紅布舉過頭頂，捧到他面前。<\/p>\n<p>「攏是我的毋著。」她哭著說，用的是渡口人的土話，「攏是我的毋著，小師父，你毋通予伊來掠我。」<\/p>\n<p>都是我的錯。全部都是我的錯。<\/p>\n<p>陳守一接過那包東西。紅布還是溫的，被一個七歲的孩子抱了兩天兩夜，捂得溫溫的。<\/p>\n<p>「是誰叫妳去拿的？」他問。<\/p>\n<p>小滿抽抽噎噎地抬起頭。<\/p>\n<p>「一个戴帽仔的人，」她說，「面看無清楚。伊講廟仔頂懸有好物，閣予我一塊糖。」<\/p>\n<p>一個戴帽子的人。臉看不清楚。說廟頂上有好東西，還給了她一塊糖。<\/p>\n<p>陳守一的背上，一陣發冷。<\/p>\n<hr class=\"sep\">\n<p>周遠在便利商店的椅子上驚醒。<\/p>\n<p>窗外天剛亮，街上空蕩蕩的。對面旅社三樓的燈還亮著，窗簾一動也沒動。<\/p>\n<p>他坐在那裡，腦子裡反覆響著同一句話。<\/p>\n<p>一個在 2026 年的旅社門後，一個在 1931 年的渡口泥地上。隔著九十五年，兩個女孩，說了同一句話。<\/p>\n<p>全部都是我的錯。<\/p>\n<p>他想起監視器裡，那個在凌晨五點零三分走進廟埕、拎走行李箱、故意抬頭看鏡頭的男人。<\/p>\n<p>那個人也戴著帽子。<\/p>\n<p>周遠抬頭看向天空。月亮還掛在西邊，淡淡的一圈，只差薄薄的一線，就要圓了。<\/p>\n<p>今晚是滿月。<\/p>", "chars": 2347}, "9": {"title": "第九章　停電", "html": "<p>白天，周遠做了所有他能做的事。<\/p>\n<p>他調了一輛巡邏車，停在福星旅社樓下，派學弟阿凱守夜。他打電話給松嶺療養院，要何靜確認沈言今晚有人看著。<\/p>\n<p>「她九點會吃鎮定劑，門口有你們的人，我們每半小時巡一次房。」何靜在電話那頭說，語氣有點不耐煩，「周組長，你在擔心什麼？」<\/p>\n<p>「今晚是滿月。」<\/p>\n<p>電話那頭安靜了一下。<\/p>\n<p>「醫學上，滿月跟精神症狀的關聯，沒有任何可靠的證據。」何靜說。然後她停頓了很久，久到周遠以為電話斷了，才又開口：「不過，七號床的阿婆今天一整天沒吃東西。從早上開始，就一直坐在窗邊，看著天。護理師叫她，她說她在等月亮。」<\/p>\n<hr class=\"sep\">\n<p>晚上十一點，周遠坐在福星旅社一樓的櫃檯旁邊。<\/p>\n<p>老闆娘泡了一壺老人茶，陪他看一台音量開得很小的電視。是一部老掉牙的連續劇，婆婆在罵媳婦，媳婦在哭。老闆娘看得很入迷，偶爾跟著罵兩句。<\/p>\n<p>周遠第三次打電話到松嶺。<\/p>\n<p>「沈小姐睡得很好，」值班護理師說，「我十分鐘前才巡過。」<\/p>\n<p>他掛了電話，抬頭看向門外。<\/p>\n<p>玻璃門外的街道很安靜。月亮完全圓了，掛在車站大樓的正上方，白得刺眼，把整條後街照得像一張曝光過度的照片，連電線桿的影子都清清楚楚。巡邏車停在對面，阿凱坐在駕駛座上，手機的光照著他的臉。<\/p>\n<p>十一點五十九分。周遠看著手錶的秒針一格一格往前跳。<\/p>\n<p>五十七、五十八、五十九。<\/p>\n<hr class=\"sep\">\n<p>整座縣城，同時黑了。<\/p>\n<p>不是一盞一盞熄的。是一瞬間，所有的光一起消失。電視、日光燈、對面便利商店的招牌、遠處的紅綠燈、整條街的路燈，全部，在同一秒鐘熄滅。冷氣停了，冰箱停了，世界安靜得像被人一把掐住了喉嚨。<\/p>\n<p>「跳電喔？」老闆娘在黑暗裡嘟囔了一聲，「整條街都沒電，真衰。」<\/p>\n<p>周遠摸出手機。螢幕亮了一下，訊號格是零。他試著撥電話，撥不出去。<\/p>\n<p>只剩下月光。白白的，冷冷的，從玻璃門照進來，在磨石子地板上鋪了一層霜。<\/p>\n<p>然後，狗開始叫了。<\/p>\n<p>先是遠處的一隻，然後是近處的兩隻、三隻，然後是整座城市的狗，此起彼落，叫得像在哭。叫了大概一分鐘，又一隻接一隻地停下來。<\/p>\n<p>最後一隻狗停下來以後，周遠聽見了腳步聲。<\/p>\n<hr class=\"sep\">\n<p>是很多人的腳步聲。<\/p>\n<p>從四面八方的巷子裡傳出來，整齊、緩慢、很有節奏，啪、啪、啪，像一支看不見的軍隊在黑暗裡列隊行進。聲音越來越近，越來越大，到最後，整條街的地面都在跟著那個節奏輕輕震動。<\/p>\n<p>周遠推開玻璃門，走了出去。<\/p>\n<p>街上，滿是人。<\/p>\n<p>穿睡衣的、穿汗衫的、光著腳的、抱著枕頭的。一個穿便利商店制服的年輕店員。一個頭髮花白、穿著西裝褲的老先生。一個抱著小孩的媽媽，小孩趴在她肩上睡得很熟，她的另一隻手直直地往前伸著。<\/p>\n<p>他們從住家、從騎樓、從停在路邊的計程車裡走出來，雙手往前平舉，手腕垂著，身體往左晃，往右晃，每隔幾拍，往前跳一小步。<\/p>\n<p>每一張臉，都帶著同一種笑。<\/p>\n<p>他們一列一列地排好隊，像有人在指揮，沿著馬路往車站廣場的方向移動。沒有人說話，沒有人推擠。整條街上，只有幾百雙腳落地的聲音，整齊得讓人頭皮發麻。<\/p>\n<p>周遠站在騎樓下，看著這一切，一步都動不了。<\/p>\n<hr class=\"sep\">\n<p>巡邏車的門開著。<\/p>\n<p>駕駛座是空的。<\/p>\n<p>周遠在人群裡找到了阿凱。他就在第三排，制服釦子扣得整整齊齊，配槍還插在腰上。他的雙手往前伸著，跟著所有人一起，左晃，右晃。<\/p>\n<p>「阿凱！」<\/p>\n<p>周遠衝進人群，抓住他的肩膀，用力搖他。<\/p>\n<p>「阿凱！醒醒！」<\/p>\n<p>阿凱慢慢地轉過頭來。他的眼睛半閉著，瞳孔散得很大，嘴角翹著，笑得很溫和，像在看一個很久不見的朋友。<\/p>\n<p>「學長，」他的聲音很平、很輕，「一起來跳嘛。很舒服的。」<\/p>\n<p>周遠的手僵在他的肩膀上。<\/p>\n<p>「不用想事情，」阿凱說，「什麼都不用想。很舒服的，學長。」<\/p>\n<p>周遠鬆開手，往後退了一步。<\/p>\n<p>人群繞過他，像水繞過一塊石頭，繼續往前走。阿凱沒有再看他，轉回頭去，跟著隊伍，一晃一晃地走遠了。<\/p>\n<hr class=\"sep\">\n<p>周遠站在馬路中央，第一次感覺到了那個東西。<\/p>\n<p>不是聲音。是一種拉力。很輕，很溫柔，像有一根看不見的線，綁在他的手腕上，一下一下地往上提。<\/p>\n<p>他低頭看自己的手。<\/p>\n<p>他的雙手，已經離開了身體兩側，往前抬起了一點點。<\/p>\n<p>他咬緊牙關，把手硬是壓下去，握成拳頭，指甲刺進掌心。那股拉力沒有放棄，一下，又一下，很有耐心，像在哄一個鬧脾氣的孩子。<\/p>\n<p>他想起夢裡的陳守一，站進曬穀場最後一排的那一刻。想起那一記耳光。<\/p>\n<p>這裡沒有人會打醒他。<\/p>\n<p>他用右手，狠狠地掐住了自己左手的虎口。痛讓他清醒了一點。他轉身，背對著那支隊伍，一步一步往旅社走。<\/p>\n<p>走過一條巷口時，他用眼角的餘光看見了一些東西。<\/p>\n<p>水溝的鐵蓋被頂開了一條縫，縫裡有什麼灰白色的、細長的東西，正慢慢往外探。<\/p>\n<p>對面老公寓的外牆上，浮著一片一片的水漬。月光照上去，那些水漬看起來像臉。很多張臉，眼睛的位置是兩個深色的凹洞，全都朝著街上那支隊伍，像在看熱鬧。<\/p>\n<p>周遠沒有停下來。他也沒有轉頭去看清楚。<\/p>\n<p>夜裡走路，別回頭。<\/p>\n<hr class=\"sep\">\n<p>他推開旅社的玻璃門。<\/p>\n<p>櫃檯後面，老闆娘還坐在那張塑膠椅上。電視黑著，茶壺翻倒在桌上，茶水沿著桌邊一滴一滴往下淌。<\/p>\n<p>她坐得很直，背對著他，面向那台黑掉的電視。<\/p>\n<p>她的雙手，平平地舉在面前。<\/p>\n<p>她在哼歌。很輕，很黏，像壞掉的音樂盒。<\/p>\n<p>周遠沒有叫她。他繞過櫃檯，衝上了樓梯。<\/p>\n<p>二樓。三樓。走廊很長，盡頭那扇小窗透進一道月光，正好照在三〇七號房的門上。<\/p>\n<p>門是關著的。<\/p>\n<p>周遠在門前停下來，喘著氣，把耳朵貼上去。<\/p>\n<p>門裡有聲音。<\/p>\n<p>不是林依的聲音。是另一種聲音，很低，很近，像是從地板底下傳上來的。<\/p>\n<p>有東西，在床底下哼歌。<\/p>", "chars": 2111}, "10": {"title": "第十章　鏡中人", "html": "<p>周遠轉動門把。鎖著。<\/p>\n<p>「林依！」他壓低聲音，「是我，周遠。開門。」<\/p>\n<p>沒有回應。床底下的哼歌聲停了一下，又繼續，像沒聽見，又像在笑他。<\/p>\n<p>他抬起手，敲門。<\/p>\n<p>叩、叩。<\/p>\n<p>手停在第二下之後。和每一次一樣。<\/p>\n<p>然後，從門的另一邊，傳來了一聲回應。<\/p>\n<p>叩。<\/p>\n<p>很輕。就在門板的另一面，正對著他指節的位置。<\/p>\n<p>第三下。<\/p>\n<p>周遠的血一下子涼了。他往後退了半步，抬腿，用盡全身的力氣踹在門鎖旁邊。老舊的木門框發出一聲爆裂，門彈開了，撞在牆上又彈回來。<\/p>\n<hr class=\"sep\">\n<p>房間裡只有月光。<\/p>\n<p>窗簾沒拉，整片月光從窗戶灌進來，把房間照成一種沒有顏色的灰白。床鋪亂七八糟，床頭櫃上堆滿了外送的餐盒，地上散著幾件衣服。<\/p>\n<p>林依站在窗前，背對著門，一動也不動。<\/p>\n<p>她的右手往前伸著，伸向床底的方向。手心裡緊緊攥著一樣東西：一只褪了色的白色小瓷瓶。<\/p>\n<p>床底下，有東西在哼歌。<\/p>\n<p>那旋律周遠沒聽過，卻莫名地熟悉。輕快、黏膩、甜得發膩，像一只壞掉的音樂盒，一圈一圈地轉。<\/p>\n<p>然後，一隻手從床沿底下伸了出來。<\/p>\n<p>灰白色的，很瘦，很長，長得不像人的手，手指的關節比正常人多了一節。皮膚皺巴巴的，像泡過水又曬乾的舊報紙，隱隱約約還看得見印刷的痕跡。它慢慢地，一寸一寸地，從床底下往外探，掌心朝上，攤開，停在林依的手底下。<\/p>\n<p>等著。<\/p>\n<p>「交出來吧。」<\/p>\n<p>床底下的聲音說話了。不是一個聲音，是很多個聲音疊在一起，老的、小的、男的、女的，像一整個房間的人在同時低語。<\/p>\n<p>「交出來，妳就不用再怕了。」<\/p>\n<p>「妳也看到了吧？白天的人有多髒。騙人的、偷東西的、把老人丟著不管的、把小孩推進水裡的。他們把我們塞進床底、塞進牆壁、塞進水溝裡，然後假裝這世界很乾淨。」<\/p>\n<p>「我們只是出來打掃。」<\/p>\n<p>「把心交出來，把腦子交出來，就不會再痛了。不會再想起誰，也不會再對不起誰。」<\/p>\n<p>林依的手，在發抖。<\/p>\n<p>她的手指一根一根地鬆開了。那只白色的小瓷瓶，在她掌心裡往前滑了一點，離那隻灰白的手，只剩一寸。<\/p>\n<p>「林依！」<\/p>\n<p>她沒有回頭。<\/p>\n<hr class=\"sep\">\n<p>周遠拔出了配槍。<\/p>\n<p>他雙手握著槍，槍口對著床底，又對著那隻手，又對著林依的背影。他的手在抖。他不知道該對準哪裡。他當了十二年警察，知道怎麼對付持刀的歹徒、怎麼在巷戰裡掩護同伴，可是沒有人教過他，要對著一隻從床底下伸出來的手開槍。<\/p>\n<p>他的視線掃過整個房間。<\/p>\n<p>最後，停在牆上那面老舊的穿衣鏡上。<\/p>\n<p>鏡子掛在衣櫃門上，邊框的漆剝落了一半，鏡面有點霧，月光照在上面，映出整個房間。<\/p>\n<p>亂掉的床。散落的衣服。站在窗前的林依。<\/p>\n<p>還有林依身後的另一個人。<\/p>\n<p>一個穿著淺藍色病人服、光著腳的女人。她站在林依的背後，貼得很近，近到下巴幾乎靠在林依的肩上。她的雙手輕輕地搭在林依的肩膀上，像一個好朋友，又像一個在後面推著人往前走的人。<\/p>\n<p>她的嘴角，翹得好高、好高。<\/p>\n<p>是沈言。<\/p>\n<p>周遠猛地轉頭看向林依。<\/p>\n<p>林依身後，什麼都沒有。只有月光，和空氣。<\/p>\n<p>他再轉回去看鏡子。<\/p>\n<p>她還在。<\/p>\n<p>她慢慢地，從林依的肩膀後面，轉過臉來。隔著鏡子，隔著整個房間，她看著周遠。看著他手裡的槍。<\/p>\n<p>然後，她對他眨了眨眼。<\/p>\n<p>像在說：你看得見我，對吧？<\/p>\n<p>她把嘴唇湊近林依的耳朵，輕輕地說了一句什麼。周遠聽不見，可是他看見林依的身體晃了一下，那隻握著藥瓶的手，又往前送了一點。<\/p>\n<p>周遠沒有再想。<\/p>\n<p>他把槍口轉向那面鏡子，對準鏡中那張笑著的臉，扣下了扳機。<\/p>\n<p class=\"beat\"><strong>砰。<\/strong><\/p>\n<hr class=\"sep\">\n<p>槍聲在小小的房間裡炸開，震得他耳膜一陣刺痛，什麼都聽不見了。<\/p>\n<p>鏡子碎了。<\/p>\n<p>碎片嘩啦啦地從衣櫃門上落下來，散了一地，每一片碎玻璃上都映著一小塊月光。他看見其中一片碎片裡，那張笑著的臉還在，只剩半張，嘴角還翹著。然後，那半張臉也淡掉了，像水氣從玻璃上散開。<\/p>\n<p>床底下的哼歌聲，停了。<\/p>\n<p>那隻灰白的手，像被燙到一樣縮了回去，消失在床沿底下的黑暗裡。<\/p>\n<p>窗外，整座城市的腳步聲，也在同一個瞬間，停了。<\/p>\n<p>周遠站在原地，耳朵裡嗡嗡作響，手裡的槍還在冒煙。他的手臂在抖，從肩膀一路抖到指尖，抖得連槍都快握不住。<\/p>\n<p>不知道過了多久，日光燈閃了一下。<\/p>\n<p>又閃了一下。<\/p>\n<p>然後，亮了。<\/p>\n<hr class=\"sep\">\n<p>電來了。手錶顯示，凌晨零點四十一分。<\/p>\n<p>房間裡只有周遠一個人。<\/p>\n<p>窗戶開著。窗外的鐵製逃生梯還在微微地晃動，發出吱嘎、吱嘎的聲音。他衝到窗邊往下看。逃生梯一路延伸到後巷，後巷空蕩蕩的，只有一隻被驚醒的野貓，從垃圾桶上跳下去，跑掉了。<\/p>\n<p>林依不見了。<\/p>\n<p>床上留著一張紙，是從旅社的便條本上撕下來的，字跡很潦草，像是在發抖的手裡匆匆寫下的：<\/p>\n<p class=\"doc\">她不在醫院。<\/p>\n<p class=\"doc\">她一直跟著我。<\/p>\n<p>周遠盯著那兩行字看了很久，然後拿出手機。訊號回來了，滿格。<\/p>\n<p>他撥了松嶺療養院的電話。響了七聲，才有人接。<\/p>\n<p>「松嶺療養院，您好。」值班護理師的聲音聽起來很睏。<\/p>\n<p>「我是縣警局的周遠。沈言，她現在在哪裡？」<\/p>\n<p>「沈小姐？」護理師打了個呵欠，「她在睡覺啊。九點吃完藥就睡了，整晚都沒醒過。我們每半小時巡一次，每一次她都在床上。門口你們的同仁也一直守著。」<\/p>\n<p>「剛剛停電的時候呢？」<\/p>\n<p>「停電？」護理師愣了一下，「我們這裡沒有停電啊。」<\/p>\n<p>周遠閉上眼睛。<\/p>\n<p>「麻煩妳現在去看她一下。」他說，「掀開被子，看她的腳。」<\/p>\n<p>「看……腳？」<\/p>\n<p>「拜託。」<\/p>\n<p>電話那頭安靜了下來。他聽見拖鞋踩在磨石子地上的聲音，越來越遠，然後是開門聲。然後，很長一段時間，什麼聲音都沒有。<\/p>\n<p>大概過了一分鐘，腳步聲回來了。很快，很亂，像是用跑的。<\/p>\n<p>護理師拿起話筒，她的聲音完全變了，睡意一點都不剩。<\/p>\n<p>「周警官……」<\/p>\n<p>她吸了一口氣。<\/p>\n<p>「她的腳底，全是泥巴。」<\/p>", "chars": 2117}, "11": {"title": "第十一章　師父", "html": "<p>凌晨四點，車站廣場上的人才散乾淨。<\/p>\n<p>槍響的那一刻，幾百個人同時停下了腳步。等電來了，他們才發現自己站在廣場中央，你看我、我看你。有人只穿了一隻拖鞋，有人懷裡還抱著枕頭。那個抱小孩的媽媽低頭看著睡在自己肩上的孩子，看了很久，突然蹲下去放聲大哭。分局的電話整夜被打爆，報案的內容都差不多：我怎麼會在這裡？<\/p>\n<p>阿凱是在噴水池邊被找到的。他站得筆直，配槍還插在腰上，看見周遠走過來，第一句話是：「學長，我剛剛是不是睡著了？」<\/p>\n<p>周遠說：「對。」<\/p>\n<p>他沒有說別的。<\/p>\n<p>小方帶著鑑識組在三〇七號房待到天亮。鏡子的碎片一片一片裝進證物袋，彈頭從衣櫃門板裡挖了出來。床底下用手電筒照了三遍，只照到一層灰，灰上有幾道長長的指痕，從床底最深的地方，一路拖到床沿。<\/p>\n<p>「組長，」小方蹲在床邊，沒有抬頭，「你開槍的時候，鏡子裡到底有什麼？」<\/p>\n<p>周遠靠在走廊的牆上，閉著眼睛。<\/p>\n<p>「一個人。」<\/p>\n<p>他本來還想說點什麼，可是眼皮太重了。他聽見小方又叫了他兩聲，聲音越來越遠，像隔著一條很寬的河。<\/p>\n<hr class=\"sep\">\n<p class=\"era\">一九三一年，霧川渡。<\/p>\n<p>滿月那天，霧川渡的天亮得特別晚。<\/p>\n<p>陳守一醒來的時候，小滿已經坐在客棧的門檻上了。她從昨天早上把那包紅布交出來以後，就一直跟著他，不肯回家。她家的門上也有三個指節印。撐船的那個漢子，她的阿爸，這兩夜都在曬穀場上，站在方陣的第四排。昨天夜裡，師父讓她裹著那塊黃布，縮在客棧房間的牆角睡，她才沒有跟著出去。<\/p>\n<p>葛青崖一早就把陳守一叫到桌前，遞給他一張紙。<\/p>\n<p>七盞油燈。一斗白米。一疊黃紙。一兩硃砂。<\/p>\n<p>「師父，我去就好。」師兄從樓上走下來，伸手要拿那張紙，「守一還小，在街上亂走不好。」<\/p>\n<p>「讓他去。」葛青崖說。<\/p>\n<p>師兄的手停在半空中，過了一下才收回去。他笑了笑，說好，轉身倒茶去了。<\/p>\n<hr class=\"sep\">\n<p>東西買齊了，葛青崖帶著陳守一往渡口的方向走。<\/p>\n<p>渡口的石階從河邊一路往上爬，爬到坡頂，是一座陳守一來了幾天都沒注意過的廟。廟很舊，屋簷的剪黏掉了一大半，門楣上的匾被香煙燻得發黑，勉強看得出三個字：城隍廟。<\/p>\n<p>廟裡只有一個打瞌睡的廟祝。神龕上的城隍爺，一張臉也被燻得烏黑，看不清是什麼表情。<\/p>\n<p>葛青崖在神案前跪下，從懷裡掏出一張寫了一夜的疏文，低聲念完，在香爐裡燒了。然後他拿起神案上的一對筊，雙手合著舉過頭頂，擲在地上。<\/p>\n<p>兩片筊，都是平面朝上。<\/p>\n<p>他撿起來，又擲。還是兩片朝上。<\/p>\n<p>第三次，還是。<\/p>\n<p>「笑杯。」陳守一聽見那個廟祝在後面嘟囔，眼睛都沒睜開，「城隍爺足久無應人矣。」<\/p>\n<p>葛青崖跪在那裡，很久沒動。後來他把筊放回神案上，對著那張黑掉的臉拜了三拜，站起來，走出廟門。<\/p>\n<p>「師父，」陳守一追上去，「城隍爺是不是不答應？」<\/p>\n<p>「笑杯不是不答應，是還沒決定。」葛青崖站在廟門口的石階頂上，往下看著整條河，「今晚子時，我在渡口搖鈴。鈴響三下，這扇門就會開。」<\/p>\n<p>「要是沒開呢？」<\/p>\n<p>「會開。」葛青崖說，「我跟祂有約。」<\/p>\n<hr class=\"sep\">\n<p>下午，葛青崖坐在客棧的窗邊寫東西。<\/p>\n<p>陳守一第一次看清楚師父的手札。兩冊，線裝，紙已經泛黃了，用一張油紙包著，疊起來有兩根手指那麼厚。葛青崖翻開下面那一冊，寫得很快，一頁接一頁，毛筆幾乎沒有停過。寫完了，他把兩冊疊好，用油紙包起來，拿麻繩綁了三圈，放進布包裡。<\/p>\n<p>「你留在客棧，」他對師兄說，「顧好這個包，顧好小滿。」<\/p>\n<p>師兄看了看布包，又看了看坐在門檻上啃饅頭的小滿。<\/p>\n<p>「師父放心。」他說，笑得兩邊嘴角一樣高。<\/p>\n<hr class=\"sep\">\n<p>月亮是從河的上游升起來的。<\/p>\n<p>又大又白，白得像一張剛糊好的紙。葛青崖在渡口最下面的幾級石階上擺壇：七盞油燈沿著石階排成一列，白米盛在一只粗碗裡，那包粉紅色的紅布放在正中間，旁邊壓著一疊新寫的黃紙。他換上一件洗得發白的長衫，膝上橫著一把用紅線串起來的銅錢劍。<\/p>\n<p>「守一，」他沒有回頭，「等一下不管看到什麼，不要應聲，不要回頭。燈要是熄到剩一盞，你就走。往上走，走到城隍廟門口跪著，天亮以前不要起來。」<\/p>\n<p>「那師父呢？」<\/p>\n<p>葛青崖沒有回答。<\/p>\n<p>沒有下雨，河水卻在漲。陳守一看著它一級一級地爬上來，淹過最下面那級石階，又淹過第二級。水是黑的，月光照在上面，平得像一面鏡子。<\/p>\n<p>然後，第一盞燈的火苗，往旁邊歪了一下。<\/p>\n<hr class=\"sep\">\n<p>水裡走出來三個人。<\/p>\n<p>是男人，打著赤膊，肩上扛著纖繩，頭上的斗笠爛了一半，水從他們的頭髮、指尖、褲管上一直往下淌。他們一步一步走上石階，腳下沒有聲音。走在最前面那個，停在葛青崖面前，攤開一隻泡得發白的手掌。<\/p>\n<p>「頭家，」他說，「工錢。」<\/p>\n<p>葛青崖從碗裡抓了一把白米，放進那隻手裡。<\/p>\n<p>「辛苦了。」<\/p>\n<p>那人低頭看著掌心的米，點點頭，從他身邊走過去，往鎮上去了。第一盞燈，熄了。<\/p>\n<p>第二個上來的是一個女孩，十二三歲，穿著一件褪了色的紅衫，手腕上有一圈一圈的勒痕，懷裡抱著一個小包袱。她沒有看葛青崖，直直地走到陳守一面前，仰著臉問他：<\/p>\n<p>「小哥，你敢知影阮兜佇佗位？」<\/p>\n<p>陳守一張開嘴，差一點就要回答。一隻手按在他的肩膀上，按得很重。他把話吞了回去。<\/p>\n<p>女孩等了很久，等不到答案，就自己往坡上走了。第二盞燈熄了。<\/p>\n<p>第三個是一個老乞丐，拄著一根竹杖，手裡捧著一只缺了口的碗。他在陳守一旁邊坐下來，一身腐爛的稻草味，把碗遞到他面前，什麼都沒說。陳守一的手在抖，他從米碗裡抓了一把米，放進那只破碗裡。老乞丐對他笑了一下。他的臉上沒有眼睛，只有兩個很深的、被水泡爛的洞。<\/p>\n<p>第三盞燈熄了。<\/p>\n<p>後來上來的，陳守一數不清了。抱著死嬰的女人，脖子上還套著麻繩的長工，一整排手牽著手、身上還纏著水草的小孩。他們一個接一個從河裡走出來，經過七盞燈，經過葛青崖，經過他，走上石階，走進霧川渡的大街小巷。<\/p>\n<p>鎮上每一扇門都關著，每一扇窗都黑著。沒有人出來看他們。<\/p>\n<p>「師父，」陳守一用氣音說，「他們是誰？」<\/p>\n<p>「這個鎮忘掉的人。」葛青崖說，「淹死在河裡的船工，賣來當童養媳、打死了草蓆一捲就埋掉的女孩，餓死在廟口、沒有人收屍的乞丐。今晚月亮太亮，水太薄，他們都浮上來了。」<\/p>\n<p>「他們會害人嗎？」<\/p>\n<p>「他們只是想回家。」葛青崖說，「可是沒有人記得他們的家在哪裡。」<\/p>\n<hr class=\"sep\">\n<p>胡琴的聲音，是從大街那頭傳過來的。<\/p>\n<p>甜的，黏的，像糖漿一滴一滴從屋簷上往下淌。月娥從霧裡走出來，赤著腳，一身素白，身後跟著那支方陣。豆腐店老闆、打鐵的、碼頭的挑夫，小滿的阿爸在第四排。他們雙手平舉，手腕垂著，往左晃，往右晃，一小步一小步地往渡口跳過來。<\/p>\n<p>那些從河裡上來的人，一個一個停下了腳步，轉過身，站進了隊伍。<\/p>\n<p>老乞丐站進去了。穿紅衫的女孩也站進去了。方陣越來越大，越來越長，從渡口的石階一直排回大街上，排到陳守一看不見的地方。<\/p>\n<p>月娥在水邊停了下來，背對著河，對著石階上的葛青崖，笑了。<\/p>\n<p>葛青崖站起來，手裡握著那只銅鈴。<\/p>\n<p>他朝坡頂的城隍廟舉起了鈴。<\/p>\n<p>陳守一跟了師父三年，這是他第一次聽見那只鈴響。<\/p>\n<p class=\"beat\"><strong>噹。<\/strong><\/p>\n<p>聲音很清，清得不像銅，像一滴水落進很深的井裡。整支隊伍頓了半拍，所有人的腳同時懸在半空中，又同時落下。<\/p>\n<p class=\"beat\"><strong>噹。<\/strong><\/p>\n<p>坡頂的城隍廟裡，亮著一盞小小的燈。陳守一看著那扇門。<\/p>\n<p class=\"beat\"><strong>噹。<\/strong><\/p>\n<p>燈熄了。<\/p>\n<p>門沒有開。<\/p>\n<p>河邊安靜得只剩下水聲。葛青崖舉著鈴，站在那裡，望著坡頂那扇黑掉的門，望了很久很久。<\/p>\n<p>然後他把鈴放進了陳守一的手裡。<\/p>\n<p>「顧好。」他說。<\/p>\n<hr class=\"sep\">\n<p>他把剩下的事，一個人做完了。<\/p>\n<p>他咬破手指，用血在那疊新的黃紙上畫了一道符，把它壓在那包粉紅色的舊符上，一起捧著，一級一級走下石階，走進水裡。水淹到他的膝蓋。第四盞燈熄了。<\/p>\n<p>月娥慢慢地轉過頭來。只有頭。<\/p>\n<p>「葛青崖。」<\/p>\n<p>那不是月娥的聲音。是很多個聲音疊在一起，老的、小的、男的、女的，像整個渡口的人在同時說話。<\/p>\n<p>「三十二年囉。你又來了。」<\/p>\n<p>葛青崖沒有停。<\/p>\n<p>「那天晚上，你也站在這裡。」那個聲音說，像在笑，「你也沒有出聲。」<\/p>\n<p>葛青崖的肩膀晃了一下。只有一下。然後他往前跨了一步，把那兩道符，按在了月娥的額頭上。<\/p>\n<p>符燒了起來。是藍色的火，沒有煙。月娥張開嘴，發出一聲尖叫。那尖叫很細、很高，像一個小女孩。整支隊伍同時停住了，胡琴斷了，河水在那一瞬間靜止下來，平得連一道波紋都沒有。<\/p>\n<p>陳守一以為成了。<\/p>\n<p>然後，那疊符變成了灰，從月娥的額頭上一片一片地剝落，落進水裡。<\/p>\n<p>她笑了。<\/p>\n<p>第五盞燈熄了。<\/p>\n<hr class=\"sep\">\n<p>葛青崖拔出了銅錢劍。<\/p>\n<p>陳守一看著師父把劍舉起來，劍尖對著月娥的喉嚨。月娥的臉在那一瞬間變了，那個不對勁的笑容不見了，換回一張蒼白、驚慌、年輕的臉。<\/p>\n<p>「葛先生，」她說，是她自己的聲音，「葛先生，救我。」<\/p>\n<p>劍停在半空中。<\/p>\n<p>葛青崖的手腕一轉，劍尖偏開了她的喉嚨，狠狠地刺進她倒映在水裡的影子。<\/p>\n<p>劍沒入水中的那一刻，河底傳出一聲哭。<\/p>\n<p>不是那些疊在一起的聲音。是一個孩子，很小的孩子，哭得撕心裂肺，只有一個字：<\/p>\n<p>「痛——」<\/p>\n<p>河邊的每一張臉，同時轉向了葛青崖。<\/p>\n<p>串著銅錢的紅線啪地斷了，銅錢嘩啦啦地散進水裡。葛青崖鬆開手，那把只剩一根木芯的劍，順著水漂走了。他站在水裡，看著自己空掉的手，嘴唇在動。<\/p>\n<p>「不對……」陳守一聽見他說，「不是這樣……」<\/p>\n<p>第六盞燈熄了。<\/p>\n<p>水突然漲了起來，一口氣漲到葛青崖的腰。他轉身往石階上爬，水裡伸出好多隻手，泡白的、細瘦的、纏著水草的，一隻一隻抓住他的腳踝、他的衣角、他的腰帶。<\/p>\n<p>「守一！」他喊，「走！」<\/p>\n<p>陳守一沒有走。他看見石階頂上站著一個小小的人影。<\/p>\n<p>是小滿。她光著腳，喘著氣，辮子散了一半。她不應該在這裡。<\/p>\n<p>「師兄講伊欲去便所，」她哭著說，「就無轉來矣。我聽著鈴仔響，我驚……」<\/p>\n<p>葛青崖也看見她了。他用最後的力氣撐上一級石階，抓起神案上那包粉紅色的紅布，往小滿懷裡一塞。<\/p>\n<p>「抱好，」他說，「毋通放。」<\/p>\n<p>然後他抓住了陳守一的手腕。他的手很冰，冰得像河底的石頭，抓得很緊，緊到陳守一以為骨頭會斷。<\/p>\n<p>「不能殺。」他說，眼睛直直地看著陳守一，「她是……一個囡仔。」<\/p>\n<p>「師父——」<\/p>\n<p>「要三個人。」葛青崖說，「要三個……」<\/p>\n<p>水把他拖了下去。<\/p>\n<p>最後一盞燈，熄了。<\/p>\n<hr class=\"sep\">\n<p>陳守一拉著小滿，往坡頂跑。<\/p>\n<p>他一級一級往上爬，不敢停，不敢看。他跑到城隍廟門口，雙膝一軟跪了下去，把小滿拉到身邊，用兩隻手抱著她。小滿抱著那包紅布，他握著那只銅鈴。<\/p>\n<p>他舉起拳頭，捶那扇門。一下，兩下，十下，二十下。<\/p>\n<p>門沒有開。<\/p>\n<p>坡底的胡琴聲又響起來了。那支方陣沿著石階慢慢地跳上來，從他們身邊經過，又跳下去，一圈又一圈。他感覺到那根看不見的線又綁上了他的胸口，輕輕地往外扯。小滿在他懷裡發抖，可是她沒有動，他也沒有動。<\/p>\n<p>快天亮的時候，他聽見背後有人叫他。<\/p>\n<p>「守一。」<\/p>\n<p>是師父的聲音。從石階底下傳上來，很累，很啞，跟平常一模一樣。<\/p>\n<p>「守一，轉來。」<\/p>\n<p>陳守一把臉埋在小滿的頭髮裡，咬著牙，全身都在抖。<\/p>\n<p>他沒有回頭。<\/p>\n<hr class=\"sep\">\n<p>天亮了，水退了。<\/p>\n<p>陳守一走下石階，在最下面那一級找到了師父。<\/p>\n<p>葛青崖仰躺在石頭上，長衫濕透了，貼在身上。他的眼睛睜著，望著坡頂的城隍廟。他的一雙布鞋，整整齊齊地擺在他的頭邊。<\/p>\n<p>鞋頭朝外，對著河。<\/p>\n<p>陳守一跪在那裡，看著那雙鞋，看了很久。然後他伸出手，把鞋子一隻一隻轉過來，鞋頭朝內，對著鎮上，對著有人住的地方。<\/p>\n<p>他抬頭看了一眼坡頂。城隍廟的門，還是關著的。<\/p>\n<hr class=\"sep\">\n<p>他把小滿帶回客棧的時候，太陽已經很高了。<\/p>\n<p>靠窗那張床，被子疊得整整齊齊，摸上去是冰的。<\/p>\n<p>師父的布包放在桌上。袋口開著，那包用油紙裹著的手札還在裡面，麻繩也還綁著三圈。陳守一把它拿起來，在手裡掂了掂。<\/p>\n<p>昨天下午，它有兩根手指那麼厚。<\/p>\n<p>現在，只剩一根。<\/p>\n<p>他站在桌前，一時想不明白。窗外，退了一半的大水還在往下游奔，水面上漂著斷掉的竹竿和翻過來的竹籃。遠遠的，有一艘小船順著水往下游去，船上只有一個人，背對著渡口。<\/p>\n<p>那個人從頭到尾，都沒有回頭。<\/p>", "chars": 4531}, "12": {"title": "第十二章　手札", "html": "<p>周遠是被小方搖醒的。<\/p>\n<p>他坐在三〇七號房外的走廊地上，背靠著牆，脖子僵得轉不過來。窗外天已經大亮，走廊盡頭的小窗照進一塊白晃晃的陽光。鑑識組的人提著箱子從他面前走過，沒有人說話。<\/p>\n<p>「組長。」小方蹲在他面前，表情有點怪，「你還好嗎？」<\/p>\n<p>「幾點了？」<\/p>\n<p>「七點半。」她遲疑了一下，從口袋裡掏出一包面紙，放在他膝蓋上，「督察室剛剛打電話來，要你明天早上九點過去，說明開槍的事。」<\/p>\n<p>周遠點點頭，伸手去拿面紙，才發現自己的臉是濕的。<\/p>\n<p>他不記得自己哭過。他只記得一條河，七盞熄掉的燈，一扇怎麼捶都不開的門，還有石階最下面那一級，一雙鞋頭朝外的布鞋。<\/p>\n<p>他用面紙擦了臉，揉成一團，捏在手心。<\/p>\n<p>「小方，」他說，「妳先回去睡。報告我自己寫。」<\/p>\n<hr class=\"sep\">\n<p>他沒有回家。<\/p>\n<p>他把車停在旅社後巷，坐在駕駛座上，拿出手機，打了三個字。<\/p>\n<p>葛青崖。<\/p>\n<p>他其實不覺得會查到什麼。一個夢裡的人，一個九十五年前在渡口淹死的江湖先生，不會有百科，不會有新聞，不會有人替他寫一行字。<\/p>\n<p>搜尋結果只有一筆。<\/p>\n<p class=\"doc\">縣文史館館藏目錄　編號 D-0447<br>葛青崖手札（殘本）　一冊<br>年代：清末至民國初年　形制：手抄線裝<br>捐贈者：陳守一<\/p>\n<p>周遠盯著最後那三個字，盯到螢幕暗下去，又按亮，又暗下去。<\/p>\n<p>他發動了車子。<\/p>\n<hr class=\"sep\">\n<p>縣文史館在舊縣府後面，是一棟日治時期留下來的紅磚樓，木頭窗框漆成綠色，門口的告示牌寫著：特藏資料，請先預約。<\/p>\n<p>櫃檯後面坐著一個三十出頭的女館員，戴細框眼鏡，名牌上寫著「許」。她看了周遠的證件，又看了看他皺成一團的襯衫，什麼都沒問，起身去了後面的庫房。<\/p>\n<p>二十分鐘後，她抱著一只灰色的無酸紙盒回來，放在閱覽室的長桌上，遞給他一雙白手套。<\/p>\n<p>「這本很少人借。」她說，「紙很脆，翻的時候慢一點。」<\/p>\n<p>盒子打開，裡面是一冊線裝的舊書。封面是深藍色的土布，四個角磨得發白，正中央貼著一張褪色的題簽，用毛筆寫了一個字：<\/p>\n<p class=\"beat\"><strong>封。<\/strong><\/p>\n<p>周遠戴上手套，翻開第一頁。<\/p>\n<p>是葛青崖的字。他從來沒見過，可是他一眼就知道。筆畫瘦，收筆很硬，每一個字都寫得很急，像怕來不及。<\/p>\n<p>前面幾十頁，畫的是符。一張一張，有的旁邊註著用途，有的只畫了一半。再往後是一份名單，記的是地名和年份，一行一行往下排：<\/p>\n<p class=\"doc\">丁酉年　大坑口　與師同封　井<br>辛丑年　霧川渡　與師同封　河<br>戊申年　鹽埕　獨封　井<\/p>\n<p>周遠的手指停在第二行。<\/p>\n<p>他用手機查了一下。辛丑年，一九〇一年。<\/p>\n<p>三十年前，你師祖跟我一起封的。<\/p>\n<p>他繼續往下翻。名單之後是幾頁筆記，寫的是封的方法：用什麼紙、什麼硃砂、什麼時辰、要付什麼。每一條最後，都跟著同一個字：魂。或者，壽。<\/p>\n<p>翻到大約一半的地方，字停了。<\/p>\n<p>最後一行寫在頁面中間，只寫了半句：<\/p>\n<p class=\"doc\">凡封，皆有期。期滿，<\/p>\n<p>後面什麼都沒有。<\/p>\n<p>周遠往下翻。空白。再翻，空白。一頁一頁，泛黃的紙上乾乾淨淨，連一滴墨都沒有，像寫字的人那天下午擱下筆，就再也沒有回來。<\/p>\n<p>他一直翻到最後一頁。<\/p>\n<p>最後一頁有字。<\/p>\n<p class=\"doc\">此物不能殺，只能葬。<br>葬需三人：宿主、放它出來的人、封它的人。<\/p>\n<p>周遠看著那兩行字，看了很久。<\/p>\n<p>不是同一個人寫的。葛青崖的字瘦硬、急促；這兩行字寫得很慢，很用力，筆畫有點歪，像一個剛學會拿毛筆的人，一筆一畫照著描出來的。每一個「一」字的收尾，都往上勾了一個小小的鉤，像釣魚的鉤子。<\/p>\n<p>不能殺。她是一個囡仔。<\/p>\n<p>要三個人。要三個……<\/p>\n<p>他把手套脫下來，用掌根壓住眼睛，壓了很久。<\/p>\n<hr class=\"sep\">\n<p>「周先生？」<\/p>\n<p>許館員站在閱覽室門口，手裡拿著一張對摺的薄紙。<\/p>\n<p>「剛剛整理盒子的時候，這張從封底的夾層掉出來了。」她把紙放在桌上，「應該是原本夾在書裡的。目錄上沒記，我也是第一次看到。」<\/p>\n<p>周遠把那張紙攤開。<\/p>\n<p>是一張很薄的棉紙，上面用毛筆畫著一樣東西：長方形，上窄下寬，頂端雕著一圈雲紋，像一塊令牌。令牌正中間，寫著兩個彎彎曲曲的字，筆畫繞來繞去，他一個都認不出來。<\/p>\n<p>「篆書。」許館員湊過來看，「巡……夜。巡夜。」<\/p>\n<p>「巡夜是什麼？」<\/p>\n<p>「字面上就是夜裡巡邏。」她推了推眼鏡，「廟裡有些神將手上會拿令牌，不過我沒看過寫這兩個字的。」<\/p>\n<p>周遠用手機拍了下來。<\/p>\n<p>「這本是誰捐的，」他問，「有捐贈資料嗎？」<\/p>\n<p>許館員回櫃檯翻了很久，抱回來一本厚厚的登記冊，翻到其中一頁，轉過來給他看。<\/p>\n<p>是一張手寫的捐贈書，紙已經泛黃了。日期欄寫著：民國七十六年。品名欄：葛青崖手札，殘本一冊。捐贈人簽名：陳守一。<\/p>\n<p>那三個字寫得很慢，很用力，筆畫有點歪。「一」字的收尾，往上勾了一個小小的鉤。<\/p>\n<p>地址欄是空的。電話欄是空的。<\/p>\n<p>年齡欄寫著：十七。<\/p>\n<p>「應該是寫錯了。」許館員笑了一下，「七十六年，十七歲的高中生來捐清朝的東西，不太可能。可能是想寫七十一，少寫了一筆。」<\/p>\n<p>周遠沒有笑。<\/p>\n<p>「陳守一名下，」他說，「還有別的東西嗎？」<\/p>\n<p>許館員回去查了電腦。「目錄上只有這一筆。」她說，「不過庫房還有一批歷年的捐贈一直沒編完，堆在地下室，等明年盤點。有的話，大概也在那裡面。」<\/p>\n<hr class=\"sep\">\n<p>離開之前，許館員把閱覽登記簿推到他面前，要他簽名。<\/p>\n<p>周遠拿起筆，在最後一行寫下日期、姓名、單位。寫完了，他的目光落在上面一行。<\/p>\n<p>上一個借閱 D-0447 的人，日期是一個多月前。霧川鎮出事之前三個禮拜。<\/p>\n<p>那一行的簽名很潦草，一筆拉到底，認不出是什麼字。單位欄空著。<\/p>\n<p>「這位是？」<\/p>\n<p>「那天不是我值班。」許館員看了一眼，「我聽同事說，是一位很客氣的老先生，在閱覽室坐了一整個下午。不過他好像沒有從頭看，一直翻著最後一頁。」<\/p>\n<p>她頓了一下，像想起了什麼。<\/p>\n<p>「對了，他走的時候，跟我同事說了一句話。說如果之後有人來問這本，就幫他轉告。」<\/p>\n<p>「轉告什麼？」<\/p>\n<p>許館員皺著眉頭想了想，有點不好意思地笑了。<\/p>\n<p>「他說，」她說，「師弟的字，這麼多年，一點都沒長進。」<\/p>\n<hr class=\"sep\">\n<p>那天晚上，周遠很早就睡了。<\/p>\n<p>他把手機放在枕頭邊，螢幕上是那張令牌的照片。他看著它，看到眼睛自己閉上。<\/p>\n<p class=\"era\">一九三一年，霧川渡。<\/p>\n<p>陳守一坐在客棧的桌前，解開了那包油紙。<\/p>\n<p>麻繩綁了三圈。他一圈一圈地解，解得很慢，像怕裡面的東西會跑掉。<\/p>\n<p>油紙裡只有一冊。深藍色的土布封面，題簽上一個字：封。<\/p>\n<p>另一冊不見了。<\/p>\n<p>他記得那一冊。昨天下午，師父就是翻開那一冊，寫得一頁接一頁，毛筆幾乎沒有停過。封面的題簽上也是一個字，他沒看清楚，只記得那個字的筆畫很多，比「封」字複雜得多。<\/p>\n<p>他把油紙翻過來，又翻過去。布包倒過來抖了三遍。床底、桌底、窗台，全都找過了。<\/p>\n<p>沒有。<\/p>\n<p>小滿坐在門檻上，抱著那包粉紅色的紅布，一聲不吭地看著他找。<\/p>\n<p>他回到桌前，翻開那一冊「封」。師父的字，一頁一頁，瘦的、硬的、急的。翻到一半，字停了，停在半句話上。<\/p>\n<p>凡封，皆有期。期滿，<\/p>\n<p>期滿怎樣？<\/p>\n<p>他往後翻，空白。再往後，空白。他一直翻到最後，一張對摺的棉紙從封底滑了出來，落在桌上。<\/p>\n<p>一塊令牌。雲紋。兩個他不認得的字。<\/p>\n<p>他跟了師父三年，從來沒見師父畫過這個東西。<\/p>\n<p>他拿著那張紙，轉頭看向靠窗那張床。被子疊得整整齊齊，摸上去，是冰的。<\/p>\n<p>他想問的人，一個再也不會回答了，一個不知道去了哪裡。<\/p>\n<hr class=\"sep\">\n<p>周遠在黑暗裡睜開眼睛。<\/p>\n<p>凌晨兩點十分。他躺著沒動，聽著自己的心跳慢慢平下來。<\/p>\n<p>枕頭邊的手機還亮著，螢幕停在那張令牌的照片上。他伸手去拿，指尖碰到螢幕，畫面滑了一下，跳到前一張。<\/p>\n<p>是他白天在閱覽室拍的，手札最後一頁。<\/p>\n<p>此物不能殺，只能葬。<\/p>\n<p>他把那張照片放大，一直放大到那個「一」字，放大到那個往上勾的小鉤子，填滿了整個螢幕。<\/p>\n<p>他看著那個鉤子，忽然覺得自己在哪裡見過它。<\/p>\n<p>他睡不著了。他爬起來，開了檯燈，從公事包裡拿出督察室要的報告紙，想趁天亮前先把開槍的經過寫好。<\/p>\n<p>他寫得很慢。寫到第三行，他停了下來。<\/p>\n<p class=\"doc\">職於當日零時許，持配槍對房內鏡面擊發子彈一發。<\/p>\n<p>他看著自己剛寫下的那個「一」字。<\/p>\n<p>收尾的地方，往上勾了一個小小的鉤。<\/p>\n<p>他往回看。第一行，第二行。每一個「一」，都勾著同一個鉤子。<\/p>\n<p>他拉開抽屜，翻出一疊舊的報告影本，一張一張攤在桌上。上個月的，去年的，前年的。全都是。<\/p>\n<p>他寫了十幾年的字，從來沒有注意過。<\/p>\n<p>他也想不起來，自己是從什麼時候開始，這樣寫字的。<\/p>", "chars": 3117}, "13": {"title": "第十三章　申誡", "html": "<p>督察室在縣警局五樓，走廊盡頭，門上沒有掛牌子。<\/p>\n<p>周遠九點準時敲門。叩、叩。<\/p>\n<p>裡面坐著三個人。兩個督察，一男一女，他都只在年終的勤前教育上見過；還有刑警大隊長羅振邦，五十出頭，頭髮剃得很短，坐在靠窗的位子，手裡捏著一個保溫杯，從周遠進門起就沒看他。<\/p>\n<p>桌上攤著他凌晨寫好的那份報告。三張紙，字寫得很工整。<\/p>\n<p>「周組長，坐。」男督察翻開報告，「我們照程序走。昨天凌晨零時許，你在福星旅社三〇七號房內，對著衣櫃門上的穿衣鏡開了一槍。對吧？」<\/p>\n<p>「對。」<\/p>\n<p>「房間裡當時有幾個人？」<\/p>\n<p>「我，還有林依。」<\/p>\n<p>「林依是霧川案的關係人，你找了五天的那個。」女督察接過話，「她現在人在哪裡？」<\/p>\n<p>「從逃生梯走了。」<\/p>\n<p>「所以除了你，沒有其他人看到你開槍的時候房間裡發生了什麼。」<\/p>\n<p>周遠沒有回答。那不是問句。<\/p>\n<p>男督察翻到第二頁，用筆尖點著其中一段。「你在報告裡寫，你開槍，是因為鏡子裡出現了一個人，站在林依身後，對林依有危害之虞。」他抬起頭，「這個人是誰？」<\/p>\n<p>「沈言。」<\/p>\n<p>房間裡安靜了一下。羅振邦終於轉過頭來看他。<\/p>\n<p>女督察從資料夾裡抽出一疊影本，推到他面前。<\/p>\n<p>「松嶺療養院昨天傳真過來的。」她說，「沈言當晚的護理紀錄，每三十分鐘巡房一次，從晚上九點到隔天早上六點，每一格都簽了名，每一格都寫：在床，睡眠中。門口是我們自己的同仁，他也做了筆錄，一整夜沒有人進出。」<\/p>\n<p>她停了一下。<\/p>\n<p>「周組長，那天晚上沈言人在山上。離福星旅社，開車四十分鐘。」<\/p>\n<p>周遠看著那疊紀錄，看著每一格裡一模一樣的四個字。<\/p>\n<p>「她的腳底，」他說，「有泥巴。值班護理師親口跟我說的。」<\/p>\n<p>「我們也問了那位護理師。」男督察說，「她說她半夜被你的電話吵醒，本來就很緊張，又在燈光不好的地方看，可能看錯了。何醫師隔天早上親自檢查過，病人的腳是乾淨的。」<\/p>\n<p>周遠把影本推回去。<\/p>\n<p>他沒有再說話。他當了十二年警察，知道什麼時候說得越多，紀錄就寫得越難看。<\/p>\n<hr class=\"sep\">\n<p>結果是在中午出來的。<\/p>\n<p>羅振邦把他叫進大隊長室，關上門，把一張公文放在桌上。<\/p>\n<p class=\"doc\">違反用槍規定，核予申誡乙次。<\/p>\n<p>「申誡而已。」羅振邦坐下來，擰開保溫杯，喝了一口，「沒人受傷，打的是鏡子，旅社那邊我叫人去賠了。這是我能壓到的最輕了。」<\/p>\n<p>「謝謝大隊長。」<\/p>\n<p>「先別謝。」羅振邦看著他，「還有一個條件。用槍之後要做心理評估，這是規定，評估過了，槍才能還你。」<\/p>\n<p>「我知道。局裡的心理輔導員——」<\/p>\n<p>「輔導員這個禮拜請假。」羅振邦說，「縣府有特約的精神科醫師，平常就在處理這種事。」他頓了一下，「松嶺那邊。何靜醫師。她今天早上主動打電話來，說她願意幫忙。」<\/p>\n<p>周遠抬起頭。<\/p>\n<p>「她說，」羅振邦慢慢地說，「霧川案的唯一倖存者是她的病人，你是承辦的刑警，你們兩個之間已經有點東西了。她說她最清楚狀況。」<\/p>\n<p>「什麼叫有點東西？」<\/p>\n<p>羅振邦沒有回答。他只是又喝了一口茶。<\/p>\n<hr class=\"sep\">\n<p>評估是下午三點，在三樓的小會議室。<\/p>\n<p>何靜比他早到。她今天沒穿白袍，穿一件深灰色的毛衣，桌上放著一本筆記本、一支筆，還有一杯她沒碰過的咖啡。她看見周遠進門，點了點頭，指了指對面的椅子。<\/p>\n<p>「這不是偵訊，是會談。」她說。<\/p>\n<p>周遠聽出來了。那是他在松嶺跟她說過的話。<\/p>\n<p>「對我來說沒有差別。」他說。<\/p>\n<p>何靜的嘴角動了一下，很快又收回去。<\/p>\n<p>她問的問題，一開始都很普通。睡得好不好。一天睡幾個小時。有沒有喝酒。最近有沒有什麼壓力特別大的事。周遠一題一題答，答得很短。<\/p>\n<p>然後她停下筆，看著他的左手。<\/p>\n<p>「你的虎口怎麼了？」<\/p>\n<p>周遠低頭。左手虎口上有一圈青紫色的瘀痕，已經開始轉黃，是指甲掐出來的形狀。是滿月那一晚，他站在馬路中央，用右手狠狠掐住的地方。<\/p>\n<p>他把手收到桌子底下。<\/p>\n<p>「沒什麼。」<\/p>\n<p>何靜在本子上寫了一行字。<\/p>\n<p>「周組長，」她換了一個坐姿，「沈言第一次見你那天，晚上睡著以前，一直要我轉告你一句話。你還記得嗎？」<\/p>\n<p>「記得。」<\/p>\n<p>「她問你，有沒有夢見一條河。」何靜看著他，「你有嗎？」<\/p>\n<p>周遠沉默了很久。<\/p>\n<p>窗外有一台垃圾車經過，放著那首每個台灣人都聽過的音樂，漸漸遠了。<\/p>\n<p>「有。」他說。<\/p>\n<hr class=\"sep\">\n<p>他沒有說全部。可是他說得比他預期的多。<\/p>\n<p>他說他每天晚上都夢見同一個地方，一九三一年的霧川渡。他說他在夢裡是一個十七歲的少年，跟著師父，叫陳守一。他說他夢見一個喝黑藥湯的少奶奶，一個偷了廟裡東西的小女孩，一個在渡口石階上淹死的江湖先生。<\/p>\n<p>他沒有說那個少奶奶敲門三下。也沒有說他自己家的鐵門上，有兩個凹痕。<\/p>\n<p>何靜一直在寫，寫得很快，中間沒有打斷他。<\/p>\n<p>等他說完，她放下筆。<\/p>\n<p>「你有沒有想過，」她說，語氣很平，「這個夢可能是從哪裡來的？」<\/p>\n<p>「我查過了。」周遠說，「縣文史館有一本手札，是夢裡那個師父寫的。捐贈人的簽名，就是陳守一。那個人真的存在過。」<\/p>\n<p>「你是在夢見他之前查到的，還是之後？」<\/p>\n<p>「之後。」<\/p>\n<p>「你確定？」何靜看著他，「館藏目錄是公開的，網路上就查得到。你辦霧川案，一定查過霧川鎮的舊資料。你有沒有可能在哪一天，某個很累的晚上，看過那一頁，看過這兩個名字，然後忘了？」<\/p>\n<p>周遠張開嘴，又閉上。<\/p>\n<p>「這叫潛在記憶。」何靜說，「大腦記得，你不記得。它在夢裡把那些名字還給你，你就以為那是你從來沒見過的東西。這很常見，不是你的錯。」<\/p>\n<p>「那沈言呢？她為什麼會知道我夢見河？」<\/p>\n<p>「因為她自己也夢見河。」何靜說，「她住在一個從前叫『霧川渡』的鎮上，身邊聽的都是渡口的故事。她看見你，一個看起來很累、很久沒睡好的人，她猜你也夢見河。她猜中了。」她停了一下，「然後你們兩個，開始用同一個故事去解釋發生在自己身上的事。臨床上有個名字，叫共享性妄想。通常發生在關係很近的兩個人之間。」<\/p>\n<p>「我跟她只見過兩次面。」<\/p>\n<p>「我知道。」何靜說，「所以我才擔心。」<\/p>\n<hr class=\"sep\">\n<p>最後一個問題，她問得很輕。<\/p>\n<p>「你剛剛進門的時候，為什麼要繞過那扇玻璃門？」<\/p>\n<p>周遠愣了一下。<\/p>\n<p>三樓會議室外面的走廊上，有一扇通往茶水間的玻璃門。他每天經過，每天都繞著走，靠著另一邊的牆。他從來沒有想過為什麼。<\/p>\n<p>「你在報告裡寫，你是從鏡子裡看見那個人的。」何靜翻開另一頁，「可是你自己，好像很怕鏡子。你從什麼時候開始不照鏡子的？你在鏡子裡，看到過什麼？」<\/p>\n<p>周遠沒有回答。<\/p>\n<p>何靜看著他，看了很久。然後她把筆記本闔上了。<\/p>\n<p>「周組長，我會照實寫。」她說，「夢見自己是另一個人，迴避自己的鏡像，身上有自己不記得怎麼來的傷，在高壓下對一個不存在的影像開槍。這些放在一起，在我的專業裡叫解離症狀。我會建議你停職，接受治療。不是處罰，是你真的需要休息。」<\/p>\n<p>她站起來，把那杯沒動過的咖啡推到他面前。<\/p>\n<p>「松嶺有門診。」她說，「你想來的時候，可以直接找我。」<\/p>\n<hr class=\"sep\">\n<p>羅振邦給了他兩個禮拜的假。<\/p>\n<p>霧川案暫時交給副組長老張。配槍鎖進了保管室。羅振邦在公文上簽名的時候，頭都沒有抬，只說了一句：「回去睡覺。睡飽了再說。」<\/p>\n<p>周遠收拾桌子的時候，小方站在門口，抱著一疊卷宗，一直沒進來。<\/p>\n<p>「組長。」<\/p>\n<p>「嗯。」<\/p>\n<p>「林依的電子票證，」她壓低聲音，「從那天晚上到現在，都沒有再刷過。她如果還在跑，就是付現金。」<\/p>\n<p>周遠點點頭。<\/p>\n<p>「還有，」小方猶豫了一下，「那天在三〇七，我們採了床底的灰。今天報告出來了。裡面除了一般的灰塵、毛髮，還有一樣東西。」<\/p>\n<p>「什麼？」<\/p>\n<p>「河沙。」小方說，「很細的那種，溪谷才有的。縣城附近沒有那種沙。」<\/p>\n<p>她把一張照片塞進他手裡，轉身就走了。<\/p>\n<hr class=\"sep\">\n<p>那天晚上，周遠很早就到家了。<\/p>\n<p>他在玄關脫鞋，把鞋頭朝牆擺好，站起來的時候，習慣性地看了一眼那扇鐵門。<\/p>\n<p>膠帶還貼在那裡。兩段，平平整整，蓋著那兩個凹痕。<\/p>\n<p>他本來要走開了。<\/p>\n<p>可是走廊燈從側面照過去，他看見膠帶旁邊的鐵皮上，好像有一點不一樣。他湊近，用手機的手電筒斜斜地照上去。<\/p>\n<p>兩段膠帶的下方，大約一個指節的距離，有一道新的痕跡。<\/p>\n<p>很淺，淺到要斜著光才看得見。不是凹痕。像是有人把指節輕輕地靠上去，壓了一下，卻沒有敲下去。<\/p>\n<p>周遠站在那裡，手電筒的光一直在抖。<\/p>\n<p>他想起何靜說的話。身上有自己不記得怎麼來的傷。<\/p>\n<p>那天晚上，他把客廳的椅子拖到玄關，背靠著鐵門坐著，一直坐到天亮。他沒有睡。<\/p>\n<p>他不敢睡。他不知道睡著以後，自己會走到哪裡，也不知道下一次醒來的時候，那隻手已經敲下去了沒有。<\/p>", "chars": 3193}, "14": {"title": "第十四章　七號床", "html": "<p>休假的第一天，周遠只睡了兩個小時。<\/p>\n<p>天亮以後，他把椅子從玄關拖回客廳，洗了臉，刮了鬍子，刮的時候背對著浴室的鏡子，用手摸著下巴刮。刮破了兩個地方。<\/p>\n<p>他在家裡待到中午，把霧川案的影本攤了一桌子，看了又看。沒有槍，沒有案子，沒有可以打電話使喚的人。他只剩下一個哪裡都能去的身分：一個普通人。<\/p>\n<p>普通人可以去療養院探病。<\/p>\n<hr class=\"sep\">\n<p>松嶺的探視時間是下午兩點到四點。<\/p>\n<p>櫃檯的護理師認得他，看見他在訪客登記表上寫字，愣了一下。<\/p>\n<p>「周警官，你今天是……」<\/p>\n<p>「探病。」周遠把筆放下，「沈言。」<\/p>\n<p>護理師面有難色，回頭看了一眼走廊。「何醫師有交代，沈小姐這幾天不能會客。她狀況不太穩，鎮定劑的量也調高了。」<\/p>\n<p>「我只在門口看一眼。」<\/p>\n<p>護理師猶豫了很久，拿起電話撥了一個分機，壓低聲音說了幾句。掛上電話以後，她的表情有點奇怪。<\/p>\n<p>「何醫師說，」她說，「讓你進去。」<\/p>\n<p>周遠沒有問為什麼。他抬頭看了一眼天花板的角落。那裡有一台監視器，黑色的半圓罩子，底下一顆紅燈，一閃一閃。<\/p>\n<hr class=\"sep\">\n<p>沈言的病房在二樓。<\/p>\n<p>門上有一扇小小的觀察窗。周遠站在窗外往裡看，沈言躺在床上，睡得很沉，臉側向牆壁，一隻手垂在床沿。窗台上放著一盆小小的綠色植物，被子拉得很平，平得像沒有人在底下。<\/p>\n<p>她的腳露在被子外面。腳底很乾淨，白得幾乎透明。<\/p>\n<p>周遠看了很久。他想起那天晚上，鏡子裡那張貼在林依肩膀後面的臉，那個眨眼。他想敲門，手抬起來，又放下了。<\/p>\n<p>他轉身往走廊盡頭走。<\/p>\n<p>走到一半，一個推著換藥車的年長護理師從轉角出來，差點撞上他。她五十幾歲，胸前的名牌寫著「蔡」，看了他一眼，又看了看他要去的方向。<\/p>\n<p>「你欲去揣七號的阿婆？」<\/p>\n<p>周遠點頭。<\/p>\n<p>「伊這幾工較好矣。」護理師把車子推到牆邊，壓低聲音，像在講一件不該講的事，「月圓彼暗，伊規暝坐佇窗仔邊，一粒飯都無食，天光才倒落去睏。睏醒了後，就開始食飯矣，食甲足濟。」<\/p>\n<p>「她以前也這樣嗎？」<\/p>\n<p>「每一擺月圓攏按呢。我佇遮做二十冬，看伊等了二十冬的月娘。」護理師嘆了一口氣，「毋過這擺無仝。這擺伊醒過來，第一句話問我：『伊來矣未？』」<\/p>\n<p>「誰？」<\/p>\n<p>護理師搖搖頭。「我嘛按呢問伊。伊就毋講話矣，兩支手一直按呢——」她把兩隻手在胸前交握起來，像抱著一個小小的包袱，「按呢抱咧。抱幾若十冬矣，啥物都無，伊就是毋放。」<\/p>\n<p>她推著車走了。周遠站在原地，看著自己的兩隻手。<\/p>\n<hr class=\"sep\">\n<p>七號房的門，跟上次一樣，開著一條縫。<\/p>\n<p>周遠在門口站了一下。走廊上沒有人，只有遠處護理站傳來推車的聲音，和不知道哪一間病房裡電視的低語。他輕輕推開門。<\/p>\n<p>房間跟上次一樣小。一張病床，一張木頭椅子，一扇對著松林的窗。窗玻璃擦得很乾淨，可是外面的松林太密，陽光照不進來，整個房間是一種很淡的綠色。<\/p>\n<p>老婦人坐在床上，背靠著枕頭。<\/p>\n<p>她比上次看起來更小了，小得像一件被掛在那裡的舊衣服。白髮稀稀落落，貼在頭皮上。她的手放在被子上，一雙手瘦得只剩骨頭和青色的血管，十根手指卻緊緊地交握著，像在抱著什麼東西。<\/p>\n<p>她的眼睛閉著。<\/p>\n<p>周遠在門邊的椅子上坐下來。他不知道自己來這裡要問什麼。一個一百零二歲的老人，一句「那個鈴，不能搖」。他只是想再聽一次。<\/p>\n<p>他坐了大概五分鐘。<\/p>\n<p>然後，老婦人睜開了眼睛。<\/p>\n<p>她沒有轉頭，也沒有看門口。她直直地看著前面的牆壁，看了一會兒，才像是終於聽見了什麼，慢慢地，一點一點地，把臉轉向他。<\/p>\n<p>那雙蒙著灰的眼睛，對上了他。<\/p>\n<p>她的嘴唇抖了一下。<\/p>\n<p>「守一。」<\/p>\n<p>周遠全身的血，一下子停住了。<\/p>\n<hr class=\"sep\">\n<p>「守一，」她又叫了一次，聲音乾得像砂紙，卻叫得非常清楚，「你閣較慢來矣。」<\/p>\n<p>你又來晚了。<\/p>\n<p>周遠張開嘴，發不出聲音。<\/p>\n<p>老婦人伸出一隻手。手指彎著，抖得很厲害，伸到半空中，像要摸他的臉，又像要抓住什麼。周遠不知道自己是什麼時候站起來的，等他回過神，他已經蹲在床邊，那隻手正輕輕地貼在他的臉頰上。<\/p>\n<p>冰的。冰得像河底的石頭。<\/p>\n<p>「我有抱牢，」她說，眼睛裡慢慢地浮起一層水，「我無放。我一直攏無放。」<\/p>\n<p>周遠的喉嚨很緊。<\/p>\n<p>他想起石階頂上那個光著腳、辮子散了一半的小女孩。想起一隻冰冷的手，把一包粉紅色的紅布塞進她懷裡。抱好，不要放。<\/p>\n<p>「阿婆，」他的聲音啞得不像自己的，「妳……妳是誰？」<\/p>\n<p>老婦人沒有回答。<\/p>\n<p>她把手收回去，重新交握在被子上，抱著那個看不見的東西。她的眼睛又看向牆壁了，好像剛剛那一瞬間從來沒有發生過。<\/p>\n<p>然後，她開始哼歌。<\/p>\n<hr class=\"sep\">\n<p>是那支歌。<\/p>\n<p>很輕，很慢，每一句都往下沉，尾音拖得很長，像要把什麼東西，一點一點地，放進很深很深的地方。<\/p>\n<p>周遠蹲在床邊，一動也不動。<\/p>\n<p>他上一次聽見這支歌，是坐在會談室裡，隔著一道牆。那時候他只覺得陌生，只覺得後頸發涼。<\/p>\n<p>這一次不一樣。<\/p>\n<p>他聽著聽著，覺得胸口某個地方鬆開了。像一扇關了很久的門，被人從裡面輕輕推開一條縫。那旋律他從來沒聽過，可是每一句還沒唱出來，他就已經知道它會往哪裡走。往下。再往下。在這裡停一拍。在這裡轉回來。<\/p>\n<p>他閉上眼睛。<\/p>\n<p>他看見一條河。很寬，很靜，看不出是哪裡的河。河邊站著幾個人，他看不清楚他們的臉，只知道他們在唱，唱的是同一支歌。<\/p>\n<p>老婦人哼完了最後一句，停了下來。<\/p>\n<p>房間裡很安靜，只剩下窗外松針被風吹動的沙沙聲。<\/p>\n<p>周遠睜開眼睛，發現自己的臉又是濕的。<\/p>\n<hr class=\"sep\">\n<p>他走出七號房的時候，何靜站在走廊上。<\/p>\n<p>她不知道在那裡站了多久。她手裡拿著一台平板，臉色很難看，不是生氣，是一種周遠在她臉上從來沒看過的表情。<\/p>\n<p>「跟我來。」她說。<\/p>\n<p>監控室在一樓護理站的後面，很小，一整面牆的螢幕，每一格是一條走廊、一間大廳、一扇門。何靜坐下來，把七號房的畫面調出來，倒轉，按下播放。<\/p>\n<p>畫面是從天花板的角落往下拍的，黑白的，有點模糊。他看見自己走進房間，坐下，過了一會兒，蹲到床邊。他看見那隻手貼上他的臉。<\/p>\n<p>然後老婦人開始哼歌。監視器沒有收音，只有畫面。<\/p>\n<p>何靜把畫面放大，放大到他的臉。<\/p>\n<p>畫面裡的他，嘴唇在動。<\/p>\n<p>他在跟著哼。一句接一句，跟老婦人的嘴型一模一樣，沒有慢半拍，沒有快半拍，從頭到尾，一個字都沒有錯過。<\/p>\n<p>周遠盯著螢幕，覺得背上的汗一下子全冒了出來。<\/p>\n<p>「你記得嗎？」何靜問。<\/p>\n<p>「不記得。」<\/p>\n<p>「我想也是。」<\/p>\n<p>何靜沒有看他。她看著螢幕上那張蹲在床邊、閉著眼睛、嘴唇不停在動的臉，看了很久。<\/p>\n<p>「這支歌，」她說，聲音很低，「七號床的阿婆唱了幾十年。這裡沒有一個人聽得懂，沒有一個人學得會。我在這裡工作六年，每天聽，到現在連第一句都哼不完整。」<\/p>\n<p>她轉過頭，終於看著他。<\/p>\n<p>「你是怎麼會唱的？」<\/p>\n<p>周遠答不出來。<\/p>\n<p>何靜沉默了一會兒，把平板拿起來，打開一份文件。他瞄到最上面一行字：<strong>初診病歷（草稿）　姓名：周遠<\/strong>。<\/p>\n<p>「我會把這段寫進去。」她說，「照實寫。」<\/p>\n<p>她的手指在螢幕上打字，打得很快，打到一半，停了下來。<\/p>\n<p>「周遠，」她沒有抬頭，「她叫你什麼？」<\/p>\n<p>監視器沒有聲音。他想了想，明白了，她是在走廊上，隔著那扇開了一條縫的門，聽見的。<\/p>\n<p>「守一。」他說。<\/p>\n<p>何靜的手指停在螢幕上。很久都沒有動。<\/p>\n<p>「她從來不叫任何人的名字。」她說，「六年來，一次都沒有。」<\/p>\n<hr class=\"sep\">\n<p>周遠開車下山的時候，天已經暗了。<\/p>\n<p>他把車停在半山腰的一個彎道旁邊，熄了火，坐在黑暗裡。<\/p>\n<p>他想起那個年長護理師的話。伊來矣未？他來了沒有？<\/p>\n<p>他想起手札最後一頁那兩行歪歪的字，想起文史館登記簿上那句沒頭沒尾的留言，想起鏡子裡貼在林依肩膀後面的那張臉。每一件事單獨拿出來，都可以是巧合。何靜一定會這麼說。<\/p>\n<p>可是巧合不會叫他的名字。不會叫一個不是他的名字。<\/p>\n<p>他拿出手機，打開計算機。<\/p>\n<p>一九三一年。那個小女孩七歲。<\/p>\n<p>他按下去。二〇二六減一九三一，等於九十五。九十五加七。<\/p>\n<p>螢幕上跳出一個數字。<\/p>\n<p>他看著那個數字，坐在車裡，一直坐到松林裡的蟲聲全都停了。<\/p>\n<p>一百零二。<\/p>", "chars": 2999}}, "core": "一個小鎮三百人兩夜消失，唯一的倖存者被送進精神病院；追查此案的刑警每晚夢見自己是九十五年前的陰陽先生，而那個先生，當年正是在同一座鎮上，用自己的魂封住了同一個東西。"};
@@ -148,33 +253,60 @@ const store = {
   get(k, d) { try { const v = localStorage.getItem("wuchuan." + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem("wuchuan." + k, JSON.stringify(v)); } catch (e) {} }
 };
+const $ = id => document.getElementById(id);
 const written = Object.keys(DATA.chapters).map(Number).sort((a, b) => a - b);
 const all = DATA.volumes.flatMap(v => v.chapters.map(c => ({ ...c, vol: v.vol, volName: v.name })));
 const meta = n => all.find(c => c.n === n) || { n, name: "", line: "" };
-const main = document.getElementById("main");
-const where = document.getElementById("where");
+const main = $("main");
+let current = 0;
 
-let size = store.get("size", 19);
-let vertical = store.get("vertical", false);
+const prefs = {
+  size: store.get("size", window.innerWidth <= 700 ? 18 : 19),
+  lead: store.get("lead", 2),
+  vertical: store.get("vertical", false),
+  theme: store.get("theme", "auto")
+};
 function applyPrefs() {
-  document.documentElement.style.setProperty("--size", size + "px");
-  document.body.classList.toggle("vertical", vertical);
-  document.getElementById("vertical").setAttribute("aria-pressed", String(vertical));
+  const root = document.documentElement;
+  root.style.setProperty("--size", prefs.size + "px");
+  root.style.setProperty("--lead", prefs.lead);
+  if (prefs.theme === "auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", prefs.theme);
+  document.body.classList.toggle("vertical", prefs.vertical);
+  $("sizeRange").value = prefs.size;
+  document.querySelectorAll("#leadSeg button").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.lead) === prefs.lead)));
+  document.querySelectorAll("#modeSeg button").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.mode === "v") === prefs.vertical)));
+  document.querySelectorAll("#themeSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themeSet === prefs.theme)));
+}
+
+function neighbours(n) {
+  const i = written.indexOf(n);
+  return { prev: written[i - 1], next: written[i + 1] };
+}
+function setNav(n) {
+  const { prev, next } = n ? neighbours(n) : {};
+  for (const [id, v] of [["dPrev", prev], ["prevTop", prev], ["dNext", next], ["nextTop", next]]) {
+    $(id).disabled = !v; $(id).dataset.go = v || "";
+  }
+  $("prevTop").hidden = $("nextTop").hidden = !n;
 }
 
 function toc() {
+  current = 0;
+  document.body.classList.remove("reading", "chrome-off");
   const last = store.get("last", null);
-  const done = written.length;
-  const next = last && DATA.chapters[last] ? last : written[0];
-  where.textContent = "目錄";
+  const resume = last && DATA.chapters[last];
+  const next = resume ? last : written[0];
+  $("where").textContent = "目錄";
+  setNav(0);
   main.innerHTML = `
     <section class="cover">
       <h1>霧川</h1>
       <div class="meta">
         <p class="core">${DATA.core}</p>
-        <div class="stat"><span>十卷・八十章</span><span>已寫 ${done} / 80 章</span>
-          <span class="progress" aria-hidden="true"><i style="width:${done / 80 * 100}%"></i></span></div>
-        <button class="go" type="button" data-go="${next}">${last && DATA.chapters[last] ? "繼續讀　第" + cn(last) + "章" : "從第一章讀起"}</button>
+        <div class="stat"><span>十卷・八十章</span><span>已寫 ${written.length} / 80 章</span>
+          <span class="progress" aria-hidden="true"><i style="width:${written.length / 80 * 100}%"></i></span></div>
+        <button class="go" type="button" data-go="${next}">${resume ? "繼續讀　第" + cn(last) + "章〈" + meta(last).name + "〉" : "從第一章讀起"}</button>
+        <p class="hint">閱讀時點一下畫面中央可以收起工具列，左右滑動可以換章。</p>
       </div>
     </section>
     <div class="toc">
@@ -191,17 +323,21 @@ function toc() {
           }).join("")}</ol>
         </section>`).join("")}
     </div>`;
-  window.scrollTo(0, 0);
+  window.scrollTo(0, store.get("tocScroll", 0));
+  updateReadbar();
 }
 
 function read(n) {
   const ch = DATA.chapters[n];
   if (!ch) return toc();
+  current = n;
+  document.body.classList.add("reading");
+  document.body.classList.remove("chrome-off");
   const m = meta(n);
-  const i = written.indexOf(n);
-  const prev = written[i - 1], next = written[i + 1];
+  const { prev, next } = neighbours(n);
   store.set("last", n);
-  where.textContent = `${m.vol || ""}　第${cn(n)}章　${m.name}`;
+  $("where").textContent = `第${cn(n)}章　${m.name}`;
+  setNav(n);
   const title = ch.title.replace(/^第.+?章　/, "");
   main.innerHTML = `
     <article class="chapter" id="text">
@@ -214,10 +350,37 @@ function read(n) {
       <button type="button" ${next ? `data-go="${next}"` : "disabled"}><small>下一章</small><span>${next ? "第" + cn(next) + "章　" + meta(next).name : "還沒寫到"}</span></button>
     </nav>
     ${next ? "" : `<p class="end">目前寫到這裡。下一章是第${cn(n + 1)}章〈${meta(n + 1).name}〉。</p>`}`;
-  window.scrollTo(0, 0);
-  const t = document.getElementById("text");
-  if (vertical) t.scrollLeft = 0;
+  const pos = store.get("pos", {})[n] || 0;
+  if (prefs.vertical) { window.scrollTo(0, 0); const t = $("text"); t.scrollLeft = -pos * (t.scrollWidth - t.clientWidth); t.addEventListener("scroll", onScroll, { passive: true }); }
+  else window.scrollTo(0, pos * (document.documentElement.scrollHeight - innerHeight));
+  updateReadbar();
 }
+
+function ratio() {
+  if (!current) return 0;
+  if (prefs.vertical) { const t = $("text"); const max = t.scrollWidth - t.clientWidth; return max > 0 ? Math.min(1, Math.abs(t.scrollLeft) / max) : 0; }
+  const max = document.documentElement.scrollHeight - innerHeight;
+  return max > 0 ? Math.min(1, scrollY / max) : 0;
+}
+function updateReadbar() { $("readbar").style.width = (ratio() * 100) + "%"; }
+
+let lastY = 0, saveTimer = 0;
+function onScroll() {
+  updateReadbar();
+  if (current) {
+    const y = scrollY;
+    if (!prefs.vertical && Math.abs(y - lastY) > 12) {
+      document.body.classList.toggle("chrome-off", y > lastY && y > 120);
+      lastY = y;
+    }
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => { const p = store.get("pos", {}); p[current] = Number(ratio().toFixed(4)); store.set("pos", p); }, 250);
+  } else {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => store.set("tocScroll", scrollY), 250);
+  }
+}
+window.addEventListener("scroll", onScroll, { passive: true });
 
 function route() {
   const m = location.hash.match(/^#c(\d+)$/);
@@ -228,22 +391,59 @@ function go(n) {
   if (location.hash === h) route(); else location.hash = h;
 }
 
+/* 點擊：換章、目錄 */
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-go]");
-  if (b) go(Number(b.dataset.go));
+  if (b && b.dataset.go) { go(Number(b.dataset.go)); return; }
+  if (current && e.target.closest(".chapter") && !getSelection().toString()) {
+    const y = e.clientY / innerHeight;
+    if (y > .25 && y < .75) document.body.classList.toggle("chrome-off");
+  }
 });
-document.getElementById("home").onclick = () => go(0);
-document.getElementById("smaller").onclick = () => { size = Math.max(15, size - 1); store.set("size", size); applyPrefs(); };
-document.getElementById("bigger").onclick = () => { size = Math.min(26, size + 1); store.set("size", size); applyPrefs(); };
-document.getElementById("vertical").onclick = () => { vertical = !vertical; store.set("vertical", vertical); applyPrefs(); route(); };
+$("home").onclick = () => go(0);
+$("dToc").onclick = () => go(0);
+
+/* 左右滑動換章（橫排時） */
+let sx = 0, sy = 0, st = 0;
+document.addEventListener("touchstart", e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); }, { passive: true });
+document.addEventListener("touchend", e => {
+  if (!current || prefs.vertical || !$("sheet").hidden) return;
+  const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+  if (Date.now() - st < 600 && Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy) * 2) {
+    const { prev, next } = neighbours(current);
+    if (dx < 0 && next) go(next);
+    if (dx > 0 && prev) go(prev);
+  }
+}, { passive: true });
+
 document.addEventListener("keydown", e => {
-  const m = location.hash.match(/^#c(\d+)$/);
-  if (!m || e.target.closest("input,textarea")) return;
-  const i = written.indexOf(Number(m[1]));
-  if (e.key === "ArrowRight" && written[i + 1]) go(written[i + 1]);
-  if (e.key === "ArrowLeft" && written[i - 1]) go(written[i - 1]);
+  if (e.key === "Escape" && !$("sheet").hidden) return closeSheet();
+  if (!current || e.target.closest("input,textarea")) return;
+  const { prev, next } = neighbours(current);
+  if (e.key === "ArrowRight" && next) go(next);
+  if (e.key === "ArrowLeft" && prev) go(prev);
 });
+
+/* 設定面板 */
+function openSheet() { $("sheet").hidden = $("shade").hidden = false; $("closeSheet").focus(); }
+function closeSheet() { $("sheet").hidden = $("shade").hidden = true; }
+$("openSheet").onclick = openSheet;
+$("dSet").onclick = openSheet;
+$("closeSheet").onclick = closeSheet;
+$("shade").onclick = closeSheet;
+$("sizeRange").oninput = e => { prefs.size = Number(e.target.value); store.set("size", prefs.size); applyPrefs(); updateReadbar(); };
+$("leadSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; prefs.lead = Number(b.dataset.lead); store.set("lead", prefs.lead); applyPrefs(); };
+$("themeSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; prefs.theme = b.dataset.themeSet; store.set("theme", prefs.theme); applyPrefs(); };
+$("modeSeg").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const v = b.dataset.mode === "v"; if (v === prefs.vertical) return;
+  prefs.vertical = v; store.set("vertical", v); applyPrefs(); if (current) read(current);
+};
+
 window.addEventListener("hashchange", route);
 applyPrefs();
 route();
 </script>
+
+</body>
+</html>

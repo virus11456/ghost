@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Serif+TC:wght@400;600&display=swap">
 <style>
-/* 版面：一條窄窄的閱讀欄，像河道；目錄依卷排列，未寫的章節淡成霧。強調色取鎮符那塊褪色的紅布。 */
+/* 版面：一條窄窄的閱讀欄，像河道；目錄依卷排列，未寫的章節淡成霧。強調色取鎮符那塊褪色的紅布。手機上工具收到底部。 */
 :root {
   --bg: #e7ebe9;
   --paper: #f3f5f4;
@@ -13,45 +13,50 @@
   --rule: #cdd4d0;
   --accent: #9c4b55;
   --accent-soft: #ead9db;
+  --shade: rgba(20, 28, 26, .35);
   --display: "LXGW WenKai TC", "Kaiti TC", "BiauKai", "STKaiti", serif;
   --body: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
   --ui: -apple-system, "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   --size: 19px;
+  --lead: 2;
+  --top: env(safe-area-inset-top, 0px);
+  --bottom: env(safe-area-inset-bottom, 0px);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f1316; --paper: #141a1e; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
-    --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; color-scheme: dark;
+    --bg: #0f1316; --paper: #161c20; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
+    --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; --shade: rgba(0, 0, 0, .55); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f1316; --paper: #141a1e; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
-  --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; color-scheme: dark;
+  --bg: #0f1316; --paper: #161c20; --fg: #d5dbd8; --muted: #84908b; --faint: #4a5652;
+  --rule: #26303a; --accent: #cf8a93; --accent-soft: #3a2528; --shade: rgba(0, 0, 0, .55); color-scheme: dark;
 }
-* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { background: var(--bg); }
-body { color: var(--fg); font-family: var(--body); margin: 0; }
+body { color: var(--fg); font-family: var(--body); margin: 0; -webkit-text-size-adjust: 100%; }
 button { font: inherit; color: inherit; }
-a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
 
+/* 頂欄 */
 .bar {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 16px; background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule);
-  font-family: var(--ui); font-size: 14px;
+  position: sticky; top: var(--top); z-index: 5;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px 8px 16px; background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule);
+  font-family: var(--ui); font-size: 14px; transition: transform .25s ease;
 }
-.bar .home { font-family: var(--display); font-size: 20px; background: none; border: 0; cursor: pointer; padding: 0 4px; letter-spacing: .1em; }
+.bar .home { font-family: var(--display); font-size: 20px; background: none; border: 0; cursor: pointer; padding: 6px 4px; letter-spacing: .1em; }
 .bar .where { color: var(--muted); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tools { display: flex; gap: 6px; }
-.tools button {
-  background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
-  padding: 4px 10px; cursor: pointer; font-size: 13px; color: var(--muted);
+.iconbtn {
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 8px;
+  min-width: 40px; height: 36px; padding: 0 10px; cursor: pointer; font-size: 14px; color: var(--muted);
 }
-.tools button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+.readbar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; }
+.readbar i { display: block; height: 100%; width: 0; background: var(--accent); }
 
-main { padding-inline: 16px; padding-block: 0 80px; }
+main { padding-inline: 16px; padding-block: 0 96px; }
 
 /* 封面 */
 .cover { max-width: 760px; margin: 0 auto; padding-block: 56px 24px; display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: start; }
@@ -68,9 +73,9 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 .progress i { display: block; height: 100%; background: var(--accent); }
 .go {
   justify-self: start; font-family: var(--display); font-size: 18px; letter-spacing: .08em;
-  background: var(--accent); color: var(--paper); border: 0; border-radius: 4px; padding: 10px 22px; cursor: pointer;
+  background: var(--accent); color: var(--paper); border: 0; border-radius: 6px; padding: 12px 24px; cursor: pointer;
 }
-@media (max-width: 520px) { .cover { grid-template-columns: 1fr; gap: 12px; padding-block: 32px 8px; } .cover h1 { writing-mode: horizontal-tb; letter-spacing: .3em; } }
+.hint { font-family: var(--ui); font-size: 12px; color: var(--muted); margin: 0; }
 
 .toc { max-width: 760px; margin: 0 auto; display: grid; gap: 34px; padding-block: 24px; }
 .vol header { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
@@ -79,9 +84,9 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 .vol .blurb { color: var(--muted); font-size: 14px; line-height: 1.8; margin: 8px 0 4px; }
 .vol ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 18px; }
 .vol li button {
-  width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+  width: 100%; min-height: 46px; text-align: left; background: none; border: 0; cursor: pointer;
   display: grid; grid-template-columns: 2.4em 1fr auto; gap: 8px; align-items: baseline;
-  padding: 9px 4px; border-bottom: 1px dashed var(--rule);
+  padding: 10px 4px; border-bottom: 1px dashed var(--rule);
 }
 .vol li .n { font-family: var(--ui); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .vol li .t { font-family: var(--display); font-size: 18px; }
@@ -95,7 +100,7 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 .chapter { max-width: 34em; margin: 0 auto; padding-block: 48px 24px; font-size: var(--size); }
 .chapter .num { font-family: var(--ui); font-size: 12px; letter-spacing: .3em; color: var(--accent); margin: 0; }
 .chapter h2 { font-family: var(--display); font-weight: 700; font-size: 2em; letter-spacing: .12em; margin: .2em 0 1.4em; text-wrap: balance; }
-.chapter p { line-height: 2; margin: 0 0 1.05em; text-align: justify; }
+.chapter p { line-height: var(--lead); margin: 0 0 1.05em; text-align: justify; }
 .chapter p.era { font-family: var(--display); color: var(--accent); letter-spacing: .15em; margin-block: 1.6em 1.4em; }
 .chapter p.doc { font-family: var(--display); background: var(--paper); border-left: 2px solid var(--accent); padding: .8em 1em; line-height: 1.9; }
 .chapter p strong { font-weight: 600; }
@@ -104,7 +109,7 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 .sep::before { content: "・　・　・"; letter-spacing: .2em; }
 .nav { max-width: 34em; margin: 40px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-family: var(--ui); }
 .nav button {
-  background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px;
   cursor: pointer; text-align: left; display: grid; gap: 4px; min-width: 0;
 }
 .nav button:last-child { text-align: right; }
@@ -115,30 +120,112 @@ main { padding-inline: 16px; padding-block: 0 80px; }
 
 /* 直排 */
 body.vertical .chapter {
-  writing-mode: vertical-rl; max-width: none; height: min(78vh, 46em);
+  writing-mode: vertical-rl; max-width: none; height: calc(100dvh - 150px - var(--top) - var(--bottom));
   overflow-x: auto; overflow-y: hidden; padding: 24px 8px; margin: 0;
+  overscroll-behavior-x: contain;
 }
 body.vertical .chapter p { margin: 0 0 0 1.05em; text-align: start; }
 body.vertical .chapter p.doc { border-left: 0; border-top: 2px solid var(--accent); }
 body.vertical .sep { margin: 0 1.6em; }
 body.vertical .chapter h2 { margin: 0 0 0 1.2em; }
 
+/* 底部工具列（手機） */
+.dock {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+  display: none; grid-template-columns: repeat(4, 1fr);
+  padding: 6px 8px calc(6px + var(--bottom));
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--rule); font-family: var(--ui); transition: transform .25s ease;
+}
+.dock button {
+  background: none; border: 0; min-height: 48px; display: grid; justify-items: center; align-content: center; gap: 2px;
+  color: var(--fg); cursor: pointer; font-size: 11px;
+}
+.dock button b { font-family: var(--display); font-weight: 400; font-size: 18px; line-height: 1; }
+.dock button:disabled { color: var(--faint); }
+
+/* 設定面板 */
+.sheet-shade { position: fixed; inset: 0; background: var(--shade); z-index: 9; }
+.sheet {
+  position: fixed; z-index: 10; left: 50%; bottom: 0; transform: translateX(-50%);
+  width: min(560px, 100%); background: var(--paper); border: 1px solid var(--rule); border-bottom: 0;
+  border-radius: 16px 16px 0 0; padding: 10px 20px calc(22px + var(--bottom));
+  font-family: var(--ui); display: grid; gap: 18px;
+}
+.sheet .grip { width: 40px; height: 4px; border-radius: 2px; background: var(--rule); justify-self: center; }
+.sheet h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 20px; letter-spacing: .1em; }
+.row { display: grid; grid-template-columns: 4.5em 1fr; gap: 12px; align-items: center; }
+.row > span { color: var(--muted); font-size: 13px; }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.seg button { background: none; border: 0; min-height: 42px; cursor: pointer; font-size: 14px; color: var(--muted); }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.size { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+.size input { width: 100%; accent-color: var(--accent); }
+.size small { color: var(--muted); }
+.sheet .done { background: var(--accent); color: var(--paper); border: 0; border-radius: 10px; min-height: 46px; font-size: 15px; cursor: pointer; }
+.sample { font-family: var(--body); font-size: var(--size); line-height: var(--lead); margin: 0; color: var(--fg); }
+
+@media (max-width: 700px) {
+  .bar .desk { display: none; }
+  body.reading .dock { display: grid; }
+  body.reading .nav { display: none; }
+  body.chrome-off.reading .bar { transform: translateY(calc(-100% - var(--top))); }
+  body.chrome-off.reading .dock { transform: translateY(100%); }
+  .chapter { padding-block: 28px 16px; }
+  .chapter h2 { font-size: 1.7em; }
+  .cover { grid-template-columns: 1fr; gap: 14px; padding-block: 32px 8px; }
+  .cover h1 { writing-mode: horizontal-tb; letter-spacing: .3em; }
+  .go { justify-self: stretch; text-align: center; }
+  .vol ol { grid-template-columns: 1fr; }
+  .vol li .l { display: none; }
+}
+@media (min-width: 701px) { .hint { display: none; } }
+
 @media (prefers-reduced-motion: no-preference) {
-  .chapter { animation: rise .5s ease both; }
+  .chapter { animation: rise .45s ease both; }
   @keyframes rise { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 }
+@media (prefers-reduced-motion: reduce) { .bar, .dock { transition: none; } }
 </style>
 
-<div class="bar">
+<div class="bar" id="bar">
   <button class="home" id="home" type="button" aria-label="回到目錄">霧川</button>
   <div class="where" id="where">目錄</div>
-  <div class="tools">
-    <button type="button" id="smaller" aria-label="字小一點">A−</button>
-    <button type="button" id="bigger" aria-label="字大一點">A＋</button>
-    <button type="button" id="vertical" aria-pressed="false">直排</button>
-  </div>
+  <button class="iconbtn desk" type="button" id="prevTop" aria-label="上一章">‹</button>
+  <button class="iconbtn desk" type="button" id="nextTop" aria-label="下一章">›</button>
+  <button class="iconbtn" type="button" id="openSheet" aria-label="閱讀設定">Aa</button>
+  <div class="readbar" aria-hidden="true"><i id="readbar"></i></div>
 </div>
 <main id="main"></main>
+
+<nav class="dock" id="dock" aria-label="閱讀工具">
+  <button type="button" id="dPrev"><b>‹</b>上一章</button>
+  <button type="button" id="dToc"><b>目</b>目錄</button>
+  <button type="button" id="dSet"><b>Aa</b>設定</button>
+  <button type="button" id="dNext"><b>›</b>下一章</button>
+</nav>
+
+<div class="sheet-shade" id="shade" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="grip" aria-hidden="true"></div>
+  <h3 id="sheetTitle">閱讀設定</h3>
+  <p class="sample">夜裡走路，別回頭。</p>
+  <div class="row"><span>字級</span>
+    <div class="size"><small>小</small><input type="range" id="sizeRange" min="15" max="26" step="1" aria-label="字級"><small>大</small></div>
+  </div>
+  <div class="row"><span>行距</span>
+    <div class="seg" id="leadSeg"><button type="button" data-lead="1.8">緊</button><button type="button" data-lead="2">適中</button><button type="button" data-lead="2.3">鬆</button></div>
+  </div>
+  <div class="row"><span>排版</span>
+    <div class="seg" id="modeSeg"><button type="button" data-mode="h">橫排</button><button type="button" data-mode="v">直排</button></div>
+  </div>
+  <div class="row"><span>外觀</span>
+    <div class="seg" id="themeSeg"><button type="button" data-theme-set="auto">跟系統</button><button type="button" data-theme-set="light">淺色</button><button type="button" data-theme-set="dark">深色</button></div>
+  </div>
+  <button type="button" class="done" id="closeSheet">完成</button>
+</section>
 
 <script>
 const DATA = /*__DATA__*/null;
@@ -148,33 +235,60 @@ const store = {
   get(k, d) { try { const v = localStorage.getItem("wuchuan." + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem("wuchuan." + k, JSON.stringify(v)); } catch (e) {} }
 };
+const $ = id => document.getElementById(id);
 const written = Object.keys(DATA.chapters).map(Number).sort((a, b) => a - b);
 const all = DATA.volumes.flatMap(v => v.chapters.map(c => ({ ...c, vol: v.vol, volName: v.name })));
 const meta = n => all.find(c => c.n === n) || { n, name: "", line: "" };
-const main = document.getElementById("main");
-const where = document.getElementById("where");
+const main = $("main");
+let current = 0;
 
-let size = store.get("size", 19);
-let vertical = store.get("vertical", false);
+const prefs = {
+  size: store.get("size", window.innerWidth <= 700 ? 18 : 19),
+  lead: store.get("lead", 2),
+  vertical: store.get("vertical", false),
+  theme: store.get("theme", "auto")
+};
 function applyPrefs() {
-  document.documentElement.style.setProperty("--size", size + "px");
-  document.body.classList.toggle("vertical", vertical);
-  document.getElementById("vertical").setAttribute("aria-pressed", String(vertical));
+  const root = document.documentElement;
+  root.style.setProperty("--size", prefs.size + "px");
+  root.style.setProperty("--lead", prefs.lead);
+  if (prefs.theme === "auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", prefs.theme);
+  document.body.classList.toggle("vertical", prefs.vertical);
+  $("sizeRange").value = prefs.size;
+  document.querySelectorAll("#leadSeg button").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.lead) === prefs.lead)));
+  document.querySelectorAll("#modeSeg button").forEach(b => b.setAttribute("aria-pressed", String((b.dataset.mode === "v") === prefs.vertical)));
+  document.querySelectorAll("#themeSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themeSet === prefs.theme)));
+}
+
+function neighbours(n) {
+  const i = written.indexOf(n);
+  return { prev: written[i - 1], next: written[i + 1] };
+}
+function setNav(n) {
+  const { prev, next } = n ? neighbours(n) : {};
+  for (const [id, v] of [["dPrev", prev], ["prevTop", prev], ["dNext", next], ["nextTop", next]]) {
+    $(id).disabled = !v; $(id).dataset.go = v || "";
+  }
+  $("prevTop").hidden = $("nextTop").hidden = !n;
 }
 
 function toc() {
+  current = 0;
+  document.body.classList.remove("reading", "chrome-off");
   const last = store.get("last", null);
-  const done = written.length;
-  const next = last && DATA.chapters[last] ? last : written[0];
-  where.textContent = "目錄";
+  const resume = last && DATA.chapters[last];
+  const next = resume ? last : written[0];
+  $("where").textContent = "目錄";
+  setNav(0);
   main.innerHTML = `
     <section class="cover">
       <h1>霧川</h1>
       <div class="meta">
         <p class="core">${DATA.core}</p>
-        <div class="stat"><span>十卷・八十章</span><span>已寫 ${done} / 80 章</span>
-          <span class="progress" aria-hidden="true"><i style="width:${done / 80 * 100}%"></i></span></div>
-        <button class="go" type="button" data-go="${next}">${last && DATA.chapters[last] ? "繼續讀　第" + cn(last) + "章" : "從第一章讀起"}</button>
+        <div class="stat"><span>十卷・八十章</span><span>已寫 ${written.length} / 80 章</span>
+          <span class="progress" aria-hidden="true"><i style="width:${written.length / 80 * 100}%"></i></span></div>
+        <button class="go" type="button" data-go="${next}">${resume ? "繼續讀　第" + cn(last) + "章〈" + meta(last).name + "〉" : "從第一章讀起"}</button>
+        <p class="hint">閱讀時點一下畫面中央可以收起工具列，左右滑動可以換章。</p>
       </div>
     </section>
     <div class="toc">
@@ -191,17 +305,21 @@ function toc() {
           }).join("")}</ol>
         </section>`).join("")}
     </div>`;
-  window.scrollTo(0, 0);
+  window.scrollTo(0, store.get("tocScroll", 0));
+  updateReadbar();
 }
 
 function read(n) {
   const ch = DATA.chapters[n];
   if (!ch) return toc();
+  current = n;
+  document.body.classList.add("reading");
+  document.body.classList.remove("chrome-off");
   const m = meta(n);
-  const i = written.indexOf(n);
-  const prev = written[i - 1], next = written[i + 1];
+  const { prev, next } = neighbours(n);
   store.set("last", n);
-  where.textContent = `${m.vol || ""}　第${cn(n)}章　${m.name}`;
+  $("where").textContent = `第${cn(n)}章　${m.name}`;
+  setNav(n);
   const title = ch.title.replace(/^第.+?章　/, "");
   main.innerHTML = `
     <article class="chapter" id="text">
@@ -214,10 +332,37 @@ function read(n) {
       <button type="button" ${next ? `data-go="${next}"` : "disabled"}><small>下一章</small><span>${next ? "第" + cn(next) + "章　" + meta(next).name : "還沒寫到"}</span></button>
     </nav>
     ${next ? "" : `<p class="end">目前寫到這裡。下一章是第${cn(n + 1)}章〈${meta(n + 1).name}〉。</p>`}`;
-  window.scrollTo(0, 0);
-  const t = document.getElementById("text");
-  if (vertical) t.scrollLeft = 0;
+  const pos = store.get("pos", {})[n] || 0;
+  if (prefs.vertical) { window.scrollTo(0, 0); const t = $("text"); t.scrollLeft = -pos * (t.scrollWidth - t.clientWidth); t.addEventListener("scroll", onScroll, { passive: true }); }
+  else window.scrollTo(0, pos * (document.documentElement.scrollHeight - innerHeight));
+  updateReadbar();
 }
+
+function ratio() {
+  if (!current) return 0;
+  if (prefs.vertical) { const t = $("text"); const max = t.scrollWidth - t.clientWidth; return max > 0 ? Math.min(1, Math.abs(t.scrollLeft) / max) : 0; }
+  const max = document.documentElement.scrollHeight - innerHeight;
+  return max > 0 ? Math.min(1, scrollY / max) : 0;
+}
+function updateReadbar() { $("readbar").style.width = (ratio() * 100) + "%"; }
+
+let lastY = 0, saveTimer = 0;
+function onScroll() {
+  updateReadbar();
+  if (current) {
+    const y = scrollY;
+    if (!prefs.vertical && Math.abs(y - lastY) > 12) {
+      document.body.classList.toggle("chrome-off", y > lastY && y > 120);
+      lastY = y;
+    }
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => { const p = store.get("pos", {}); p[current] = Number(ratio().toFixed(4)); store.set("pos", p); }, 250);
+  } else {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => store.set("tocScroll", scrollY), 250);
+  }
+}
+window.addEventListener("scroll", onScroll, { passive: true });
 
 function route() {
   const m = location.hash.match(/^#c(\d+)$/);
@@ -228,21 +373,55 @@ function go(n) {
   if (location.hash === h) route(); else location.hash = h;
 }
 
+/* 點擊：換章、目錄 */
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-go]");
-  if (b) go(Number(b.dataset.go));
+  if (b && b.dataset.go) { go(Number(b.dataset.go)); return; }
+  if (current && e.target.closest(".chapter") && !getSelection().toString()) {
+    const y = e.clientY / innerHeight;
+    if (y > .25 && y < .75) document.body.classList.toggle("chrome-off");
+  }
 });
-document.getElementById("home").onclick = () => go(0);
-document.getElementById("smaller").onclick = () => { size = Math.max(15, size - 1); store.set("size", size); applyPrefs(); };
-document.getElementById("bigger").onclick = () => { size = Math.min(26, size + 1); store.set("size", size); applyPrefs(); };
-document.getElementById("vertical").onclick = () => { vertical = !vertical; store.set("vertical", vertical); applyPrefs(); route(); };
+$("home").onclick = () => go(0);
+$("dToc").onclick = () => go(0);
+
+/* 左右滑動換章（橫排時） */
+let sx = 0, sy = 0, st = 0;
+document.addEventListener("touchstart", e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); }, { passive: true });
+document.addEventListener("touchend", e => {
+  if (!current || prefs.vertical || !$("sheet").hidden) return;
+  const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+  if (Date.now() - st < 600 && Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy) * 2) {
+    const { prev, next } = neighbours(current);
+    if (dx < 0 && next) go(next);
+    if (dx > 0 && prev) go(prev);
+  }
+}, { passive: true });
+
 document.addEventListener("keydown", e => {
-  const m = location.hash.match(/^#c(\d+)$/);
-  if (!m || e.target.closest("input,textarea")) return;
-  const i = written.indexOf(Number(m[1]));
-  if (e.key === "ArrowRight" && written[i + 1]) go(written[i + 1]);
-  if (e.key === "ArrowLeft" && written[i - 1]) go(written[i - 1]);
+  if (e.key === "Escape" && !$("sheet").hidden) return closeSheet();
+  if (!current || e.target.closest("input,textarea")) return;
+  const { prev, next } = neighbours(current);
+  if (e.key === "ArrowRight" && next) go(next);
+  if (e.key === "ArrowLeft" && prev) go(prev);
 });
+
+/* 設定面板 */
+function openSheet() { $("sheet").hidden = $("shade").hidden = false; $("closeSheet").focus(); }
+function closeSheet() { $("sheet").hidden = $("shade").hidden = true; }
+$("openSheet").onclick = openSheet;
+$("dSet").onclick = openSheet;
+$("closeSheet").onclick = closeSheet;
+$("shade").onclick = closeSheet;
+$("sizeRange").oninput = e => { prefs.size = Number(e.target.value); store.set("size", prefs.size); applyPrefs(); updateReadbar(); };
+$("leadSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; prefs.lead = Number(b.dataset.lead); store.set("lead", prefs.lead); applyPrefs(); };
+$("themeSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; prefs.theme = b.dataset.themeSet; store.set("theme", prefs.theme); applyPrefs(); };
+$("modeSeg").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const v = b.dataset.mode === "v"; if (v === prefs.vertical) return;
+  prefs.vertical = v; store.set("vertical", v); applyPrefs(); if (current) read(current);
+};
+
 window.addEventListener("hashchange", route);
 applyPrefs();
 route();

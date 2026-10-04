@@ -36,7 +36,7 @@
    - 違反十條鐵律、敘事管道（夢只能看見陳守一在場的事）、寫作守則的地方。
    找到就直接修（改正文或補大綱一句），並更新本檔的連續性備忘。
 7. `git add`、`git commit -m "第N章 章名"`，直接推到 `main`：`git push origin HEAD:main`（不開 PR）。
-8. **更新閱讀網站**：`python3 tools/build_reader.py` 重建 `site/index.html`，跟章節一起 commit。推到 `main` 後 Vercel 會自動部署到 https://wuchuan-gilt.vercel.app（Vercel 專案 `wuchuan`，`vercel.json` 設定輸出目錄為 `site/`）。若同時要更新 claude.ai 版，再用 Artifact 工具發布到 `https://claude.ai/artifact/WyVUHxNTvCnCknir9o379q`（新對話要帶 `url`）。
+8. **更新閱讀網站**：`python3 tools/build_reader.py` 重建 `site/index.html`，跟章節一起 commit。推到 `main` 後 Vercel 會自動部署到 https://wuchuan-gilt.vercel.app（Vercel 專案 `wuchuan`，`vercel.json` 設定輸出目錄為 `site/`）。若同時要更新 claude.ai 版，再用 Artifact 工具把 `build/artifact.html`（不進 git）發布到 `https://claude.ai/artifact/WyVUHxNTvCnCknir9o379q`（帶 `url` 參數）。
 9. 用一兩句中文回報：這章寫了什麼、新埋了哪些伏筆，以及回頭檢查找到並修掉了哪些問題（沒有也要說）。
 
 ## 寫作守則摘要（細節見 03-寫作守則.md）

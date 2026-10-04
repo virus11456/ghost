@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "python3 tools/build_reader.py || echo '沿用已提交的 site/index.html'",
+  "outputDirectory": "site"
+}

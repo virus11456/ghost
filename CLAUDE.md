@@ -39,7 +39,7 @@
    - 違反十條鐵律、敘事管道（夢只能看見陳守一在場的事）、寫作守則的地方。
    找到就直接修（改正文或補大綱一句），並更新本檔的連續性備忘。
 7. `git add`、`git commit -m "第N章 章名"`，直接推到 `main`：`git push origin HEAD:main`（不開 PR）。
-8. **更新閱讀網站**：`python3 tools/build_reader.py` 重建 `site/index.html`，跟章節一起 commit。推到 `main` 後 Vercel 會自動部署到 https://wuchuan-gilt.vercel.app（Vercel 專案 `wuchuan`，`vercel.json` 設定輸出目錄為 `site/`）。若同時要更新 claude.ai 版，再用 Artifact 工具把 `build/artifact.html`（不進 git）發布到 `https://claude.ai/artifact/WyVUHxNTvCnCknir9o379q`（帶 `url` 參數）。
+8. **更新閱讀網站（一天最多一次，Frank 2026-10 要求，省 Vercel 每日部署額度）**：`vercel.json` 的 `ignoreCommand` 設定成只有 `site/` 有變動的 push 才會觸發 Vercel 部署，其餘 push 一律跳過。所以每章照常 commit、推 `main`，但**只有當天第一次**才跑 `python3 tools/build_reader.py` 重建 `site/index.html` 並一起 commit；先用 `git log -1 --format=%cd --date=short -- site/` 查 `site/` 最後更新日期，若已是今天（`date +%F`），就不要動 `site/`（跑過 build_reader 的話用 `git checkout site/` 還原），當天後寫的章節等隔天第一次推送時一起上線。Frank 明說要立刻更新網站時例外。線上版：https://wuchuan-gilt.vercel.app（Vercel 專案 `wuchuan`，`vercel.json` 設定輸出目錄為 `site/`）。若同時要更新 claude.ai 版，再用 Artifact 工具把 `build/artifact.html`（不進 git）發布到 `https://claude.ai/artifact/WyVUHxNTvCnCknir9o379q`（帶 `url` 參數）。
 9. 用一兩句中文回報：這章寫了什麼、新埋了哪些伏筆，以及回頭檢查找到並修掉了哪些問題（沒有也要說）。
 
 ## 寫實層（Frank 2026-10 決定加重寫實感）

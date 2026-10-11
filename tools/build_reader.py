@@ -36,8 +36,8 @@ def volumes():
     for m in re.finditer(r"^## (卷.)　(.+?)\n\n(.+?)\n\n(.+?)(?=\n## |\Z)", outline, re.S | re.M):
         chs = []
         for row in re.finditer(r"^\| (\d+) \| (.+?) \| (.+?) \|", m.group(4), re.M):
-            chs.append({"n": int(row.group(1)), "name": row.group(2), "line": row.group(3)})
-        vols.append({"vol": m.group(1), "name": m.group(2), "blurb": m.group(3).strip(), "chapters": chs})
+            chs.append({"n": int(row.group(1)), "name": row.group(2), "line": ""})
+        vols.append({"vol": m.group(1), "name": m.group(2), "chapters": chs})  # 不放卷簡介，免得暴雷
     return vols
 
 def main():
@@ -55,12 +55,12 @@ def main():
         eggs = []
         for i, row in enumerate(re.finditer(r"^\| ([一二三四五六七八九十]) \| (.+?) \| (.+?) \|", em.group(3), re.M)):
             n = 81 + i
-            eggs.append({"n": n, "name": row.group(2), "line": row.group(3), "label": "彩蛋" + row.group(1)})
+            eggs.append({"n": n, "name": row.group(2), "line": "", "label": "彩蛋" + row.group(1)})
             f = ROOT / "彩蛋" / f"{i + 1:02d}-{row.group(2)}.md"
             if f.exists():
                 title, body = md_to_html(f.read_text(encoding="utf-8"))
                 chapters[n] = {"title": title, "html": body, "chars": len(re.sub(r"\s|<[^>]+>", "", body))}
-        vols.append({"vol": "彩蛋", "name": em.group(1), "blurb": "全書完結後的番外。", "chapters": eggs})
+        vols.append({"vol": "彩蛋", "name": em.group(1), "chapters": eggs})
     core = re.search(r"## 故事核心\n\n(.+?)\n", outline).group(1)
     data = {"volumes": vols, "chapters": chapters, "core": core}
     tpl = (ROOT / "tools" / "reader_template.html").read_text(encoding="utf-8")

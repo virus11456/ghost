@@ -297,7 +297,6 @@ function toc() {
       ${DATA.volumes.map(v => `
         <section class="vol">
           <header><h2><small>${v.vol}</small>${v.name}</h2></header>
-          <p class="blurb">${v.blurb}</p>
           <ol>${v.chapters.map(c => {
             const has = !!DATA.chapters[c.n];
             return `<li class="${has ? "" : "todo"} ${c.n === last ? "here" : ""}">

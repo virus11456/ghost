@@ -239,6 +239,8 @@ const $ = id => document.getElementById(id);
 const written = Object.keys(DATA.chapters).map(Number).sort((a, b) => a - b);
 const all = DATA.volumes.flatMap(v => v.chapters.map(c => ({ ...c, vol: v.vol, volName: v.name })));
 const meta = n => all.find(c => c.n === n) || { n, name: "", line: "" };
+const lab = n => meta(n).label || ("第" + cn(n) + "章");
+const mainWritten = written.filter(n => n <= 80).length;
 const main = $("main");
 let current = 0;
 
@@ -285,9 +287,9 @@ function toc() {
       <h1>霧川</h1>
       <div class="meta">
         <p class="core">${DATA.core}</p>
-        <div class="stat"><span>十卷・八十章</span><span>已寫 ${written.length} / 80 章</span>
-          <span class="progress" aria-hidden="true"><i style="width:${written.length / 80 * 100}%"></i></span></div>
-        <button class="go" type="button" data-go="${next}">${resume ? "繼續讀　第" + cn(last) + "章〈" + meta(last).name + "〉" : "從第一章讀起"}</button>
+        <div class="stat"><span>十卷・八十章</span><span>已寫 ${mainWritten} / 80 章</span>
+          <span class="progress" aria-hidden="true"><i style="width:${mainWritten / 80 * 100}%"></i></span></div>
+        <button class="go" type="button" data-go="${next}">${resume ? "繼續讀　" + lab(last) + "〈" + meta(last).name + "〉" : "從第一章讀起"}</button>
         <p class="hint">閱讀時點一下畫面中央可以收起工具列，左右滑動可以換章。</p>
       </div>
     </section>
@@ -300,7 +302,7 @@ function toc() {
             const has = !!DATA.chapters[c.n];
             return `<li class="${has ? "" : "todo"} ${c.n === last ? "here" : ""}">
               <button type="button" ${has ? `data-go="${c.n}"` : `disabled aria-label="第${c.n}章 ${c.name}，尚未寫成"`}>
-                <span class="n">${c.n}</span><span class="t">${c.name}</span><span class="l">${has ? c.line : "未寫"}</span>
+                <span class="n">${c.label || c.n}</span><span class="t">${c.name}</span><span class="l">${has ? c.line : "未寫"}</span>
               </button></li>`;
           }).join("")}</ol>
         </section>`).join("")}
@@ -318,20 +320,20 @@ function read(n) {
   const m = meta(n);
   const { prev, next } = neighbours(n);
   store.set("last", n);
-  $("where").textContent = `第${cn(n)}章　${m.name}`;
+  $("where").textContent = `${lab(n)}　${m.name}`;
   setNav(n);
-  const title = ch.title.replace(/^第.+?章　/, "");
+  const title = ch.title.replace(/^(第.+?章|彩蛋.)　/, "");
   main.innerHTML = `
     <article class="chapter" id="text">
-      <p class="num">${m.vol || ""}・${m.volName || ""}　第 ${n} 章</p>
+      <p class="num">${m.vol || ""}・${m.volName || ""}　${m.label || "第 " + n + " 章"}</p>
       <h2>${title}</h2>
       ${ch.html}
     </article>
     <nav class="nav" aria-label="換章">
-      <button type="button" ${prev ? `data-go="${prev}"` : "disabled"}><small>上一章</small><span>${prev ? "第" + cn(prev) + "章　" + meta(prev).name : "已是第一章"}</span></button>
-      <button type="button" ${next ? `data-go="${next}"` : "disabled"}><small>下一章</small><span>${next ? "第" + cn(next) + "章　" + meta(next).name : "還沒寫到"}</span></button>
+      <button type="button" ${prev ? `data-go="${prev}"` : "disabled"}><small>上一章</small><span>${prev ? lab(prev) + "　" + meta(prev).name : "已是第一章"}</span></button>
+      <button type="button" ${next ? `data-go="${next}"` : "disabled"}><small>下一章</small><span>${next ? lab(next) + "　" + meta(next).name : "還沒寫到"}</span></button>
     </nav>
-    ${next ? "" : `<p class="end">目前寫到這裡。下一章是第${cn(n + 1)}章〈${meta(n + 1).name}〉。</p>`}`;
+    ${next ? "" : (meta(n + 1).name ? `<p class="end">目前寫到這裡。下一篇是${lab(n + 1)}〈${meta(n + 1).name}〉。</p>` : `<p class="end">全書完。</p>`)}`;
   const pos = store.get("pos", {})[n] || 0;
   if (prefs.vertical) { window.scrollTo(0, 0); const t = $("text"); t.scrollLeft = -pos * (t.scrollWidth - t.clientWidth); t.addEventListener("scroll", onScroll, { passive: true }); }
   else window.scrollTo(0, pos * (document.documentElement.scrollHeight - innerHeight));

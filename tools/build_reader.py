@@ -30,6 +30,11 @@ def md_to_html(text):
             out.append("<p>" + "<br>".join(inline(l) for l in lines) + "</p>")
     return title, "\n".join(out)
 
+def cnum(n):
+    if n <= 10: return "十" if n == 10 else CN[n]
+    if n < 20: return "十" + (CN[n % 10] if n % 10 else "")
+    return CN[n // 10] + "十" + (CN[n % 10] if n % 10 else "")
+
 def volumes():
     outline = (ROOT / "01-大綱.md").read_text(encoding="utf-8")
     vols = []
@@ -61,6 +66,23 @@ def main():
                 title, body = md_to_html(f.read_text(encoding="utf-8"))
                 chapters[n] = {"title": title, "html": body, "chars": len(re.sub(r"\s|<[^>]+>", "", body))}
         vols.append({"vol": "彩蛋", "name": em.group(1), "chapters": eggs})
+    # 第二部《日遊》：編號 1001 起，顯示用 label；只收已排到每章一句的卷
+    ry = ROOT / "日遊" / "01-大綱.md"
+    if ry.exists():
+        yo = ry.read_text(encoding="utf-8")
+        first = True
+        for m in re.finditer(r"^## (卷.)　(.+?)\n\n(.+?)\n\n(.+?)(?=\n## |\Z)", yo, re.S | re.M):
+            chs = []
+            for row in re.finditer(r"^\| (\d+) \| (.+?) \| (.+?) \|", m.group(4), re.M):
+                k = int(row.group(1)); n = 1000 + k
+                chs.append({"n": n, "name": row.group(2), "line": "", "label": "第" + cnum(k) + "章", "short": k})
+                for f in (ROOT / "日遊" / "正文").glob(f"{k:02d}-*.md"):
+                    title, body = md_to_html(f.read_text(encoding="utf-8"))
+                    chapters[n] = {"title": title, "html": body, "chars": len(re.sub(r"\s|<[^>]+>", "", body))}
+            if chs:
+                name = re.sub(r"（.*?）$", "", m.group(2))
+                vols.append({"vol": m.group(1), "name": name, "chapters": chs, "book": "日遊" if first else ""})
+                first = False
     core = re.search(r"## 故事核心\n\n(.+?)\n", outline).group(1)
     data = {"volumes": vols, "chapters": chapters, "core": core}
     tpl = (ROOT / "tools" / "reader_template.html").read_text(encoding="utf-8")
@@ -82,7 +104,7 @@ HEAD = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="《霧川》：靈異懸疑長篇小說，十卷八十章。">
+<meta name="description" content="「陰陽帳」三部曲：《霧川》十卷八十章、彩蛋，與第二部《日遊》。">
 <meta name="theme-color" content="#e7ebe9" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0f1316" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">

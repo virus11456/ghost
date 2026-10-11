@@ -81,6 +81,10 @@ main { padding-inline: 16px; padding-block: 0 96px; }
 .vol header { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
 .vol h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0; letter-spacing: .08em; text-wrap: balance; }
 .vol h2 small { color: var(--muted); font-size: 15px; margin-right: 10px; }
+.book { border-top: 2px solid var(--rule); padding-top: 28px; margin-top: 12px; }
+.book h2 { font-family: var(--display); font-weight: 400; font-size: 40px; margin: 0; letter-spacing: .2em; }
+.book h2 small { display: block; font-size: 14px; color: var(--muted); letter-spacing: .1em; margin-bottom: 6px; }
+.book .stat { font-family: var(--ui); font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 .vol .blurb { color: var(--muted); font-size: 14px; line-height: 1.8; margin: 8px 0 4px; }
 .vol ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 18px; }
 .vol li button {
@@ -239,7 +243,7 @@ const $ = id => document.getElementById(id);
 const written = Object.keys(DATA.chapters).map(Number).sort((a, b) => a - b);
 const all = DATA.volumes.flatMap(v => v.chapters.map(c => ({ ...c, vol: v.vol, volName: v.name })));
 const meta = n => all.find(c => c.n === n) || { n, name: "", line: "" };
-const lab = n => meta(n).label || ("第" + cn(n) + "章");
+const lab = n => (n > 1000 ? "日遊・" : "") + (meta(n).label || ("第" + cn(n) + "章"));
 const mainWritten = written.filter(n => n <= 80).length;
 const main = $("main");
 let current = 0;
@@ -295,13 +299,14 @@ function toc() {
     </section>
     <div class="toc">
       ${DATA.volumes.map(v => `
+        ${v.book ? `<section class="book"><h2><small>第二部</small>${v.book}</h2><p class="stat">已寫 ${written.filter(n => n > 1000).length} 章</p></section>` : ""}
         <section class="vol">
           <header><h2><small>${v.vol}</small>${v.name}</h2></header>
           <ol>${v.chapters.map(c => {
             const has = !!DATA.chapters[c.n];
             return `<li class="${has ? "" : "todo"} ${c.n === last ? "here" : ""}">
               <button type="button" ${has ? `data-go="${c.n}"` : `disabled aria-label="第${c.n}章 ${c.name}，尚未寫成"`}>
-                <span class="n">${c.label || c.n}</span><span class="t">${c.name}</span><span class="l">${has ? c.line : "未寫"}</span>
+                <span class="n">${c.short || c.label || c.n}</span><span class="t">${c.name}</span><span class="l">${has ? c.line : "未寫"}</span>
               </button></li>`;
           }).join("")}</ol>
         </section>`).join("")}
@@ -322,9 +327,10 @@ function read(n) {
   $("where").textContent = `${lab(n)}　${m.name}`;
   setNav(n);
   const title = ch.title.replace(/^(第.+?章|彩蛋.)　/, "");
+  const bookTag = n > 1000 ? "日遊・" : "";
   main.innerHTML = `
     <article class="chapter" id="text">
-      <p class="num">${m.vol || ""}・${m.volName || ""}　${m.label || "第 " + n + " 章"}</p>
+      <p class="num">${bookTag}${m.vol || ""}・${m.volName || ""}　${m.label || "第 " + n + " 章"}</p>
       <h2>${title}</h2>
       ${ch.html}
     </article>
